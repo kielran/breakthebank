@@ -10,9 +10,6 @@ if not os.path.exists("imgs"):
 
 # files:
 
-
-
-
 pygame.display.set_caption('Break the Bank')
 
 
@@ -40,7 +37,7 @@ class button():
             text = font.render(self.text, 1, (0,0,0))
             win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
         
-        if self.image != False:
+        if self.image != None:
 
             if not self.isOver(pygame.mouse.get_pos()):
                 image = pygame.image.load(self.image)
@@ -73,9 +70,7 @@ class button():
             return False
 size = 80
 
-def drawButtons():
-    global stopDrawing
-    stopDrawing = False
+def drawMainMenu():
     backgroundphoto = pygame.image.load("imgs/start_bare.png").convert()
     #screen.blit(backgroundphoto, (0, 0))
     backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9)) 
@@ -111,31 +106,42 @@ quit_button = button(width/2.2980,height/1.26760,20,100,'',None,"imgs/buttons/sl
 audio_button = button(width/2.015748,height/1.09923,20,100,'',None,"imgs/buttons/slice_audio.png", "imgs/buttons/hovering_slice_audio.png")
 accessibility_button = button(width/2.3063063,height/1.09923,20,100,'',None,"imgs/buttons/slice_cb.png", "imgs/buttons/hovering_slice_cb.png")
 
+notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ESCAPE TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
+
 running = True
+main_menu = True
 while running:
-    drawButtons()
-    # screen.fill((40, 0, 80))
+    if main_menu:
+        drawMainMenu()
+        # screen.fill((40, 0, 80))
+        # Did the user click the window close button?
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                    if start_button.isOver(mouse):
+                        print("start pressed")
+                        main_menu = False
+                    if quit_button.isOver(mouse):
+                        pygame.quit()
+            # if event.type == pygame.MOUSEMOTION:
 
-    # Did the user click the window close button?
-    for event in pygame.event.get():
-        mouse = pygame.mouse.get_pos()
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-                if green_button.isOver(mouse):
-                    print("clicked")
-                    pygame.quit()
-                if quit_button.isOver(mouse):
-                    pygame.quit()
-        # if event.type == pygame.MOUSEMOTION:
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.key_code("return"):
+                    # print("width: " + str(width/mouse[0]))
+                    # print("height: " + str(height/mouse[1]))
+                    print(mouse)
+    else:
+        screen.fill((40, 0, 80))
+        notify_msg.draw(screen)
+        #print("we are supposed to be in game right now.")
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.key_code("escape"):
+                    main_menu = True
 
-        if event.type == pygame.KEYDOWN:
-            if pygame.key.key_code("return"):
-                # print("width: " + str(width/mouse[0]))
-                # print("height: " + str(height/mouse[1]))
-                print(mouse)
-
-
+  
 
     # Fill the background with white
     
