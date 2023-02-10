@@ -90,9 +90,9 @@ class button():
 size = 80
 
 def drawMainMenu():
-    backgroundphoto = pygame.image.load("imgs/start_bare.png").convert()
+    backgroundphoto = pygame.image.load("imgs/start_bare.png")#.convert()
     #screen.blit(backgroundphoto, (0, 0))
-    backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9)) 
+    #backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9)) 
     screen.blit(backgroundphoto,(0,0))
     start_button.draw(screen)
     quit_button.draw(screen)
