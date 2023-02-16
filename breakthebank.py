@@ -99,16 +99,13 @@ class button():
             return False
 
 #--------------------------------------------------------
-# Define music
+# Load music
 #--------------------------------------------------------
-# def music():
-#     pygame.mixer.music.load("audio/menu_maintheme.mp3")
-#     pygame.mixer.music.play()
 
-pygame.mixer.music.load("audio/menu_maintheme.mp3")
-
-    #while True:
-#music()            
+#pygame.mixer.music.load("audio/menu_maintheme.mp3")
+#pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.wav")
+pygame.mixer.music.load("audio/maintheme_syndicate.wav")
+pygame.mixer.music.set_volume(0.5)         
 
 #--------------------------------------------------------
 # Control objects on the Title Screen/Main Menu
@@ -208,7 +205,7 @@ while running:
     timer.tick(60)
 
     if main_menu_music:
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
         main_menu_music = False
         
     #-------------MAIN MENU-------------
