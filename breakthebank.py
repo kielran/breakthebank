@@ -2,6 +2,8 @@
 # Import and initialize the pygame library
 #--------------------------------------------------------
 import pygame, os, random
+from statemachine import StateMachine, State
+
 pygame.init()
 pygame.mixer.init()
 
@@ -250,57 +252,6 @@ class button():
 pygame.mixer.music.set_volume(0.5)         
 
 #--------------------------------------------------------
-# Control objects on the Title Screen/Main Menu
-#--------------------------------------------------------
-def drawMainMenu():
-    backgroundphoto = pygame.image.load("imgs/start_bare.png")#.convert()
-    screen.blit(backgroundphoto,(0,0))
-    start_button.draw(screen)
-    quit_button.draw(screen)
-    audio_button.draw(screen)
-    accessibility_button.draw(screen)
-
-#--------------------------------------------------------
-# Control objects on the Stage Selection page
-# - TODO: finalize page, add buttons for stages
-#--------------------------------------------------------
-def drawStageSelection():
-    backgroundphoto = pygame.image.load("imgs/stage_select.png").convert()
-    backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
-    screen.blit(backgroundphoto,(0,0))
-    stage_placeholderbutton.draw(screen)
-    quit_mainmenu_button.draw(screen)
-
-#--------------------------------------------------------
-# Control objects on the Pause Menu
-#--------------------------------------------------------
-def drawPauseMenu():
-    #global backgroundphoto
-    screen.blit(current_screen,(0,0))
-    backgroundphoto = pygame.image.load("imgs/pause_bg_light.png")
-    backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
-    #backgroundphoto.convert_alpha()
-    backgroundphoto.set_alpha(250)
-    screen.blit(backgroundphoto, (0,0))
-    continue_button.draw(screen)
-    restart_button.draw(screen)
-    tutorial_button.draw(screen)
-    pause_title.draw(screen)
-    quit_button.draw(screen)
-    audio_button.draw(screen)
-    accessibility_button.draw(screen)
-
-#--------------------------------------------------------
-# Placeholder for In Game stages
-# - TODO: this might need to be split into a def for 
-#         every individual stage
-#--------------------------------------------------------
-def drawInGame():
-    backgroundphoto = pygame.image.load("imgs/in_game.png")
-    backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
-    screen.blit(backgroundphoto,(0,0))
-
-#--------------------------------------------------------
 # Set up the drawing window
 #--------------------------------------------------------
 screen = pygame.display.set_mode([size*16, size*9])
@@ -320,17 +271,30 @@ pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slic
 
 # TODO: placeholders for Stage Selection Menu
 stage_placeholderbutton = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
-smallfont = pygame.font.SysFont('comicsansms',25)
-text = smallfont.render('quit', True, (255,00,255))
-color_light = (255,255,255)
-color_dark = (0,0,0)
+# notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
 
+
+overallScreen = CurrentScene()
+
+
+# Draw buttons 
+pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continue_button, restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
+InGame = Scene(screen, "imgs/in_game.png", [])
+mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
+stageSelection = Scene(screen, "imgs/stage_select.png", [stage_placeholderbutton,quit_mainmenu_button])
+
+#--------------------------------------------------------
+#Define Booleans for stage states
+#--------------------------------------------------------
+running = True #game run state
+main_menu_music = True
 #--------------------------------------------------------
 # Main Game Loop
 # - Clock tick needs to be contained here
 # - Game state is controlled here
 #--------------------------------------------------------
+
+
 while running:
     timer = pygame.time.Clock()
     timer.tick(60)
@@ -374,3 +338,4 @@ while running:
 
 # Done! Time to quit.
 pygame.quit()
+

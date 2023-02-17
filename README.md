@@ -1,5 +1,9 @@
 # CS180: Break the Bank | by 9Lives++
 
+2/15
+- music added
+- main menu -> stage select -> in game implemented
+
 2/09
 - Main Menu
 ![Main Menu](https://snipboard.io/a2nKrH.jpg "Main Menu")
