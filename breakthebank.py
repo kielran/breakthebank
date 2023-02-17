@@ -104,8 +104,8 @@ class button():
 
 #pygame.mixer.music.load("audio/menu_maintheme.mp3")
 #pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.wav")
-pygame.mixer.music.load("audio/maintheme_syndicate.wav")
-pygame.mixer.music.set_volume(0.5)         
+menu_theme = pygame.mixer.Sound("audio/maintheme_syndicate.wav")
+menu_theme.set_volume(0.5)         
 
 #--------------------------------------------------------
 # Control objects on the Title Screen/Main Menu
@@ -205,7 +205,7 @@ while running:
     timer.tick(60)
 
     if main_menu_music:
-        pygame.mixer.music.play(-1)
+        menu_theme.play(-1)
         main_menu_music = False
         
     #-------------MAIN MENU-------------
@@ -224,7 +224,7 @@ while running:
                     in_game = False
                     stage_selection = True
                     main_menu_music = False
-                    pygame.mixer.music.pause()
+                    menu_theme.stop()
                 if quit_button.isOver(mouse):
                     pygame.quit()
             # if event.type == pygame.MOUSEMOTION:
