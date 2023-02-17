@@ -1,7 +1,10 @@
 #--------------------------------------------------------
 # Import and initialize the pygame library
 #--------------------------------------------------------
-import pygame, os, random
+import pygame, os, random, sys
+from settings import *
+from tiles import Tile
+from level import Level
 pygame.init()
 pygame.mixer.init()
 
@@ -19,6 +22,9 @@ pygame.display.set_caption('Break the Bank')
 gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
+
+
+
 
 #--------------------------------------------------------
 # Define buttons
@@ -102,8 +108,8 @@ class button():
 # Load music
 #--------------------------------------------------------
 
-#pygame.mixer.music.load("audio/menu_maintheme.mp3")
-#pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.wav")
+#ygame.mixer.music.load("audio/menu_maintheme.mp3")
+pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.wav")
 pygame.mixer.music.load("audio/maintheme_syndicate.wav")
 pygame.mixer.music.set_volume(0.5)         
 
@@ -159,12 +165,43 @@ def drawInGame():
     screen.blit(backgroundphoto,(0,0))
 
 #--------------------------------------------------------
+# Drawing game stage
+# 
+# 
+#--------------------------------------------------------
+def do_game_stuff():
+    test_tile = pygame.sprite.Group(Tile((100,100), 200))
+    level = Level(level_map, screen)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        screen.fill('black')
+        level.run()
+        
+        pygame.display.update()
+        timer.tick(60)
+
+
+
+
+
+
+
+
+
+
+#--------------------------------------------------------
 # Set up the drawing window
 #--------------------------------------------------------
 screen = pygame.display.set_mode([size*16, size*9])
 # screen = pygame.transform.scale(backgroundphoto,[859, 727])
 width = screen.get_width()
 height = screen.get_height()
+
+tile_size = 64
+height = len(level_map) * tile_size
 
 start_button = button(width/2.807,height/1.6,20,100,'',None,"imgs/buttons/slice_start.png","imgs/buttons/hovering_slice_start.png")
 quit_button = button(width/2.2,height/1.3,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")
@@ -252,6 +289,7 @@ while running:
     #-------------IN GAME-------------
     elif not main_menu and not pause_menu and in_game:
         #screen.fill((40, 0, 80))
+        do_game_stuff()
         drawInGame()
         mouse = pygame.mouse.get_pos()
         main_menu = False
