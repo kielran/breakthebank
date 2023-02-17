@@ -21,6 +21,148 @@ pygame.display.set_icon(gameicon)
 size = 80
 
 #--------------------------------------------------------
+#Define Booleans for stage states
+#--------------------------------------------------------
+running = True # game run state
+main_menu_music = True # tick music
+
+pygame.mixer.music.load("audio/wip/ogmaintheme.mp3")
+menuMusic = pygame.mixer.Sound("audio/wip/ogmaintheme.mp3")
+menu_ch = pygame.mixer.Channel(0)
+menu_ch.play(menuMusic, loops=-1, fade_ms=5000)
+stageselect_ch = pygame.mixer.Channel(1)
+
+#--------------------------------------------------------
+# Define Drawing States
+#--------------------------------------------------------
+
+class CurrentScene(StateMachine):
+    scene_main_menu = State("mainMenu", initial = True)
+    scene_level_selection = State("Level Selection")
+    scene_in_game = State("In Game")
+    scene_pause_menu = State("Paused")
+
+    # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
+
+    go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
+        scene_in_game, cond = "in_game") | scene_in_game.to(scene_main_menu, cond = "main_menu") | scene_in_game.to(
+            scene_pause_menu, cond = "pause_menu") | scene_pause_menu.to(scene_in_game, cond = "in_game") | scene_pause_menu.to(scene_level_selection, cond = "select_stage")
+    update = scene_main_menu.to.itself(on="drawMainMenu") | scene_level_selection.to.itself(on="drawStageSelection") | scene_in_game.to.itself(
+        on="drawInGame") | scene_pause_menu.to.itself(on="drawPauseMenu")
+
+    def __init__(self):
+        # self.calls = []
+        self.select_stage = False
+        self.main_menu = False
+        self.in_game = False
+        self.pause_menu = False
+        self.curr_screen = screen.copy()
+        super().__init__()
+
+    def on_transition(self):
+        self.select_stage = False
+        self.main_menu = False
+        self.in_game = False
+        self.pause_menu = False
+
+    def checkChange(self):
+        if self.select_stage | self.main_menu | self.in_game | self.pause_menu:
+            return True
+
+
+    #-------------MAIN MENU-------------
+    def drawMainMenu(self):
+        mainMenu.update()
+        
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.isOver(mouse):
+                    self.select_stage = True
+                    print("TRIGGERED start game")
+                    pygame.mixer.music.pause()
+                if quit_button.isOver(mouse):
+                    pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    print(mouse)
+
+    #-------------STAGE SELECTION-------------
+    def drawStageSelection(self):
+        pygame.mixer.music.load("audio\wip\cicadas.flac")
+        pygame.mixer.music.set_volume(0.5)
+        stageSelection.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if stage_placeholderbutton.isOver(mouse):
+                    print("TRIGGERED stage selection -> in game")
+                    self.in_game = True
+                if quit_mainmenu_button.isOver(mouse):
+                    self.main_menu = True
+
+
+    #-------------IN GAME-------------
+    def drawInGame(self):
+        InGame.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.curr_screen = screen.copy()
+                    # put physics stuff here to remember when unpausing
+                    self.pause_menu = True
+                if event.key == pygame.K_RETURN:
+                    self.main_menu = True
+
+    #-------------PAUSE MENU-------------
+    def drawPauseMenu(self):
+        screen.blit(self.curr_screen,(0,0))
+        pauseMenu.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if continue_button.isOver(mouse):
+                    self.in_game = True
+                if quit_button.isOver(mouse):
+                    self.select_stage = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE: # go back to game
+                    self.in_game = True
+
+#--------------------------------------------------------
+# Define Drawing Scenes
+#--------------------------------------------------------
+
+
+class Scene():
+    def __init__(self, screen, background, buttonArray, transparency = False):
+        self.screen = screen
+        self.buttons = buttonArray
+        # self.states = stateArray
+        self.background = background
+        self.transparency = transparency
+
+    def update(self):
+        if self.transparency:
+            # screen.blit(self.screen,(0,0))
+            backgroundphoto = pygame.image.load(self.background)
+            backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
+            backgroundphoto.set_alpha(250)
+            screen.blit(backgroundphoto, (0,0))
+            for individualButton in range(len(self.buttons)):
+                self.buttons[individualButton].draw(screen)
+        else:
+            backgroundphoto = pygame.image.load(self.background).convert()
+            backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
+            screen.blit(backgroundphoto,(0,0))
+            for individualButton in range(len(self.buttons)):
+                self.buttons[individualButton].draw(self.screen)
+            
+
+#--------------------------------------------------------
 # Define buttons
 #--------------------------------------------------------
 class button():
@@ -102,9 +244,9 @@ class button():
 # Load music
 #--------------------------------------------------------
 
-#pygame.mixer.music.load("audio/menu_maintheme.mp3")
-#pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.wav")
-pygame.mixer.music.load("audio/maintheme_syndicate.wav")
+#pygame.mixer.music.load("audio/maintheme_syndicate.mp3")
+#pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.mp3")
+#pygame.mixer.music.load("audio/not used yet/")
 pygame.mixer.music.set_volume(0.5)         
 
 #--------------------------------------------------------
@@ -185,17 +327,6 @@ color_light = (255,255,255)
 color_dark = (0,0,0)
 
 #--------------------------------------------------------
-#Define Booleans for stage states
-#--------------------------------------------------------
-running = True #game run state
-main_menu = True #title screen/main menu
-pause_menu = False #game paused
-stage_selection = False #level/stage select
-in_game = False #in level/stage
-in_cutscene = False #visual story mode
-main_menu_music = True #if music should be playing
-
-#--------------------------------------------------------
 # Main Game Loop
 # - Clock tick needs to be contained here
 # - Game state is controlled here
@@ -207,89 +338,11 @@ while running:
     if main_menu_music:
         pygame.mixer.music.play(-1)
         main_menu_music = False
-        
-    #-------------MAIN MENU-------------
-    if main_menu:
-        drawMainMenu()
-        # screen.fill((40, 0, 80))
-        # Did the user click the window close button?
-        for event in pygame.event.get():
-            mouse = pygame.mouse.get_pos()
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.isOver(mouse):
-                    print("TRIGGERED start game")
-                    main_menu = False
-                    in_game = False
-                    stage_selection = True
-                    main_menu_music = False
-                    pygame.mixer.music.pause()
-                if quit_button.isOver(mouse):
-                    pygame.quit()
-            # if event.type == pygame.MOUSEMOTION:
+    
+    overallScreen.update()
+    if overallScreen.checkChange():
+        overallScreen.go_to_next_scene()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    # print("width: " + str(width/mouse[0]))
-                    # print("height: " + str(height/mouse[1]))
-                    print(mouse)
-    #-------------STAGE SELECTION-------------
-    elif stage_selection:
-        drawStageSelection()
-        mouse = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if stage_placeholderbutton.isOver(mouse):
-                    print("TRIGGERED stage selection -> in game")
-                    main_menu = False
-                    in_game = True
-                    stage_selection = False
-                if quit_mainmenu_button.isOver(mouse):
-                    main_menu = True
-                    main_menu_music = True
-                    stage_selection = False
-    #-------------IN GAME-------------
-    elif not main_menu and not pause_menu and in_game:
-        #screen.fill((40, 0, 80))
-        drawInGame()
-        mouse = pygame.mouse.get_pos()
-        main_menu = False
-        in_game = True
-        stage_selection = False
-        in_cutscene = False
-        #notify_msg.draw(screen)
-        #print("we are supposed to be in game right now.")
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    current_screen = screen.copy()
-                    # put physics stuff here to remember when unpausing
-                    pause_menu = True
-                if event.key == pygame.K_RETURN:
-                    main_menu = True
-    #-------------PAUSE MENU-------------
-    elif pause_menu:
-        screen.blit(current_screen, (0,0))
-        drawPauseMenu()
-        mouse = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if continue_button.isOver(mouse):
-                    print("test")
-                    main_menu = False
-                    pause_menu = False
-                    in_game = True
-                if quit_button.isOver(mouse):
-                    main_menu = False
-                    pause_menu = False
-                    stage_selection = True
-                    in_game = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE: # go back to game
-                    pause_menu = False
-                    main_menu = False
-                    in_game = True
     pygame.display.update()
                 #for finding location of button
                 # if event.key == pygame.K_RIGHT:
