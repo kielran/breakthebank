@@ -47,10 +47,10 @@ class Player(pygame.sprite.Sprite):
 player_list = pygame.sprite.Group()
 obstacle_list = pygame.sprite.Group()
 
-bankerPlayer = Player(20, 30)
-bankerPlayer.rect.x = 50
-bankerPlayer.rect.y = 300
-player_list.add(bankerPlayer)
+player = Player(20, 30)
+player.rect.x = 50
+player.rect.y = 300
+player_list.add(player)
 
 obstacleTest = Obstacle()
 obstacle_list.add(obstacleTest)
@@ -65,7 +65,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_k:
                 for obstacle in obstacle_list:
-                    if bankerPlayer.rect.colliderect(obstacle.rect):
+                    if player.rect.colliderect(obstacle.rect):
                         obstacle.kill()
                         del obstacle
                         print('Collision detected')
