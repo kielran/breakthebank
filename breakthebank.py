@@ -5,6 +5,7 @@ import pygame, os, random, sys
 from settings import *
 from tiles import Tile
 from level import Level
+from statemachine import StateMachine, State
 pygame.init()
 pygame.mixer.init()
 
@@ -25,6 +26,133 @@ size = 80
 
 
 
+
+#--------------------------------------------------------
+# Define Drawing States
+#--------------------------------------------------------
+
+class CurrentScene(StateMachine):
+    scene_main_menu = State("mainMenu", initial = True)
+    scene_level_selection = State("Level Selection")
+    scene_in_game = State("In Game")
+    scene_pause_menu = State("Paused")
+
+    # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
+
+    go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
+        scene_in_game, cond = "in_game") | scene_in_game.to(scene_main_menu, cond = "main_menu") | scene_in_game.to(
+            scene_pause_menu, cond = "pause_menu") | scene_pause_menu.to(scene_in_game, cond = "in_game") | scene_pause_menu.to(scene_level_selection, cond = "select_stage")
+    update = scene_main_menu.to.itself(on="drawMainMenu") | scene_level_selection.to.itself(on="drawStageSelection") | scene_in_game.to.itself(
+        on="drawInGame") | scene_pause_menu.to.itself(on="drawPauseMenu")
+
+    def __init__(self):
+        # self.calls = []
+        self.select_stage = False
+        self.main_menu = False
+        self.in_game = False
+        self.pause_menu = False
+        self.curr_screen = screen.copy()
+        super().__init__()
+
+    def on_transition(self):
+        self.select_stage = False
+        self.main_menu = False
+        self.in_game = False
+        self.pause_menu = False
+
+    def checkChange(self):
+        if self.select_stage | self.main_menu | self.in_game | self.pause_menu:
+            return True
+
+
+    #-------------MAIN MENU-------------
+    def drawMainMenu(self):
+        mainMenu.update()
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.isOver(mouse):
+                    self.select_stage = True
+                    print("TRIGGERED start game")
+                    pygame.mixer.music.pause()
+                if quit_button.isOver(mouse):
+                    pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    print(mouse)
+
+    #-------------STAGE SELECTION-------------
+    def drawStageSelection(self):
+        stageSelection.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if stage_placeholderbutton.isOver(mouse):
+                    print("TRIGGERED stage selection -> in game")
+                    self.in_game = True
+                if quit_mainmenu_button.isOver(mouse):
+                    self.main_menu = True
+
+
+    #-------------IN GAME-------------
+    def drawInGame(self):
+        InGame.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.curr_screen = screen.copy()
+                    # put physics stuff here to remember when unpausing
+                    self.pause_menu = True
+                if event.key == pygame.K_RETURN:
+                    self.main_menu = True
+
+    #-------------PAUSE MENU-------------
+    def drawPauseMenu(self):
+        screen.blit(self.curr_screen,(0,0))
+        pauseMenu.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if continue_button.isOver(mouse):
+                    self.in_game = True
+                if quit_button.isOver(mouse):
+                    self.select_stage = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE: # go back to game
+                    self.in_game = True
+
+#--------------------------------------------------------
+# Define Drawing Scenes
+#--------------------------------------------------------
+
+
+class Scene():
+    def __init__(self, screen, background, buttonArray, transparency = False):
+        self.screen = screen
+        self.buttons = buttonArray
+        # self.states = stateArray
+        self.background = background
+        self.transparency = transparency
+
+    def update(self):
+        if self.transparency:
+            # screen.blit(self.screen,(0,0))
+            backgroundphoto = pygame.image.load(self.background)
+            backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
+            backgroundphoto.set_alpha(250)
+            screen.blit(backgroundphoto, (0,0))
+            for individualButton in range(len(self.buttons)):
+                self.buttons[individualButton].draw(screen)
+        else:
+            backgroundphoto = pygame.image.load(self.background).convert()
+            backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
+            screen.blit(backgroundphoto,(0,0))
+            for individualButton in range(len(self.buttons)):
+                self.buttons[individualButton].draw(self.screen)
+            
 
 #--------------------------------------------------------
 # Define buttons
@@ -215,28 +343,30 @@ pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slic
 
 # TODO: placeholders for Stage Selection Menu
 stage_placeholderbutton = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
-smallfont = pygame.font.SysFont('comicsansms',25)
-text = smallfont.render('quit', True, (255,00,255))
-color_light = (255,255,255)
-color_dark = (0,0,0)
+# notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
+
+
+overallScreen = CurrentScene()
+
+
+# Draw buttons 
+pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continue_button, restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
+InGame = Scene(screen, "imgs/in_game.png", [])
+mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
+stageSelection = Scene(screen, "imgs/stage_select.png", [stage_placeholderbutton,quit_mainmenu_button])
 
 #--------------------------------------------------------
 #Define Booleans for stage states
 #--------------------------------------------------------
 running = True #game run state
-main_menu = True #title screen/main menu
-pause_menu = False #game paused
-stage_selection = False #level/stage select
-in_game = False #in level/stage
-in_cutscene = False #visual story mode
-main_menu_music = True #if music should be playing
-
+main_menu_music = True
 #--------------------------------------------------------
 # Main Game Loop
 # - Clock tick needs to be contained here
 # - Game state is controlled here
 #--------------------------------------------------------
+
+
 while running:
     timer = pygame.time.Clock()
     timer.tick(60)
@@ -245,26 +375,12 @@ while running:
         pygame.mixer.music.play(-1)
         main_menu_music = False
         
-    #-------------MAIN MENU-------------
-    if main_menu:
-        drawMainMenu()
-        # screen.fill((40, 0, 80))
-        # Did the user click the window close button?
-        for event in pygame.event.get():
-            mouse = pygame.mouse.get_pos()
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.isOver(mouse):
-                    print("TRIGGERED start game")
-                    main_menu = False
-                    in_game = False
-                    stage_selection = True
-                    main_menu_music = False
-                    pygame.mixer.music.pause()
-                if quit_button.isOver(mouse):
-                    pygame.quit()
-            # if event.type == pygame.MOUSEMOTION:
+    
+    overallScreen.update()
+    if overallScreen.checkChange():
+        overallScreen.go_to_next_scene()
+
+
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
@@ -359,3 +475,4 @@ while running:
 
 # Done! Time to quit.
 pygame.quit()
+
