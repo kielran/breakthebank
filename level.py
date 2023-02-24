@@ -63,8 +63,6 @@ class Level:
 
     def run(self):
         self.tiles.draw(self.display_surface)
-
-        
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
