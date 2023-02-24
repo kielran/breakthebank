@@ -1,6 +1,7 @@
 import pygame
 from tiles import Tile
 from player import Player
+from enemy import Roomba
 
 class Level:
     def __init__(self, level_data, surface):
@@ -11,6 +12,7 @@ class Level:
     def setup_level(self,layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.enemies = pygame.sprite.Group()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -28,6 +30,10 @@ class Level:
                 if cell == "P":
                     player_sprite = Player((x,y))
                     self.player.add(player_sprite)
+                    
+                if cell == "E":
+                    roomba_sprite = Roomba((x, y), 300, self.player)
+                    self.enemies.add(roomba_sprite)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -57,11 +63,16 @@ class Level:
 
     def run(self):
         self.tiles.draw(self.display_surface)
-
+        
+        for enemy in self.enemies:
+            sight_rect = enemy.update()
+            pygame.draw.rect(self.display_surface, "white", sight_rect)
+            for player in self.player:
+                if enemy.detect_player(player.rect, self.tiles):
+                    print("detected")
+        self.enemies.draw(self.display_surface)
+        
         self.player.update()
         self.player.draw(self.display_surface)
-        
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
-
-
