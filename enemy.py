@@ -30,7 +30,7 @@ class Enemy(pygame.sprite.Sprite):
 class Roomba(Enemy):
     def __init__(self, pos, distance, player):
         super().__init__(pos, distance)
-        self.sight_image = pygame.Surface((250, 64))
+        self.sight_image = pygame.Surface((250, 62))
         self.sight_image.fill((50, 50, 50))
         self.sight_rect = self.sight_image.get_rect(topleft = self.rect.topright)
         self.player = player
@@ -64,9 +64,9 @@ class Roomba(Enemy):
             if pygame.Rect.colliderect(self.sight_rect, player_rect): #if enemy collides with sight
                 if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
                     #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
-                    if player_rect.x < tile.rect.x and tile.rect.midright[0] < self.sight_rect.midright[0]:
+                    if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
                         break
-                    elif player_rect.x > tile.rect.x and tile.rect.midleft[0] > self.sight_rect.midleft[0]:
+                    elif player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
                         break
                     else: return True
                 else:
