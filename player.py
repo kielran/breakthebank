@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
                 self.inventory.append(item)
                 item.collect_item()
     
-    def drop_item(self, items):
+    def drop_item(self):
         if len(self.inventory) > 0:
             self.inventory[0].drop_item(self.rect.topleft)
             self.inventory.clear()
@@ -57,5 +57,5 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_k]:
             self.pick_up_item(items)
         if keys[pygame.K_j]:
-            self.drop_item(items)
+            self.drop_item()
         self.rect.x += self.direction.x * self.speed

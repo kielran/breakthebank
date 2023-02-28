@@ -55,10 +55,15 @@ class Level:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0: #moving right
                     player.rect.right = sprite.rect.left
+                
 
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
+        
+        for item in self.items:
+            item.apply_gravity()
+        
 
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(player.rect): #if player collides with a tile
@@ -70,13 +75,25 @@ class Level:
                 elif player.direction.y < 0: #moving right
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+                    
+            for item in self.items.sprites():
+                if sprite.rect.colliderect(item.rect): #if player collides with a tile
+                
+                    if item.direction.y > 0: #moving left
+                        item.rect.bottom = sprite.rect.top
+                        item.direction.y = 0
+
+                    elif item.direction.y < 0: #moving right
+                        item.rect.top = sprite.rect.bottom
+                        item.direction.y = 0
+                    
 
     def run(self):
         self.tiles.draw(self.display_surface)
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
-            pygame.draw.rect(self.display_surface, "white", sight_rect)
+            pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             for player in self.player:
                 if enemy.detect_player(player.rect, self.tiles):
                     print("detected")

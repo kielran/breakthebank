@@ -30,7 +30,7 @@ class Enemy(pygame.sprite.Sprite):
 class Roomba(Enemy):
     def __init__(self, pos, distance, player):
         super().__init__(pos, distance)
-        self.sight_image = pygame.Surface((250, 62))
+        self.sight_image = pygame.Surface((1000, 62))
         self.sight_image.fill((50, 50, 50))
         self.sight_rect = self.sight_image.get_rect(topleft = self.rect.topright)
         self.player = player
