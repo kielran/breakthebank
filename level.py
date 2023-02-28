@@ -2,6 +2,7 @@ import pygame
 from tiles import Tile
 from player import Player
 from enemy import Roomba
+from item import JanitorItem, BankerItem
 
 class Level:
     def __init__(self, level_data, surface):
@@ -13,6 +14,7 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -34,6 +36,14 @@ class Level:
                 if cell == "E":
                     roomba_sprite = Roomba((x, y), 300, self.player)
                     self.enemies.add(roomba_sprite)
+                
+                if cell == "J":
+                    janitor_item_sprite = JanitorItem((x, y), (64, 32))
+                    self.items.add(janitor_item_sprite)
+                
+                if cell == "B":
+                    banker_item_sprite = BankerItem((x, y), (64, 32))
+                    self.items.add(banker_item_sprite)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -72,7 +82,13 @@ class Level:
                     print("detected")
         self.enemies.draw(self.display_surface)
         
-        self.player.update()
+        self.player.update(self.items)
         self.player.draw(self.display_surface)
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        
+        for item in self.items:
+            if not item.collected:
+                pygame.draw.rect(self.display_surface, "white", item.rect)
+        
+        

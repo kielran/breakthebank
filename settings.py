@@ -20,8 +20,8 @@ level_map = [
 '                            ',
 '                            ',
 '                            ',
-'         XE                 ',
-'  P    XXXXXXXXXXXXX        ',
+'         XE  B              ',
+'  P J  XXXXXXXXXXXXX        ',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
 
 #11 rows
