@@ -23,18 +23,18 @@ level_map = [
 # '       X  XXXX    XX  XXX   ',
 # '    XXXX  XXXXXX  XX  XXXX  ',
 # 'XXXXXXXX  XXXXXX  XX  XXXX  ']
-level_map = [
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'         XE  B              ',
-'  P J  XXXXXXXXXXXXX        ',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+# level_map = [
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '         XE  B              ',
+# '  P J  XXXXXXXXXXXXX        ',
+# 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
 
 #11 rows
 # tile_size = 64

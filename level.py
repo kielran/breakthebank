@@ -3,6 +3,7 @@ from tiles import Tile
 from player import Player
 from enemy import Roomba
 from item import JanitorItem, BankerItem
+from obstacle import PointObstacle, InteractObstacle
 
 class Level:
     def __init__(self, level_data, surface):
