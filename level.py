@@ -38,11 +38,11 @@ class Level:
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "J":
-                    janitor_item_sprite = JanitorItem((x, y), (64, 32))
+                    janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/key.png")
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "B":
-                    banker_item_sprite = BankerItem((x, y), (64, 32))
+                    banker_item_sprite = BankerItem((x, y), (64, 32), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
 
     def horizontal_movement_collision(self):
@@ -93,7 +93,7 @@ class Level:
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
-            pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
+            #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             for player in self.player:
                 if enemy.detect_player(player.rect, self.tiles):
                     print("detected")
@@ -105,7 +105,6 @@ class Level:
         self.vertical_movement_collision()
         
         for item in self.items:
-            # if not item.collected:
-            pygame.draw.rect(self.display_surface, "white", item.rect)
+            self.display_surface.blit(item.image, item.rect)
         
         
