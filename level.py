@@ -15,6 +15,8 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
+        self.points = pygame.sprite.Group()
+        self.obstacles = pygame.sprite.Group()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -44,6 +46,14 @@ class Level:
                 if cell == "B":
                     banker_item_sprite = BankerItem((x, y), (64, 32), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
+                    
+                if cell == "C":
+                    point = PointObstacle((x,y), tile_size)
+                    self.points.add(point)
+                
+                if cell == "O":
+                    obstacle = InteractObstacle((x,y), tile_size)
+                    self.obstacles.add(obstacle)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -54,6 +64,14 @@ class Level:
                 if player.direction.x < 0: #moving left
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0: #moving right
+                    player.rect.right = sprite.rect.left
+                    
+      
+        for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
                 
 
@@ -86,10 +104,42 @@ class Level:
                     elif item.direction.y < 0: #moving right
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
+                        
+        for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 0
+                    
+    # For later: store in items/score increase
+    def disappear_on_touch_obstacle(self):
+        player = self.player.sprite
+        for sprite in self.points.sprites(): # looking through all point locations
+            if sprite.rect.colliderect(player.rect): # if player collides, remove
+                print('Point collection')
+                sprite.kill()
+    
+    # For later: generalize key for player/objects that can make them disappear
+    def obstacle_behavior(self):
+        player = self.player.sprite
+        for sprite in self.obstacles.sprites(): # looking through all obstacles
+            if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN: # if key is pressed
+                        if event.key == pygame.K_k: # and it is the interact button, remove
+                            print('Obstacle collision')
+                            sprite.kill()
                     
 
     def run(self):
         self.tiles.draw(self.display_surface)
+        
+        self.obstacles.draw(self.display_surface)
+
+        self.points.draw(self.display_surface)
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
@@ -103,8 +153,9 @@ class Level:
         self.player.draw(self.display_surface)
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        self.disappear_on_touch_obstacle()
+        self.obstacle_behavior()
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
-        
-        
+            
