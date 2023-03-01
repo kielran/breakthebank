@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         for item in items.sprites():
             if self.rect.colliderect(item.rect) and len(self.inventory) < 1:
                 self.inventory.append(item)
-                item.collect_item()
+                item.collect_item(self.rect.center)
     
     def drop_item(self):
         if len(self.inventory) > 0:
@@ -53,6 +53,9 @@ class Player(pygame.sprite.Sprite):
     def update(self, items):
         self.player_movement()
         keys = pygame.key.get_pressed()
+        
+        if (len(self.inventory)) > 0:
+            self.inventory[0].update(self.rect.center, self.direction.x)
 
         if keys[pygame.K_k]:
             self.pick_up_item(items)

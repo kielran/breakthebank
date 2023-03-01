@@ -105,7 +105,7 @@ class Level:
         self.vertical_movement_collision()
         
         for item in self.items:
-            if not item.collected:
-                pygame.draw.rect(self.display_surface, "white", item.rect)
+            # if not item.collected:
+            pygame.draw.rect(self.display_surface, "white", item.rect)
         
         
