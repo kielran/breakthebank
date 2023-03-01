@@ -1,7 +1,11 @@
 #--------------------------------------------------------
 # Import and initialize the pygame library
 #--------------------------------------------------------
-import pygame, os, random
+
+import pygame, os, random, sys
+from settings import *
+from tiles import Tile
+from level import Level
 from statemachine import StateMachine, State
 
 pygame.init()
@@ -21,6 +25,8 @@ pygame.display.set_caption('Break the Bank')
 gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
+
+
 
 #--------------------------------------------------------
 # Define Drawing States
@@ -46,6 +52,7 @@ class CurrentScene(StateMachine):
         self.main_menu = False
         self.in_game = False
         self.pause_menu = False
+        self.check_from_select = True
         self.curr_screen = screen.copy()
         super().__init__()
 
@@ -54,7 +61,7 @@ class CurrentScene(StateMachine):
         self.main_menu = False
         self.in_game = False
         self.pause_menu = False
-
+        
     def checkChange(self):
         if self.select_stage | self.main_menu | self.in_game | self.pause_menu:
             return True
@@ -86,6 +93,7 @@ class CurrentScene(StateMachine):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if stage_placeholderbutton.isOver(mouse):
                     print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     self.main_menu = True
@@ -93,13 +101,15 @@ class CurrentScene(StateMachine):
 
     #-------------IN GAME-------------
     def drawInGame(self):
-        InGame.update()
+        # game_stage()
+        screen.fill('black')
+        self.level.run()
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.curr_screen = screen.copy()
                     # put physics stuff here to remember when unpausing
+                    self.curr_screen = screen.copy()
                     self.pause_menu = True
                 if event.key == pygame.K_RETURN:
                     self.main_menu = True
@@ -118,6 +128,7 @@ class CurrentScene(StateMachine):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     self.in_game = True
+
 
 #--------------------------------------------------------
 # Define Drawing Scenes
@@ -231,10 +242,29 @@ class button():
 # Load music
 #--------------------------------------------------------
 
-pygame.mixer.music.load("audio/maintheme_syndicate.mp3")
-pygame.mixer.music.load("audio/stage1_bgm_spookydarkpad.mp3")
-# pygame.mixer.music.load("audio/maintheme_syndicate.wav")
-pygame.mixer.music.set_volume(0.5)         
+#--------------------------------------------------------
+# Drawing game stage
+# 
+# 
+#--------------------------------------------------------
+# def game_stage():
+#     # test_tile = pygame.sprite.Group(Tile((100,100), 200))
+    
+#     screen.fill('black')
+#     level.run()
+    # while True:
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             pygame.quit()
+    #             sys.exit()
+    #     screen.fill('black')
+    #     level.run()
+        
+    #     pygame.display.update()
+    #     timer.tick(60)
+
+
+
 
 #--------------------------------------------------------
 # Set up the drawing window
@@ -243,6 +273,9 @@ screen = pygame.display.set_mode([size*16, size*9])
 # screen = pygame.transform.scale(backgroundphoto,[859, 727])
 width = screen.get_width()
 height = screen.get_height()
+
+tile_size = 64
+height = len(level_map) * tile_size
 
 start_button = button(width/2.807,height/1.6,20,100,'',None,"imgs/buttons/slice_start.png","imgs/buttons/hovering_slice_start.png")
 quit_button = button(width/2.2,height/1.3,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")
@@ -276,7 +309,7 @@ main_menu_music = True
 #--------------------------------------------------------
 # Main Game Loop
 # - Clock tick needs to be contained here
-# - Game state is controlled here
+# - Game state is controlled here44
 #--------------------------------------------------------
 
 
@@ -284,17 +317,15 @@ while running:
     timer = pygame.time.Clock()
     timer.tick(60)
 
-    if main_menu_music:
-        pygame.mixer.music.play(-1)
-        main_menu_music = False
+
         
     
     overallScreen.update()
     if overallScreen.checkChange():
         overallScreen.go_to_next_scene()
 
-
-
+    #-------------PAUSE MENU-------------
+   
     pygame.display.update()
                 #for finding location of button
                 # if event.key == pygame.K_RIGHT:
@@ -326,4 +357,3 @@ while running:
 
 # Done! Time to quit.
 pygame.quit()
-
