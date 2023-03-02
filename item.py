@@ -31,11 +31,11 @@ class Item(pygame.sprite.Sprite):
         # self.rect = self.image.get_rect(topleft = pos)
         self.gravity = 0.4
         
-    def update(self, pos, direction):           #only called if player is holding the item
-        if direction >= 0:
+    def update(self, pos, direction):   #only called if player is holding the item
+        if direction >= 0:      #player is facing right
             self.image = self.right_img
             self.rect.topright = pos
-        elif direction < 0:
+        elif direction < 0:     #player is facing left
             self.image = self.left_img
             self.rect.topleft = pos
         

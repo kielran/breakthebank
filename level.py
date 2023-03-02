@@ -96,7 +96,7 @@ class Level:
                     player.direction.y = 0
                     
             for item in self.items.sprites():
-                if sprite.rect.colliderect(item.rect): #if player collides with a tile
+                if sprite.rect.colliderect(item.rect): #if item collides with a tile
                 
                     if item.direction.y > 0: #moving left
                         item.rect.bottom = sprite.rect.top
@@ -130,7 +130,7 @@ class Level:
             if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN: # if key is pressed
-                        if event.key == pygame.K_k: # and it is the interact button, remove
+                        if event.key == pygame.K_k and len(player.inventory) > 0: # and it is the interact button, remove
                             print('Obstacle collision')
                             sprite.kill()
                     
