@@ -10,6 +10,7 @@ from statemachine import StateMachine, State
 
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.music.set_volume(0.5)
 
 #--------------------------------------------------------
 # Check if the images are loaded
@@ -26,8 +27,6 @@ gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
 
-
-
 #--------------------------------------------------------
 # Define Drawing States
 #--------------------------------------------------------
@@ -37,7 +36,7 @@ class CurrentScene(StateMachine):
     scene_level_selection = State("Level Selection")
     scene_in_game = State("In Game")
     scene_pause_menu = State("Paused")
-
+    musicON = True
     # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
 
     go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
@@ -55,13 +54,19 @@ class CurrentScene(StateMachine):
         self.check_from_select = True
         self.curr_screen = screen.copy()
         super().__init__()
+        print("DEF INIT")
+        # if self.musicON is False:
+        #     bgm_ch.stop()
+        #     self.musicON = True
+        #     print("====BGMCH STOP")
 
     def on_transition(self):
         self.select_stage = False
         self.main_menu = False
         self.in_game = False
         self.pause_menu = False
-        
+        print("ON_TRANSITION")
+
     def checkChange(self):
         if self.select_stage | self.main_menu | self.in_game | self.pause_menu:
             return True
@@ -69,8 +74,11 @@ class CurrentScene(StateMachine):
 
     #-------------MAIN MENU-------------
     def drawMainMenu(self):
+        if self.musicON is True:
+            bgm_ch.play(menuMusic, loops=-1, fade_ms=100)
+            self.musicON = False
+            print("bgm_ch play menuMusic")
         mainMenu.update()
-        
         for event in pygame.event.get():
             mouse = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
@@ -79,7 +87,6 @@ class CurrentScene(StateMachine):
                 if start_button.isOver(mouse):
                     self.select_stage = True
                     print("TRIGGERED start game")
-                    pygame.mixer.music.pause()
                 if quit_button.isOver(mouse):
                     pygame.quit()
             if event.type == pygame.KEYDOWN:
@@ -88,14 +95,16 @@ class CurrentScene(StateMachine):
 
     #-------------STAGE SELECTION-------------
     def drawStageSelection(self):
-        pygame.mixer.music.load("audio\wip\cicadas.flac")
-        pygame.mixer.music.set_volume(0.5)
+        if self.musicON is False:
+            bgm_ch.play(selectMusic, loops=-1, fade_ms=100)
+            self.musicON = True
+            print("bgm_ch play selectMusic")
         stageSelection.update()
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if stage_placeholderbutton.isOver(mouse):
-                    print("TRIGGERED stage selection -> in game")
+                    print("stage selection -> in game")
                     self.level = Level(level_map, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
@@ -105,6 +114,10 @@ class CurrentScene(StateMachine):
     #-------------IN GAME-------------
     def drawInGame(self):
         # game_stage()
+        if self.musicON is True:
+            bgm_ch.play(wipMusic, loops=-1, fade_ms=100)
+            self.musicON = False
+            print("bgm_ch play wipMusic")
         screen.fill('black')
         self.level.run()
         mouse = pygame.mouse.get_pos()
@@ -119,6 +132,10 @@ class CurrentScene(StateMachine):
 
     #-------------PAUSE MENU-------------
     def drawPauseMenu(self):
+        if self.musicON is False:
+            bgm_ch.pause()
+            self.musicON = True
+            print("====pause menu stop music")
         screen.blit(self.curr_screen,(0,0))
         pauseMenu.update()
         mouse = pygame.mouse.get_pos()
@@ -128,6 +145,7 @@ class CurrentScene(StateMachine):
                     self.in_game = True
                 if quit_button.isOver(mouse):
                     self.select_stage = True
+                    self.musicON = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     self.in_game = True
@@ -244,7 +262,16 @@ class button():
 #--------------------------------------------------------
 # Load music
 #--------------------------------------------------------
+#==============WORK IN PROGRESS
+menuMusic = pygame.mixer.Sound("audio\maintheme_syndicate.mp3")
+selectMusic = pygame.mixer.Sound("audio\stage1_bgm_spookydarkpad.mp3")
+wipMusic = pygame.mixer.Sound("audio\wip\cicadas.flac")
+#--------------------------------------------------------
+# Music channels for BGM vs SFX
+#--------------------------------------------------------
+bgm_ch = pygame.mixer.Channel(0)
 
+bgm_ch.play(menuMusic, loops = -1, fade_ms = 0)
 #--------------------------------------------------------
 # Drawing game stage
 # 
@@ -319,9 +346,6 @@ main_menu_music = True
 while running:
     timer = pygame.time.Clock()
     timer.tick(60)
-
-
-        
     
     overallScreen.update()
     if overallScreen.checkChange():
