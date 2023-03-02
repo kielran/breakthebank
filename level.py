@@ -1,6 +1,7 @@
 import pygame
 from tiles import Tile
 from player import Player
+from banker import Banker
 
 class Level:
     def __init__(self, level_data, surface):
@@ -11,6 +12,7 @@ class Level:
     def setup_level(self,layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.banker = pygame.sprite.GroupSingle()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -28,6 +30,10 @@ class Level:
                 if cell == "P":
                     player_sprite = Player((x,y))
                     self.player.add(player_sprite)
+
+                if cell == "B":
+                    banker_sprite = Banker((x,y))
+                    self.banker.add(banker_sprite)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -55,13 +61,45 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
+    def banker_horizontal_movement_collision(self):
+            banker = self.banker.sprite  
+            banker.rect.x += banker.direction.x * banker.speed
+
+            for sprite in self.tiles.sprites(): #looking through all sprites
+                if sprite.rect.colliderect(banker.rect): #if player collides with a tile
+                    if banker.direction.x < 0: #moving left
+                        banker.rect.left = sprite.rect.right
+                    elif banker.direction.x > 0: #moving right
+                        banker.rect.right = sprite.rect.left
+
+    def banker_vertical_movement_collision(self):
+        banker = self.banker.sprite
+        banker.apply_gravity()
+
+        for sprite in self.tiles.sprites(): #looking through all sprites
+            if sprite.rect.colliderect(banker.rect): #if player collides with a tile
+                
+                if banker.direction.y > 0: #moving left
+                    banker.rect.bottom = sprite.rect.top
+                    banker.direction.y = 0
+
+                elif banker.direction.y < 0: #moving right
+                    banker.rect.top = sprite.rect.bottom
+                    banker.direction.y = 0
+
     def run(self):
         self.tiles.draw(self.display_surface)
 
         self.player.update()
         self.player.draw(self.display_surface)
+
+        self.banker.update()
+        self.banker.draw(self.display_surface)
         
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+
+        self.banker_horizontal_movement_collision()
+        self.banker_vertical_movement_collision()
 
 

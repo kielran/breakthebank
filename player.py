@@ -3,6 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
+        self.pos = pos
         self.image = pygame.Surface((32,64))
         self.image.fill('pink')
         self.rect = self.image.get_rect(topleft = pos)
@@ -38,3 +39,21 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.player_movement()
         self.rect.x += self.direction.x * self.speed
+        #print(self.pos)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
