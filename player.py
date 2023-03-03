@@ -1,5 +1,5 @@
 import pygame
-from item import Item
+from item import Item, JanitorItem, BankerItem
 
 
 class Player(pygame.sprite.Sprite):
@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         
     def pick_up_item(self, items):
         for item in items.sprites():
-            if self.rect.colliderect(item.rect) and len(self.inventory) < 1:
+            if self.rect.colliderect(item.rect) and len(self.inventory) < 1 and ((type(self) == Banker and type(item) == BankerItem) or (type(self) == Janitor and type(item) == JanitorItem)):
                 self.inventory.append(item)
                 item.collect_item(self.rect.center)
     
@@ -62,3 +62,11 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_j]:
             self.drop_item()
         self.rect.x += self.direction.x * self.speed
+        
+class Janitor(Player):
+    def __init__(self, pos):
+        super().__init__(pos)
+        
+class Banker(Player):
+    def __init__(self, pos):
+        super().__init__(pos)

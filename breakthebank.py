@@ -103,7 +103,8 @@ class CurrentScene(StateMachine):
     def drawInGame(self):
         # game_stage()
         screen.fill('black')
-        self.level.run()
+        if not self.level.run():
+            self.pause_menu = True
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

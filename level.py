@@ -1,6 +1,6 @@
-import pygame
+import pygame, sys
 from tiles import Tile
-from player import Player
+from player import Janitor
 from enemy import Roomba
 from item import JanitorItem, BankerItem
 from obstacle import PointObstacle, InteractObstacle
@@ -33,11 +33,17 @@ class Level:
                     self.tiles.add(tile)
 
                 if cell == "P":
-                    player_sprite = Player((x,y))
+                    player_sprite = Janitor((x,y))
                     self.player.add(player_sprite)
                     
                 if cell == "E":
-                    roomba_sprite = Roomba((x, y), 300, self.player)
+                    enemy_distance = ""
+                    col_index += 1
+                    while col_index < len(row) - 1 and layout[row_index][col_index + 1].isnumeric():
+                        enemy_distance += layout[row_index][col_index]
+                        col_index += 1
+                    enemy_distance += layout[row_index][col_index]
+                    roomba_sprite = Roomba((x, y), int(enemy_distance), self.player)
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "J":
@@ -59,6 +65,8 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player.sprite  
         player.rect.x += player.direction.x * player.speed
+        # for enemy in self.enemies.sprites():
+        #     enemy.rect.x += enemy.direction * enemy.speed
 
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(player.rect): #if player collides with a tile
@@ -66,6 +74,13 @@ class Level:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0: #moving right
                     player.rect.right = sprite.rect.left
+                    
+            # for enemy in self.enemies.sprites():
+            #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
+            #         if enemy.direction < 0: #moving left
+            #             enemy.rect.left = sprite.rect.right
+            #         elif enemy.direction > 0: #moving right
+            #             enemy.rect.right = sprite.rect.left
                     
       
         for sprite in self.obstacles.sprites(): # Same as above but with obstacles
@@ -148,6 +163,7 @@ class Level:
             for player in self.player:
                 if enemy.detect_player(player.rect, self.tiles):
                     print("detected")
+                    return False
         self.enemies.draw(self.display_surface)
         
         self.player.update(self.items)
@@ -159,4 +175,6 @@ class Level:
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
+        
+        return True
             
