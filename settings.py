@@ -1,11 +1,26 @@
+#----------------------------------------------------------------------------------------
+# Rules for creating level maps
+# 
+#  X: tile
+#  B: Banker player
+#  J: Janitor player
+#  E{distance to travel}: enemy, specify the distance it travels right after (ex: E350)
+#  F: Janitor item
+#  G: Banker item
+#  L{leverId}: lever, specify id that corresponds with what obstacle it removes (ex: L1)
+#  O{obstacleId}: obstacle, specify id (ex: O1)
+#  C: point obstacle
+#
+# ---------------------------------------------------------------------------------------
+
 level_map = [
 '                            ',
 '                            ',
-' B      C                   ',
+' F      C                   ',
 ' XX    XXX            XX    ',
-' XX P          O1           ',
-' XXXX L1       XX         XX ',
-' XXXX  JE350   XX              ',
+' XX J          O            ',
+' XXXX         XX         XX ',
+' XXXX  GE350   XX              ',
 ' XX    XXXXXXX    XX  XX    ',
 '       X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX  ',

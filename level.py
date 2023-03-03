@@ -1,6 +1,6 @@
 import pygame, sys
 from tiles import Tile
-from player import Janitor
+from player import Janitor, Banker
 from enemy import Roomba
 from item import JanitorItem, BankerItem
 from obstacle import PointObstacle, InteractObstacle
@@ -32,8 +32,12 @@ class Level:
                     tile = Tile((x,y), tile_size)
                     self.tiles.add(tile)
 
-                if cell == "P":
+                if cell == "J":
                     player_sprite = Janitor((x,y))
+                    self.player.add(player_sprite)
+                    
+                if cell == "B":
+                    player_sprite = Banker((x,y))
                     self.player.add(player_sprite)
                     
                 if cell == "E":
@@ -46,11 +50,11 @@ class Level:
                     roomba_sprite = Roomba((x, y), int(enemy_distance), self.player)
                     self.enemies.add(roomba_sprite)
                 
-                if cell == "J":
+                if cell == "F":
                     janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/key.png")
                     self.items.add(janitor_item_sprite)
                 
-                if cell == "B":
+                if cell == "G":
                     banker_item_sprite = BankerItem((x, y), (64, 32), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
                     
