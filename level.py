@@ -22,10 +22,11 @@ class Level:
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
-
+            cols_skipped = 0
             for col_index, cell in enumerate(row):
+                cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
-                x = col_index * tile_size
+                x = (col_index - cols_skipped) * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
@@ -43,9 +44,11 @@ class Level:
                 if cell == "E":
                     enemy_distance = ""
                     col_index += 1
+                    cols_skipped += 1
                     while col_index < len(row) - 1 and layout[row_index][col_index + 1].isnumeric():
                         enemy_distance += layout[row_index][col_index]
                         col_index += 1
+                        cols_skipped += 1
                     enemy_distance += layout[row_index][col_index]
                     roomba_sprite = Roomba((x, y), int(enemy_distance), self.player)
                     self.enemies.add(roomba_sprite)

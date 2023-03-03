@@ -20,8 +20,8 @@ level_map = [
 ' XX    XXX            XX    ',
 ' XX J          O            ',
 ' XXXX         XX         XX ',
-' XXXX  GE350   XX              ',
-' XX    XXXXXXX    XX  XX    ',
+' XXXX  GE234     XX            ',
+' XX    XXXXXXXX   XX  XX    ',
 '       X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
