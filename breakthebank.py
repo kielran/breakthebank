@@ -10,7 +10,7 @@ from statemachine import StateMachine, State
 
 pygame.init()
 pygame.mixer.init()
-pygame.mixer.music.set_volume(0.5)
+#pygame.mixer.music.set_volume(0.01)
 
 #--------------------------------------------------------
 # Check if the images are loaded
@@ -27,6 +27,11 @@ gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
 
+
+button_hover = pygame.mixer.Sound('audio/sfx/button_hover.mp3')
+button_hover.set_volume(1.0)
+esc_click = pygame.mixer.Sound('audio/sfx/esc_click.wav')
+esc_click.set_volume(1.0)
 #--------------------------------------------------------
 # Define Drawing States
 #--------------------------------------------------------
@@ -85,11 +90,13 @@ class CurrentScene(StateMachine):
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.isOver(mouse):
+                    button_hover.play()
                     self.select_stage = True
                     print("TRIGGERED start game")
                 if quit_button.isOver(mouse):
+                    button_hover.play()
                     pygame.quit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN: #temp to get coords
                 if event.key == pygame.K_RETURN:
                     print(mouse)
 
@@ -104,10 +111,12 @@ class CurrentScene(StateMachine):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if stage_placeholderbutton.isOver(mouse):
+                    button_hover.play()
                     print("stage selection -> in game")
                     self.level = Level(level_map, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
+                    button_hover.play()
                     self.main_menu = True
 
 
@@ -125,9 +134,11 @@ class CurrentScene(StateMachine):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     # put physics stuff here to remember when unpausing
+                    esc_click.play()
                     self.curr_screen = screen.copy()
                     self.pause_menu = True
                 if event.key == pygame.K_RETURN:
+                    button_hover.play()
                     self.main_menu = True
 
     #-------------PAUSE MENU-------------
@@ -142,12 +153,15 @@ class CurrentScene(StateMachine):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if continue_button.isOver(mouse):
+                    button_hover.play()
                     self.in_game = True
                 if quit_button.isOver(mouse):
+                    button_hover.play()
                     self.select_stage = True
                     self.musicON = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
+                    esc_click.play()
                     self.in_game = True
 
 
@@ -270,8 +284,8 @@ wipMusic = pygame.mixer.Sound("audio\wip\cicadas.flac")
 # Music channels for BGM vs SFX
 #--------------------------------------------------------
 bgm_ch = pygame.mixer.Channel(0)
-
-bgm_ch.play(menuMusic, loops = -1, fade_ms = 0)
+bgm_ch.set_volume(0.3)
+bgm_ch.play(menuMusic, loops = -1, fade_ms = 500)
 #--------------------------------------------------------
 # Drawing game stage
 # 
