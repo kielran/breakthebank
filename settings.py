@@ -7,8 +7,8 @@
 #  E{distance to travel}: enemy, specify the distance it travels right after (ex: E350)
 #  F: Janitor item
 #  G: Banker item
-#  L{leverId}: lever, specify id that corresponds with what obstacle it removes (ex: L1)
-#  O{obstacleId}: obstacle, specify id (ex: O1)
+#  L{leverId}: lever, specify id that corresponds with what obstacle it removes (ex: L1)  **not implmented yet**
+#  O{obstacleId}: obstacle, specify id (ex: O1)  **id not implemented yet**
 #  C: point obstacle
 #
 # ---------------------------------------------------------------------------------------
