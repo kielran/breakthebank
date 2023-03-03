@@ -20,9 +20,10 @@ class InteractObstacle(pygame.sprite.Sprite):
         print('Gone forever')
 
 class InteractBox(pygame.sprite.Sprite):
-    def __init__(self, pos, size):
-        super().__init__
-        self.image = pygame.Surface((size, size))
+    def __init__(self, pos):
+        super().__init__()
+        self.image = pygame.Surface((20, 40))
         self.image.fill('Purple')
         self.rect = self.image.get_rect(topleft = pos)
-        self.interactable = InteractObstacle(pos, size)
+        self.flipUse = 1
+        self.obstacleDistance = (0, 0)

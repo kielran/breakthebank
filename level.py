@@ -3,6 +3,7 @@ from tiles import Tile
 from player import Player
 from obstacle import PointObstacle
 from obstacle import InteractObstacle
+from obstacle import InteractBox
 from enemy import Roomba
 from item import JanitorItem, BankerItem
 
@@ -19,6 +20,7 @@ class Level:
         self.items = pygame.sprite.Group()
         self.points = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+        self.lever = pygame.sprite.GroupSingle()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -54,8 +56,12 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + 64), 64, 800)
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, 800)
                     self.obstacles.add(obstacle)
+                
+                if cell == "L":
+                    leverC = InteractBox((x,y))
+                    self.lever.add(leverC)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -140,6 +146,8 @@ class Level:
         self.obstacles.draw(self.display_surface)
 
         self.points.draw(self.display_surface)
+
+        self.lever.draw(self.display_surface)
         
         for enemy in self.enemies:
             sight_rect = enemy.update()

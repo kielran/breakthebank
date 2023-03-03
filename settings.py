@@ -1,8 +1,8 @@
 level_map = [
 '                            ',
-'                            ',
 '        C                   ',
-' XX    XXX            XX    ',
+'                            ',
+' XXL   XXX            XX    ',
 ' XX P          O            ',
 ' XXXX         XX         XX ',
 ' XXXX       XX              ',
@@ -23,6 +23,7 @@ level_map = [
 # '       X  XXXX    XX  XXX   ',
 # '    XXXX  XXXXXX  XX  XXXX  ',
 # 'XXXXXXXX  XXXXXX  XX  XXXX  ']
+"""
 level_map = [
 '                            ',
 '                            ',
@@ -35,7 +36,7 @@ level_map = [
 '         XE  B              ',
 '  P J  XXXXXXXXXXXXX        ',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
-
+"""
 #11 rows
 # tile_size = 64
 # screen_width = 1280
