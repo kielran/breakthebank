@@ -1,6 +1,8 @@
 import pygame
 from tiles import Tile
 from player import Player
+from obstacle import PointObstacle
+from obstacle import InteractObstacle
 from enemy import Roomba
 from item import JanitorItem, BankerItem
 
@@ -52,7 +54,7 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x,y), tile_size)
+                    obstacle = InteractObstacle((x, y + 64), 64, 800)
                     self.obstacles.add(obstacle)
 
     def horizontal_movement_collision(self):
@@ -113,18 +115,16 @@ class Level:
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
-                    
-    # For later: store in items/score increase
-    def disappear_on_touch_obstacle(self):
-        player = self.player.sprite
-        for sprite in self.points.sprites(): # looking through all point locations
-            if sprite.rect.colliderect(player.rect): # if player collides, remove
-                print('Point collection')
-                sprite.kill()
     
     # For later: generalize key for player/objects that can make them disappear
     def obstacle_behavior(self):
         player = self.player.sprite
+
+        for sprite in self.points.sprites(): # looking through all point locations
+            if sprite.rect.colliderect(player.rect): # if player collides, remove
+                print('Point collection')
+                sprite.kill()
+
         for sprite in self.obstacles.sprites(): # looking through all obstacles
             if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
                 for event in pygame.event.get():
@@ -153,7 +153,6 @@ class Level:
         self.player.draw(self.display_surface)
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
-        self.disappear_on_touch_obstacle()
         self.obstacle_behavior()
         
         for item in self.items:
