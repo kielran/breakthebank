@@ -60,10 +60,6 @@ class CurrentScene(StateMachine):
         self.curr_screen = screen.copy()
         super().__init__()
         print("DEF INIT")
-        # if self.musicON is False:
-        #     bgm_ch.stop()
-        #     self.musicON = True
-        #     print("====BGMCH STOP")
 
     def on_transition(self):
         self.select_stage = False
@@ -274,18 +270,16 @@ class button():
             return False
 
 #--------------------------------------------------------
-# Load music
+# Load background music
 #--------------------------------------------------------
-#==============WORK IN PROGRESS
-menuMusic = pygame.mixer.Sound("audio\maintheme_syndicate.mp3")
-selectMusic = pygame.mixer.Sound("audio\stage1_bgm_spookydarkpad.mp3")
-wipMusic = pygame.mixer.Sound("audio\wip\cicadas.flac")
-#--------------------------------------------------------
-# Music channels for BGM vs SFX
-#--------------------------------------------------------
+menuMusic = pygame.mixer.Sound("audio\stage1_bgm_spookydarkpad.mp3") ; menuMusic.set_volume(1.0)
+selectMusic = pygame.mixer.Sound("audio\maintheme_syndicate.mp3"); selectMusic.set_volume(0.4)
+wipMusic = pygame.mixer.Sound("audio\wip\duskwalkinloop.wav"); wipMusic.set_volume(0.4)
+
 bgm_ch = pygame.mixer.Channel(0)
 bgm_ch.set_volume(0.3)
 bgm_ch.play(menuMusic, loops = -1, fade_ms = 500)
+
 #--------------------------------------------------------
 # Drawing game stage
 # 
@@ -333,6 +327,8 @@ pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slic
 
 # TODO: placeholders for Stage Selection Menu
 stage_placeholderbutton = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton2 = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+
 # notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
 
 
