@@ -1,17 +1,22 @@
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------
 # Rules for creating level maps
-# 
+#
 #  X: tile
 #  B: Banker player
 #  J: Janitor player
-#  E{distance to travel}: enemy, specify the distance it travels right after (ex: E350)
+#  E: enemy, specify the distance it travels and its speed
 #  F: Janitor item
 #  G: Banker item
-#  L{leverId}: lever, specify id that corresponds with what obstacle it removes (ex: L1)  **not implmented yet**
-#  O{obstacleId}: obstacle, specify id (ex: O1)  **id not implemented yet**
-#  C: point obstacle
+#  L: Lever, specify id     **not implmented yet**
+#  O: Obstacle, specify id  **id not implemented yet**
+#  C: Point obstacle
 #
-# ---------------------------------------------------------------------------------------
+#
+# Rules for parameters
+#
+#  - put parameters in order of which the entity appears in the map (left to right, top to bottom)
+#  - level_param is a 2d array, each subarray contains the parameters for one entity
+# -----------------------------------------------------------------------------------------------
 
 level_map = [
 '                            ',
@@ -20,11 +25,13 @@ level_map = [
 ' XX    XXX            XX    ',
 ' XX J          O            ',
 ' XXXX         XX         XX ',
-' XXXX  GE234     XX            ',
+' XXXX  GE     XX            ',
 ' XX    XXXXXXXX   XX  XX    ',
 '       X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX  ',
-'XXXXXXXX  XXXXXX  XX  XXXX  ']
+'XXXXXXXX  XXXXXX  XX  XXXX  ',]
+
+level_param = [[335, 2]]
 
 # level_map = [
 # '                            ',

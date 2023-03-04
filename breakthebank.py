@@ -93,7 +93,7 @@ class CurrentScene(StateMachine):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if stage_placeholderbutton.isOver(mouse):
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map, screen)
+                    self.level = Level(level_map, level_param, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     self.main_menu = True

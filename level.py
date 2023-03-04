@@ -6,12 +6,13 @@ from item import JanitorItem, BankerItem
 from obstacle import PointObstacle, InteractObstacle
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, level_map, level_param, surface):
         self.display_surface = surface
-        self.level_data = level_data
-        self.setup_level(level_data)
+        self.level_map = level_map
+        self.level_param = level_param
+        self.setup_level(level_map, level_param)
 
-    def setup_level(self,layout):
+    def setup_level(self, layout, level_param):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
@@ -23,6 +24,7 @@ class Level:
             # print(row_index)
             # print(row)
             cols_skipped = 0
+            currParam = 0
             for col_index, cell in enumerate(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
@@ -42,15 +44,17 @@ class Level:
                     self.player.add(player_sprite)
                     
                 if cell == "E":
-                    enemy_distance = ""
-                    col_index += 1
-                    cols_skipped += 1
-                    while col_index < len(row) - 1 and layout[row_index][col_index + 1].isnumeric():
-                        enemy_distance += layout[row_index][col_index]
-                        col_index += 1
-                        cols_skipped += 1
-                    enemy_distance += layout[row_index][col_index]
-                    roomba_sprite = Roomba((x, y), int(enemy_distance), self.player)
+                    enemy_distance = level_param[currParam][0]
+                    enemy_speed = level_param[currParam][1]
+                    currParam += 1
+                    # col_index += 1
+                    # cols_skipped += 1
+                    # while col_index < len(row) - 1 and layout[row_index][col_index + 1].isnumeric():
+                    #     enemy_distance += layout[row_index][col_index]
+                    #     col_index += 1
+                    #     cols_skipped += 1
+                    # enemy_distance += layout[row_index][col_index]
+                    roomba_sprite = Roomba((x, y), enemy_distance, enemy_speed, self.player)
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "F":
@@ -127,6 +131,7 @@ class Level:
                     elif item.direction.y < 0: #moving right
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
+            
                         
         for sprite in self.obstacles.sprites(): # Same as above but with obstacles
             if sprite.rect.colliderect(player.rect):
