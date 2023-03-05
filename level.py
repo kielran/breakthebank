@@ -20,15 +20,16 @@ class Level:
         self.items = pygame.sprite.Group()
         self.points = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
-        self.lever = pygame.sprite.GroupSingle()
-        tile_size = 64
+        self.levers = pygame.sprite.Group()
+        tile_size = 46
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
 
+            cols_skipped = 0
             for col_index, cell in enumerate(row):
                 #print(f'{row_index},{col_index}:{cell}')
-                x = col_index * tile_size
+                x = (col_index - cols_skipped) * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
@@ -56,12 +57,22 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, 800)
-                    self.obstacles.add(obstacle)
-                
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 4)
+                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
+                        col_index += 1
+                        cols_skipped += 1
+                        uniqueID = layout[row_index][col_index]
+                        obstacle.obstacleID = int(uniqueID)
+                    self.obstacles.add(obstacle)   
+                           
                 if cell == "L":
-                    leverC = InteractBox((x,y))
-                    self.lever.add(leverC)
+                    lever = InteractBox((x,y))
+                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
+                        col_index += 1
+                        cols_skipped += 1
+                        uniqueID = layout[row_index][col_index]
+                        lever.leverID = int(uniqueID)
+                    self.levers.add(lever)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -76,6 +87,14 @@ class Level:
                     
       
         for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+            
+        
+        for sprite in self.levers.sprites(): # Same as above but with levers, only x axis for levers since they are smaller
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
@@ -133,11 +152,32 @@ class Level:
 
         for sprite in self.obstacles.sprites(): # looking through all obstacles
             if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN: # if key is pressed
-                        if event.key == pygame.K_k: # and it is the interact button, remove
-                            print('Obstacle collision')
-                            sprite.kill()
+                if sprite.obstacleID == 0: # if the obstacle is not tied to a lever
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN: # if key is pressed
+                            if event.key == pygame.K_k: # and it is the interact button, remove
+                                print('Obstacle collision, removed')
+                                sprite.kill()
+                #else:
+                    #print('Special obstacle id ' + str(sprite.obstacleID))
+
+    def lever_removal(self):
+        player = self.player.sprite
+
+        for sprite in self.levers.sprites(): # looking through all obstacles
+            if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
+                if sprite.flipUse == 1: # levers can only be used once
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN: # if key is pressed
+                            if event.key == pygame.K_k: # and it is the interact button
+                                for spriteOb in self.obstacles.sprites():
+                                    if spriteOb.obstacleID == sprite.leverID: # delete the corresponding object to lever ID
+                                        print('Lever flipped, corresponding obstacle of id ' + str(spriteOb.obstacleID) + ' has been removed')
+                                        spriteOb.kill()
+                                        break
+                                sprite.flipUse = 0
+                #else:
+                    #print('Lever id ' + str(sprite.leverID) + ' is deactivated')
                     
 
     def run(self):
@@ -147,7 +187,7 @@ class Level:
 
         self.points.draw(self.display_surface)
 
-        self.lever.draw(self.display_surface)
+        self.levers.draw(self.display_surface)
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
@@ -162,6 +202,7 @@ class Level:
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
         self.obstacle_behavior()
+        self.lever_removal()
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
