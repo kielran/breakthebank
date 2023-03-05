@@ -161,7 +161,7 @@ class Level:
                 #else:
                     #print('Special obstacle id ' + str(sprite.obstacleID))
 
-    def lever_removal(self):
+    def lever_flip(self):
         player = self.player.sprite
 
         for sprite in self.levers.sprites(): # looking through all obstacles
@@ -202,7 +202,7 @@ class Level:
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
         self.obstacle_behavior()
-        self.lever_removal()
+        self.lever_flip()
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
