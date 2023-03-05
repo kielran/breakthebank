@@ -86,7 +86,7 @@ class Level:
                     player.rect.right = sprite.rect.left
                     
       
-        for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+        for sprite in self.obstacles.sprites(): # Players can't overlap obstacles (x axis)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
@@ -94,7 +94,7 @@ class Level:
                     player.rect.right = sprite.rect.left
             
         
-        for sprite in self.levers.sprites(): # Same as above but with levers, only x axis for levers since they are smaller
+        for sprite in self.levers.sprites(): # Players can't overlap levers (x axis)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
@@ -132,7 +132,7 @@ class Level:
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
                         
-        for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+        for sprite in self.obstacles.sprites(): # Players can't overlap obstacles (y axis)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
