@@ -3,6 +3,7 @@ from tiles import Tile
 from player import Janitor, Banker
 from enemy import Roomba
 from item import JanitorItem, BankerItem
+from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle
 
 class Level:
@@ -19,6 +20,7 @@ class Level:
         self.items = pygame.sprite.Group()
         self.points = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+        self.exits = pygame.sprite.Group()
         tile_size = 64
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -72,6 +74,14 @@ class Level:
                 if cell == "O":
                     obstacle = InteractObstacle((x,y), tile_size)
                     self.obstacles.add(obstacle)
+                    
+                if cell == "N":
+                    janitor_exit = JanitorExit((x,y))
+                    self.exits.add(janitor_exit)
+                    
+                if cell == "M":
+                    banker_exit = BankerExit((x,y))
+                    self.exits.add(banker_exit)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
@@ -160,6 +170,18 @@ class Level:
                         if event.key == pygame.K_k and len(player.inventory) > 0: # and it is the interact button, remove
                             print('Obstacle collision')
                             sprite.kill()
+                            
+    def check_game_ended(self):
+        player = self.player.sprite
+        for exit in self.exits.sprites():
+            if player.rect.colliderect(exit):
+                if not ((type(self.player) == Banker and type(exit) == BankerExit) or (type(self.player) == Janitor and type(exit) == JanitorExit)):
+                    return False
+            else:
+                return False
+        
+        return True
+                    
                     
 
     def run(self):
@@ -168,6 +190,8 @@ class Level:
         self.obstacles.draw(self.display_surface)
 
         self.points.draw(self.display_surface)
+        
+        self.exits.draw(self.display_surface)
         
         for enemy in self.enemies:
             sight_rect = enemy.update()
@@ -188,5 +212,7 @@ class Level:
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
         
+        if self.check_game_ended():
+             return False                      
         return True
             

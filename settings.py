@@ -21,9 +21,9 @@
 level_map = [
 '                            ',
 '                            ',
-' F      C                   ',
+' F     C N                  ',
 ' XX    XXX            XX    ',
-' XX B          O            ',
+' XX B          M            ',
 ' XXXX         XX         XX ',
 ' XXXX  GE     XX            ',
 ' XX    XXXXXXXX   XX  XX    ',
