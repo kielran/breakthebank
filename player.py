@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_speed = -16
         self.inventory = []
         self.counter = 0
+        self.facingRight = True
 
     def player_movement(self):
         keys = pygame.key.get_pressed()
@@ -43,10 +44,12 @@ class Player(pygame.sprite.Sprite):
             self.image = bankerright[self.counter]
             self.counter = (self.counter + 1) % len(bankerright)
             self.direction.x = 1
+            self.facingRight = True
         elif keys[pygame.K_a]:
             self.image = bankerleft[self.counter]
             self.counter = (self.counter + 1) % len(bankerleft)
             self.direction.x = -1
+            self.facingRight = False
         else:
             self.direction.x = 0
 
@@ -78,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         
         if (len(self.inventory)) > 0:
-            self.inventory[0].update(self.rect.center, self.direction.x)
+            self.inventory[0].update(self.rect.center, self.facingRight)
 
         if keys[pygame.K_k]:
             self.pick_up_item(items)
