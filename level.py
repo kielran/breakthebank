@@ -58,7 +58,7 @@ class Level:
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "F":
-                    janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/key.png")
+                    janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/broom.png")
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "G":
