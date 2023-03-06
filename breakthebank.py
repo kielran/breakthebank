@@ -109,7 +109,7 @@ class CurrentScene(StateMachine):
                 if stage_placeholderbutton.isOver(mouse):
                     button_hover.play()
                     print("stage selection -> in game")
-                    self.level = Level(level_map, screen)
+                    self.level = Level(level_map, level_param, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     button_hover.play()
@@ -124,7 +124,8 @@ class CurrentScene(StateMachine):
             self.musicON = False
             print("bgm_ch play wipMusic")
         screen.fill('black')
-        self.level.run()
+        if not self.level.run():
+            self.pause_menu = True
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -349,7 +350,7 @@ main_menu_music = True
 #--------------------------------------------------------
 # Main Game Loop
 # - Clock tick needs to be contained here
-# - Game state is controlled here
+# - Game state is controlled here44
 #--------------------------------------------------------
 
 

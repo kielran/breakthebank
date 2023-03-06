@@ -1,13 +1,13 @@
 import pygame
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos, distance):
+    def __init__(self, pos, distance, speed):
         super().__init__()
         self.image = pygame.Surface((32,64))
         self.image.fill("red")
         self.rect = self.image.get_rect(topleft = pos)
         self.posFromStart = 0
-        self.speed = 1
+        self.speed = speed
         self.distance = distance
         self.direction = 1
     
@@ -21,6 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         
     def reverse_dir(self):
         self.direction *= -1
+        self.image = pygame.transform.flip(self.image, True, False)
         
     def update(self):
         self.move()
@@ -28,9 +29,9 @@ class Enemy(pygame.sprite.Sprite):
             self.reverse_dir()
         
 class Roomba(Enemy):
-    def __init__(self, pos, distance, player):
-        super().__init__(pos, distance)
-        self.sight_image = pygame.Surface((250, 62))
+    def __init__(self, pos, distance, speed, player):
+        super().__init__(pos, distance, speed)
+        self.sight_image = pygame.Surface((1000, 62))
         self.sight_image.fill((50, 50, 50))
         self.sight_rect = self.sight_image.get_rect(topleft = self.rect.topright)
         self.player = player
@@ -60,16 +61,18 @@ class Roomba(Enemy):
         return self.sight_rect
     
     def detect_player(self, player_rect, tiles):
+        tiles_to_check = []
+        
         for tile in tiles.sprites(): #looking through all sprites
             if pygame.Rect.colliderect(self.sight_rect, player_rect): #if enemy collides with sight
                 if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
                     #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
-                    if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
-                        break
-                    elif player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
-                        break
-                    else: return True
-                else:
-                    return True
+                    tiles_to_check.append(tile)
         
+        for tile in tiles_to_check:
+            if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
+                continue
+            elif player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
+                continue
+            else: return True
         return False
