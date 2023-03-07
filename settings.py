@@ -10,6 +10,8 @@
 #  L: Lever, specify id     **not implmented yet**
 #  O: Obstacle, specify id  **id not implemented yet**
 #  C: Point obstacle
+#  N: Janitor exit
+#  M: Banker exit
 #
 #
 # Rules for parameters
@@ -21,9 +23,9 @@
 level_map = [
 '                            ',
 '                            ',
-' F      C                   ',
+' F     C N                  ',
 ' XX    XXX            XX    ',
-' XX B          O            ',
+' XX B          M            ',
 ' XXXX         XX         XX ',
 ' XXXX  GE     XX            ',
 ' XX    XXXXXXXX   XX  XX    ',
