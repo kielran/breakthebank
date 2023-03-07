@@ -10,6 +10,8 @@
 #  L: Lever, specify id     **not implmented yet**
 #  O: Obstacle, specify id  **id not implemented yet**
 #  C: Point obstacle
+#  N: Janitor exit
+#  M: Banker exit
 #
 #
 # Rules for parameters

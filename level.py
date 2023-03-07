@@ -22,15 +22,14 @@ class Level:
         self.obstacles = pygame.sprite.Group()
         self.exits = pygame.sprite.Group()
         tile_size = 64
+        currParam = 0
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
-            cols_skipped = 0
-            currParam = 0
             for col_index, cell in enumerate(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
-                x = (col_index - cols_skipped) * tile_size
+                x = col_index * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
@@ -49,22 +48,15 @@ class Level:
                     enemy_distance = level_param[currParam][0]
                     enemy_speed = level_param[currParam][1]
                     currParam += 1
-                    # col_index += 1
-                    # cols_skipped += 1
-                    # while col_index < len(row) - 1 and layout[row_index][col_index + 1].isnumeric():
-                    #     enemy_distance += layout[row_index][col_index]
-                    #     col_index += 1
-                    #     cols_skipped += 1
-                    # enemy_distance += layout[row_index][col_index]
                     roomba_sprite = Roomba((x, y), enemy_distance, enemy_speed, self.player)
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "F":
-                    janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/broom.png")
+                    janitor_item_sprite = JanitorItem((x, y), (64, 32))
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "G":
-                    banker_item_sprite = BankerItem((x, y), (64, 32), "./imgs/key.png")
+                    banker_item_sprite = BankerItem((x, y), (64, 32))
                     self.items.add(banker_item_sprite)
                     
                 if cell == "C":

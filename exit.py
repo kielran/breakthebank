@@ -6,12 +6,6 @@ class Exit(pygame.sprite.Sprite):
         self.image = pygame.Surface((64, 100))
         self.rect = self.image.get_rect(topleft = (pos[0], pos[1] - 36))
     
-        
-        
-        
-    
-        
-            
 
         
 class JanitorExit(Exit):

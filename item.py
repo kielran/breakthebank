@@ -54,10 +54,10 @@ class Item(pygame.sprite.Sprite):
 
         
 class JanitorItem(Item):
-    def __init__(self, pos, size, img):
-        super().__init__(pos, size, img)
+    def __init__(self, pos, size):
+        super().__init__(pos, size, "./imgs/broom.png")
         
         
 class BankerItem(Item):
-    def __init__(self, pos, size, img):
-        super().__init__(pos, size, img)
+    def __init__(self, pos, size):
+        super().__init__(pos, size, "./imgs/key.png")
