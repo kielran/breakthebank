@@ -29,7 +29,9 @@ class InteractBox(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.flipUse = 1
         self.leverID = 0
+        self.posNote = pos
     def update(self):
         if self.flipUse == 0: #Currently not working, need to switch images later
             self.image = pygame.Surface((15, 30))
             self.image.fill('Brown')
+            self.rect = self.image.get_rect(topleft = self.posNote)

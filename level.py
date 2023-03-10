@@ -175,7 +175,8 @@ class Level:
                                         print('Lever flipped, corresponding obstacle of id ' + str(spriteOb.obstacleID) + ' has been removed')
                                         spriteOb.kill()
                                         break
-                                sprite.flipUse = 0
+                                sprite.flipUse = 0 # Lever no longer works
+                                sprite.update() # Update lever sprite
                 #else:
                     #print('Lever id ' + str(sprite.leverID) + ' is deactivated')
                     
