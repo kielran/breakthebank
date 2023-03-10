@@ -13,7 +13,7 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
-        tile_size = 64
+        tile_size = 46
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)

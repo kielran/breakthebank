@@ -25,7 +25,7 @@ pygame.display.set_caption('Break the Bank')
 gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
-
+levels_to_draw = 2
 
 
 #--------------------------------------------------------
@@ -37,6 +37,7 @@ class CurrentScene(StateMachine):
     scene_level_selection = State("Level Selection")
     scene_in_game = State("In Game")
     scene_pause_menu = State("Paused")
+    global levels_to_draw
 
     # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
 
@@ -91,9 +92,29 @@ class CurrentScene(StateMachine):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if stage_placeholderbutton.isOver(mouse):
+                if (stage_placeholderbutton_1.isOver(mouse) and 1<=levels_to_draw):
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map, screen)
+                    self.level = Level(level_map_0, screen)
+                    self.in_game = True
+                if (stage_placeholderbutton_2.isOver(mouse) and 2<=levels_to_draw):
+                    print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map_1, screen)
+                    self.in_game = True
+                if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
+                    print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map_1, screen)
+                    self.in_game = True
+                if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
+                    print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map_1, screen)
+                    self.in_game = True
+                if (stage_placeholderbutton_5.isOver(mouse) and 5<=levels_to_draw):
+                    print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map_1, screen)
+                    self.in_game = True
+                if (stage_placeholderbutton_6.isOver(mouse) and 6<=levels_to_draw):
+                    print("TRIGGERED stage selection -> in game")
+                    self.level = Level(level_map_1, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     self.main_menu = True
@@ -125,6 +146,9 @@ class CurrentScene(StateMachine):
                     self.in_game = True
                 if quit_button.isOver(mouse):
                     self.select_stage = True
+                if restart_button.isOver(mouse):
+                    self.level = Level(level_map_1, screen)
+                    self.in_game = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     self.in_game = True
@@ -153,6 +177,7 @@ class Scene():
             for individualButton in range(len(self.buttons)):
                 self.buttons[individualButton].draw(screen)
         else:
+            # print(self.buttons)
             backgroundphoto = pygame.image.load(self.background).convert()
             backgroundphoto = pygame.transform.scale(backgroundphoto, (size*16,size*9))
             screen.blit(backgroundphoto,(0,0))
@@ -274,12 +299,14 @@ screen = pygame.display.set_mode([size*16, size*9])
 width = screen.get_width()
 height = screen.get_height()
 
-tile_size = 64
-height = len(level_map) * tile_size
+# tile_size = 45
+# height = len(level_map) * tile_size
+# width = len(level_map[0])
+# print(width)
 
 start_button = button(width/2.807,height/1.6,20,100,'',None,"imgs/buttons/slice_start.png","imgs/buttons/hovering_slice_start.png")
 quit_button = button(width/2.2,height/1.3,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")
-quit_mainmenu_button = button(width/2.2,height/1.3,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")
+quit_mainmenu_button = button(width/20,height/20,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")
 audio_button = button(width/2.015748,height/1.15,20,100,'',None,"imgs/buttons/slice_audio.png", "imgs/buttons/hovering_slice_audio.png")
 accessibility_button = button(width/2.4063063,height/1.15,20,100,'',None,"imgs/buttons/slice_cb.png", "imgs/buttons/hovering_slice_cb.png")
 continue_button = button(width/2.4288,height/2.1951219, 20, 100, '', None, "imgs/buttons/slice_continue.png","imgs/buttons/hovering_slice_continue.png",160)
@@ -288,18 +315,38 @@ tutorial_button = button(width/2.424242,height/1.50627, 20, 100, '', None, "imgs
 pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slice_paused.png","imgs/slice_paused.png",160) #bad code 
 
 # TODO: placeholders for Stage Selection Menu
-stage_placeholderbutton = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_1 = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_2 = button(width/18+1*(width/3),height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_3 = button(width/18+2*(width/3),height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_4 = button(width/18,height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_5 = button(width/18+1*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_6 = button(width/18+2*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
 # notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
 
 
 overallScreen = CurrentScene()
 
 
+levels_list = [stage_placeholderbutton_1 ,stage_placeholderbutton_2 ,stage_placeholderbutton_3 ,stage_placeholderbutton_4 ,stage_placeholderbutton_5 ,stage_placeholderbutton_6 ]
+stageSelection_list = [quit_mainmenu_button]
+# print(range(len(levels_list)))
+def drawAmount(current_levels):
+    for x in range(0,6):
+        if x <= current_levels:
+            stageSelection_list.append(levels_list[x])
+
+
+drawAmount(levels_to_draw-1)
+
 # Draw buttons 
 pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continue_button, restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
 InGame = Scene(screen, "imgs/in_game.png", [])
 mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
-stageSelection = Scene(screen, "imgs/stage_select.png", [stage_placeholderbutton,quit_mainmenu_button])
+stageSelection = Scene(screen, "imgs/stage_select.png", stageSelection_list)
+
+
+        
+
 
 #--------------------------------------------------------
 #Define Booleans for stage states
