@@ -1,6 +1,7 @@
 import pygame
 from tiles import Tile
 from player import Player
+from banker import Banker
 from obstacle import PointObstacle
 from obstacle import InteractObstacle
 from obstacle import InteractBox
@@ -16,6 +17,7 @@ class Level:
     def setup_level(self,layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.banker = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
         self.points = pygame.sprite.Group()
@@ -39,17 +41,21 @@ class Level:
                 if cell == "P":
                     player_sprite = Player((x,y))
                     self.player.add(player_sprite)
+                
+                if cell == "B":
+                    banker_sprite = Banker((x,y))
+                    self.banker.add(banker_sprite)
                     
                 if cell == "E":
                     roomba_sprite = Roomba((x, y), 300, self.player)
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "J":
-                    janitor_item_sprite = JanitorItem((x, y), (64, 32), "./imgs/key.png")
+                    janitor_item_sprite = JanitorItem((x, y), (tile_size * 2, tile_size), "./imgs/key.png")
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "B":
-                    banker_item_sprite = BankerItem((x, y), (64, 32), "./imgs/key.png")
+                    banker_item_sprite = BankerItem((x, y), (tile_size * 2, tile_size), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
                     
                 if cell == "C":
@@ -57,7 +63,7 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 4)
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 5)
                     if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
                         col_index += 1
                         cols_skipped += 1
@@ -141,6 +147,32 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
     
+    def banker_horizontal_movement_collision(self):
+            banker = self.banker.sprite  
+            banker.rect.x += banker.direction.x * banker.speed
+
+            for sprite in self.tiles.sprites(): #looking through all sprites
+                if sprite.rect.colliderect(banker.rect): #if player collides with a tile
+                    if banker.direction.x < 0: #moving left
+                        banker.rect.left = sprite.rect.right
+                    elif banker.direction.x > 0: #moving right
+                        banker.rect.right = sprite.rect.left
+
+    def banker_vertical_movement_collision(self):
+        banker = self.banker.sprite
+        banker.apply_gravity()
+
+        for sprite in self.tiles.sprites(): #looking through all sprites
+            if sprite.rect.colliderect(banker.rect): #if player collides with a tile
+                
+                if banker.direction.y > 0: #moving left
+                    banker.rect.bottom = sprite.rect.top
+                    banker.direction.y = 0
+
+                elif banker.direction.y < 0: #moving right
+                    banker.rect.top = sprite.rect.bottom
+                    banker.direction.y = 0
+    
     # For later: generalize key for player/objects that can make them disappear
     def obstacle_behavior(self):
         player = self.player.sprite
@@ -200,11 +232,18 @@ class Level:
         
         self.player.update(self.items)
         self.player.draw(self.display_surface)
+        
+        self.banker.update()
+        self.banker.draw(self.display_surface)
+        
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        
+        self.banker_horizontal_movement_collision()
+        self.banker_vertical_movement_collision()
+        
         self.obstacle_behavior()
         self.lever_flip()
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
-            
