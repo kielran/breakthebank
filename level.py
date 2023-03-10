@@ -148,15 +148,22 @@ class Level:
                     player.direction.y = 0
     
     def banker_horizontal_movement_collision(self):
-            banker = self.banker.sprite  
-            banker.rect.x += banker.direction.x * banker.speed
+        banker = self.banker.sprite  
+        banker.rect.x += banker.direction.x * banker.speed
 
-            for sprite in self.tiles.sprites(): #looking through all sprites
-                if sprite.rect.colliderect(banker.rect): #if player collides with a tile
-                    if banker.direction.x < 0: #moving left
-                        banker.rect.left = sprite.rect.right
-                    elif banker.direction.x > 0: #moving right
-                        banker.rect.right = sprite.rect.left
+        for sprite in self.tiles.sprites(): #looking through all sprites
+            if sprite.rect.colliderect(banker.rect): #if player collides with a tile
+                if banker.direction.x < 0: #moving left
+                    banker.rect.left = sprite.rect.right
+                elif banker.direction.x > 0: #moving right
+                    banker.rect.right = sprite.rect.left
+
+        for sprite in self.obstacles.sprites(): # Players can't overlap obstacles (x axis)
+            if sprite.rect.colliderect(banker.rect):
+                if banker.direction.x < 0:
+                    banker.rect.left = sprite.rect.right
+                elif banker.direction.x > 0:
+                    banker.rect.right = sprite.rect.left
 
     def banker_vertical_movement_collision(self):
         banker = self.banker.sprite
@@ -176,22 +183,30 @@ class Level:
     # For later: generalize key for player/objects that can make them disappear
     def obstacle_behavior(self):
         player = self.player.sprite
+        banker = self.banker.sprite
 
         for sprite in self.points.sprites(): # looking through all point locations
-            if sprite.rect.colliderect(player.rect): # if player collides, remove
+            if sprite.rect.colliderect(player.rect) or sprite.rect.colliderect(banker.rect): # If either player collides, remove
                 print('Point collection')
                 sprite.kill()
 
         for sprite in self.obstacles.sprites(): # looking through all obstacles
-            if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # if the player is next to the obstacle
+            if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: # If the player is next to the obstacle
                 if sprite.obstacleID == 0: # if the obstacle is not tied to a lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: # if key is pressed
-                            if event.key == pygame.K_k: # and it is the interact button, remove
-                                print('Obstacle collision, removed')
+                            if event.key == pygame.K_f: # and it is the interact button, remove
+                                print('Obstacle collision with WASD, removed')
                                 sprite.kill()
                 #else:
                     #print('Special obstacle id ' + str(sprite.obstacleID))
+            elif sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: # If the 2nd player is next to the obstacle
+                if sprite.obstacleID == 0: # if the obstacle is not tied to a lever
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN: # if key is pressed
+                            if event.key == pygame.K_SLASH: # and it is the interact button, remove
+                                print('Obstacle collision wit ARROWS, removed')
+                                sprite.kill()
 
     def lever_flip(self):
         player = self.player.sprite
@@ -201,7 +216,7 @@ class Level:
                 if sprite.flipUse == 1: # levers can only be used once
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: # if key is pressed
-                            if event.key == pygame.K_k: # and it is the interact button
+                            if event.key == pygame.K_f: # and it is the interact button
                                 for spriteOb in self.obstacles.sprites():
                                     if spriteOb.obstacleID == sprite.leverID: # delete the corresponding object to lever ID
                                         print('Lever flipped, corresponding obstacle of id ' + str(spriteOb.obstacleID) + ' has been removed')
@@ -233,7 +248,7 @@ class Level:
         self.player.update(self.items)
         self.player.draw(self.display_surface)
         
-        self.banker.update()
+        self.banker.update(self.items)
         self.banker.draw(self.display_surface)
         
         self.horizontal_movement_collision()
