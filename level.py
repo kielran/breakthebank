@@ -51,11 +51,11 @@ class Level:
                     self.enemies.add(roomba_sprite)
                 
                 if cell == "J":
-                    janitor_item_sprite = JanitorItem((x, y), (tile_size * 2, tile_size), "./imgs/key.png")
+                    janitor_item_sprite = JanitorItem((x, y), (tile_size, tile_size), "./imgs/key.png")
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "B":
-                    banker_item_sprite = BankerItem((x, y), (tile_size * 2, tile_size), "./imgs/key.png")
+                    banker_item_sprite = BankerItem((x, y), (tile_size, tile_size), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
                     
                 if cell == "C":
@@ -63,7 +63,7 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 5)
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3)
                     if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
                         col_index += 1
                         cols_skipped += 1
@@ -200,7 +200,7 @@ class Level:
                                 sprite.kill()
                 #else:
                     #print('Special obstacle id ' + str(sprite.obstacleID))
-            elif sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: # If the 2nd player is next to the obstacle
+            if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: # If the 2nd player is next to the obstacle
                 if sprite.obstacleID == 0: # if the obstacle is not tied to a lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: # if key is pressed
