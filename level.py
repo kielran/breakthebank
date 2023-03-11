@@ -21,7 +21,7 @@ class Level:
         self.points = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
         self.exits = pygame.sprite.Group()
-        tile_size = 64
+        tile_size = 46
         currParam = 0
         for row_index, row in enumerate(layout):
             # print(row_index)
@@ -41,7 +41,7 @@ class Level:
                     self.player.add(player_sprite)
                     
                 if cell == "B":
-                    player_sprite = Banker((x,y))
+                    player_sprite = Banker((x,y-11))
                     self.player.add(player_sprite)
                     
                 if cell == "E":

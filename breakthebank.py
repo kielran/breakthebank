@@ -313,8 +313,8 @@ screen = pygame.display.set_mode([size*16, size*9])
 width = screen.get_width()
 height = screen.get_height()
 
-tile_size = 64
-height = len(level_map) * tile_size
+# tile_size = 64
+# height = len(level_map) * tile_size
 
 start_button = button(width/2.807,height/1.6,20,100,'',None,"imgs/buttons/slice_start.png","imgs/buttons/hovering_slice_start.png")
 quit_button = button(width/2.2,height/1.3,20,100,'',None,"imgs/buttons/slice_quit.png", "imgs/buttons/hovering_slice_quit.png")

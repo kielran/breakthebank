@@ -11,6 +11,9 @@ bankerright.append(bankerr1), bankerright.append(bankerr2), bankerright.append(b
 bankerright.append(bankerr5)
 bankerright.append(bankerr6)
 bankerright.append(bankerr7)
+
+for banker in bankerright:
+    pygame.transform.scale_by(banker, 0.1)
 bankerl1 = pygame.image.load('imgs/banker_sprite/banker_walk/l1.png')
 bankerl2 = pygame.image.load('imgs/banker_sprite/banker_walk/l2.png')
 bankerl3 = pygame.image.load('imgs/banker_sprite/banker_walk/l3.png')
@@ -23,9 +26,17 @@ bankerleft.append(bankerl1), bankerleft.append(bankerl2), bankerleft.append(bank
 bankerleft.append(bankerl5)
 bankerleft.append(bankerl6)
 bankerleft.append(bankerl7)
+# for banker in bankerleft:
+#     banker = pygame.transform.scale_by(banker, 0.1).convert_alpha()
+#     print("hi")
+for index, banker in enumerate(bankerright):
+    bankerright[index] = pygame.transform.scale_by(banker, 0.72)
+for index, banker in enumerate(bankerleft):
+    bankerleft[index] = pygame.transform.scale_by(banker, 0.72)
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
+        
         self.image = bankerright[0]
         self.rect = self.image.get_rect(topleft = pos)
         #player movement
@@ -83,7 +94,7 @@ class Player(pygame.sprite.Sprite):
         if (len(self.inventory)) > 0:
             self.inventory[0].update(self.rect.center, self.facingRight)
 
-        if keys[pygame.K_k]:
+        if keys[pygame.K_s]:
             self.pick_up_item(items)
         if keys[pygame.K_j]:
             self.drop_item()
