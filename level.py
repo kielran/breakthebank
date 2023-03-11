@@ -54,7 +54,7 @@ class Level:
                     janitor_item_sprite = JanitorItem((x, y), (tile_size, tile_size), "./imgs/key.png")
                     self.items.add(janitor_item_sprite)
                 
-                if cell == "B":
+                if cell == "K":
                     banker_item_sprite = BankerItem((x, y), (tile_size, tile_size), "./imgs/key.png")
                     self.items.add(banker_item_sprite)
                     
