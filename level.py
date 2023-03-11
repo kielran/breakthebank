@@ -208,7 +208,6 @@ class Level:
     """
 
 
-    # For later: gefneralize key for player/objects that can make them disappear
     def obstacle_behavior(self):
         player = self.player.sprite
         banker = self.banker.sprite
