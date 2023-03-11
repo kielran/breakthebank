@@ -49,17 +49,25 @@ class Level:
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
+        is_colliding_with_tile = False
 
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(player.rect): #if player collides with a tile
-                
-                if player.direction.y > 0: #moving left
+                is_colliding_with_tile = True
+                if player.direction.y > 0: #is on top of a rectangle
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
+                    player.is_on_ground = True
 
-                elif player.direction.y < 0: #moving right
+                elif player.direction.y < 0: #player's  touching bottom of tile
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+
+
+
+        if is_colliding_with_tile == False:
+            player.is_on_ground = False  
+        
 
     def banker_horizontal_movement_collision(self):
             banker = self.banker.sprite  
@@ -75,17 +83,21 @@ class Level:
     def banker_vertical_movement_collision(self):
         banker = self.banker.sprite
         banker.apply_gravity()
+        is_colliding_with_tile = False
 
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(banker.rect): #if player collides with a tile
-                
+                is_colliding_with_tile = True
                 if banker.direction.y > 0: #moving left
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
+                    banker.is_on_ground = True
 
                 elif banker.direction.y < 0: #moving right
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
+        if is_colliding_with_tile == False:
+            banker.is_on_ground = False
 
     def run(self):
         self.tiles.draw(self.display_surface)

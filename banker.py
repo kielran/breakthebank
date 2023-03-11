@@ -21,5 +21,5 @@ class Banker(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and self.is_on_ground == True:
             self.jump()
