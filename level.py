@@ -37,11 +37,11 @@ class Level:
                     self.tiles.add(tile)
 
                 if cell == "J":
-                    player_sprite = Janitor((x,y-34))
+                    player_sprite = Janitor((x,y))
                     self.player.add(player_sprite)
                     
                 if cell == "B":
-                    player_sprite = Banker((x,y-34))
+                    player_sprite = Banker((x,y-11))
                     self.player.add(player_sprite)
                     
                 if cell == "E":
@@ -207,4 +207,5 @@ class Level:
         if self.check_game_ended():
              return False                      
         return True
-            
+           
+  
