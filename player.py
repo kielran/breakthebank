@@ -11,6 +11,7 @@ bankerright.append(bankerr1), bankerright.append(bankerr2), bankerright.append(b
 bankerright.append(bankerr5)
 bankerright.append(bankerr6)
 bankerright.append(bankerr7)
+
 bankerl1 = pygame.image.load('imgs/banker_sprite/banker_walk/l1.png')
 bankerl2 = pygame.image.load('imgs/banker_sprite/banker_walk/l2.png')
 bankerl3 = pygame.image.load('imgs/banker_sprite/banker_walk/l3.png')
@@ -23,6 +24,10 @@ bankerleft.append(bankerl1), bankerleft.append(bankerl2), bankerleft.append(bank
 bankerleft.append(bankerl5)
 bankerleft.append(bankerl6)
 bankerleft.append(bankerl7)
+# for x in range(len(bankerright)):
+#     bankerright[x] = pygame.transform.scale(bankerright[x], (30,60))
+# for x in range(len(bankerright)):
+#     bankerleft[x] = pygame.transform.scale( bankerleft[x], (1,1))
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()

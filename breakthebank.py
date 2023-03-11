@@ -59,6 +59,7 @@ class CurrentScene(StateMachine):
         self.pause_menu = False
         self.check_from_select = True
         self.curr_screen = screen.copy()
+        self.current_level = ""
         super().__init__()
         print("DEF INIT")
 
@@ -67,7 +68,7 @@ class CurrentScene(StateMachine):
         self.main_menu = False
         self.in_game = False
         self.pause_menu = False
-        print("ON_TRANSITION")
+        # print("ON_TRANSITION")
 
     def checkChange(self):
         if self.select_stage | self.main_menu | self.in_game | self.pause_menu:
@@ -110,32 +111,38 @@ class CurrentScene(StateMachine):
                 if (stage_placeholderbutton_1.isOver(mouse) and 1<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_0, level_param, screen)
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if (stage_placeholderbutton_2.isOver(mouse) and 2<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_1, level_param, screen)
+                    self.current_level = level_map_1
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_1, level_param, screen)
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_1, level_param, screen)
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if (stage_placeholderbutton_5.isOver(mouse) and 5<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_1, level_param, screen)
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if (stage_placeholderbutton_6.isOver(mouse) and 6<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.level = Level(level_map_1,level_param, screen)
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     button_hover.play()
@@ -150,8 +157,10 @@ class CurrentScene(StateMachine):
             self.musicON = False
             print("bgm_ch play wipMusic")
         screen.fill('black')
+        
         if not self.level.run():
-            self.pause_menu = True
+            self.curr_screen = screen.copy()
+            self.pause_menu = True # make die
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -182,7 +191,7 @@ class CurrentScene(StateMachine):
                     button_hover.play()
                     self.select_stage = True
                 if restart_button.isOver(mouse):
-                    self.level = Level(level_map_1, screen)
+                    self.level = Level(self.current_level, level_param, screen)
                     self.in_game = True
                     self.musicON = False
             if event.type == pygame.KEYDOWN:
