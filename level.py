@@ -208,7 +208,7 @@ class Level:
     """
 
 
-    # For later: generalize key for player/objects that can make them disappear
+    # For later: gefneralize key for player/objects that can make them disappear
     def obstacle_behavior(self):
         player = self.player.sprite
         banker = self.banker.sprite
@@ -224,14 +224,22 @@ class Level:
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_f: #and it is player 1's interact button (F), remove
-                                print('Player 1 (WASD) encountered door, removing')
-                                sprite.kill()
+                                if(len(player.inventory) > 0):
+                                    print('Player 1 (WASD) with key encountered door, removing')
+                                    sprite.kill()
+                                    player.inventory.clear()
+                                else:
+                                    print('Player 1 does not have an item, cannot remove')
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_SLASH: #and it is player 2's interact button (/), remove
-                                print('Player 2 (ARROWS) encountered door, removing')
-                                sprite.kill()
+                                if(len(banker.inventory) > 0):
+                                    print('Player 2 (WASD) with key encountered door, removing')
+                                    sprite.kill()
+                                    player.inventory.clear()
+                                else:
+                                    print('Player 2 does not have an item, cannot remove')
 
     def lever_flip(self):
         player = self.player.sprite
