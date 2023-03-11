@@ -38,7 +38,45 @@ level_map = [
 'XXXXXXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
 
-level_param = [[235, 2]]
+
+level_map_0 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'XX         NM     XXXXXXXXXX',
+'XXX                XXXXXXXXX',
+'XXXX                XXXXXXXX',
+'XXXXX                XXXXXXX',
+'XXXXXX                XXXXXX',
+'XXXXXXX                XXXXX',
+'XXXXXXXX                XXXX',
+'XXXXXXXXX                XXX',
+'XXXXXXXXXX                XX',
+'XXXX XXXXXX                X',
+'XXXXJXXXXXXX               X',
+'XXXXXXXXXXXXX              X',
+'XXXXXXXXXXXXXX             X',
+'XXXXXXXXXXXXXXX            X',
+'XXXXXXXXXXXXXXXX           X']
+
+level_map_1 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'XX          NM    XXXXXXXXXX',
+'XXX         XXX    XXXXXXXXX',
+'XXXX          X     XXXXXXXX',
+'XXXX B        X      XXXXXXX',
+'XXXXXX       XXX      XXXXXX',
+'XXXXXXX X              XXXXX',
+'XXXXXXX X                XXXX',
+'XXXXXXXXX                XXX',
+'XXXXXXXXXX                XX',
+'XXXXXXXXXXX                X',
+'XXXXXXXXXXXX   E           X',
+'XXXXXXXXXXXXX              X',
+'XXXXXXXXXXXXXX             X',
+'XXXXXXXXXXXXXXX            X',
+'XXXXXXXXXXXXXXXX           X']
+
+
+level_param = [[335, 2]]
 
 # level_map = [
 # '                            ',
@@ -70,3 +108,4 @@ level_param = [[235, 2]]
 # tile_size = 64
 # screen_width = 1280
 # screen_height = len(level_map) * tile_size
+
