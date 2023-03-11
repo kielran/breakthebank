@@ -234,7 +234,7 @@ class Level:
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_SLASH: #and it is player 2's interact button (/), remove
                                 if(len(banker.inventory) > 0):
-                                    print('Player 2 (WASD) with key encountered door, removing')
+                                    print('Player 2 (Arrows) with key encountered door, removing')
                                     sprite.kill()
                                     player.inventory.clear()
                                 else:
