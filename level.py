@@ -239,7 +239,7 @@ class Level:
         player = self.player.sprite
         banker = self.banker.sprite
 
-        for sprite in self.levers.sprites(): #Looking through all obstacles
+        for sprite in self.levers.sprites(): #Looking through all levers
             if sprite.flipUse == 1: #If the lever hasn't been flipped (Player 1 always has priority over Player 2)
                 if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: #If player 1 is next to the lever
                     for event in pygame.event.get():
