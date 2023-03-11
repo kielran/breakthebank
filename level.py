@@ -88,38 +88,38 @@ class Level:
 
         for sprite in self.tiles.sprites(): #Looking through all tiles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a tile
-                if player.direction.x < 0: #Moving left
+                if player.direction.x < 0: #Moving right
                     player.rect.left = sprite.rect.right
-                elif player.direction.x > 0: #Moving right
+                elif player.direction.x > 0: #Moving left
                     player.rect.right = sprite.rect.left
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with a tile
-                if banker.direction.x < 0: #Moving left
+                if banker.direction.x < 0: #Moving right
                     banker.rect.left = sprite.rect.right
-                elif banker.direction.x > 0: #Moving right
+                elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
                     
         for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
-                if player.direction.x < 0:
+                if player.direction.x < 0: #Moving right
                     player.rect.left = sprite.rect.right
-                elif player.direction.x > 0:
+                elif player.direction.x > 0: #Moving left
                     player.rect.right = sprite.rect.left
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with an obstacle
-                if banker.direction.x < 0:
+                if banker.direction.x < 0: #Moving right
                     banker.rect.left = sprite.rect.right 
-                elif banker.direction.x > 0:
+                elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
             
         for sprite in self.levers.sprites(): # Looking through all levers on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a lever
-                if player.direction.x < 0:
+                if player.direction.x < 0: #Moving right
                     player.rect.left = sprite.rect.right
-                elif player.direction.x > 0:
+                elif player.direction.x > 0: #Moving left
                     player.rect.right = sprite.rect.left
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with a lever
-                if banker.direction.x < 0:
+                if banker.direction.x < 0: #Moving right
                     banker.rect.left = sprite.rect.right 
-                elif banker.direction.x > 0:
+                elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
                 
 
@@ -132,46 +132,44 @@ class Level:
         for item in self.items:
             item.apply_gravity()
         
-
         for sprite in self.tiles.sprites(): #Looking through all tiles on map
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a tile
-                if player.direction.y > 0: #Moving left
+                if player.direction.y > 0: #Moving up
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
-                elif player.direction.y < 0: #Moving right
+                elif player.direction.y < 0: #Moving down
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with a tile
-                if banker.direction.y > 0: #Moving left
+                if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
-                elif banker.direction.y < 0: #Moving right
+                elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
                     
             for item in self.items.sprites(): #Looking through all items (y axis)
                 if sprite.rect.colliderect(item.rect): #If item collides with a tile
-                    if item.direction.y > 0:
+                    if item.direction.y > 0: #Moving up
                         item.rect.bottom = sprite.rect.top
                         item.direction.y = 0
-                    elif item.direction.y < 0:
+                    elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
                         
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
-                if player.direction.y > 0:
+                if player.direction.y > 0: #Moving up
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
-                elif player.direction.y < 0:
+                elif player.direction.y < 0: #Moving down
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
-            
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with an obstacle
-                if banker.direction.y > 0:
+                if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
-                elif banker.direction.y < 0:
+                elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
 
