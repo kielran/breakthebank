@@ -7,11 +7,13 @@ from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle, InteractBox
 
 class Level:
-    def __init__(self, level_map, level_param, surface):
+    def __init__(self, level_map, level_param, surface, bg_image):
         self.display_surface = surface
         self.level_map = level_map
         self.level_param = level_param
+        self.bg_image = pygame.image.load(bg_image).convert_alpha()
         self.setup_level(level_map, level_param)
+        self.score = 0
 
     def setup_level(self, layout, level_param):
         self.tiles = pygame.sprite.Group()
@@ -44,7 +46,7 @@ class Level:
                     self.player.add(player_sprite)
                     
                 if cell == "B":
-                    player_sprite = Banker((x,y-11))
+                    player_sprite = Banker((x,y))
                     self.player.add(player_sprite)
                 
                 if cell == "B":
@@ -71,7 +73,7 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3)
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size)
                     if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
                         col_index += 1
                         cols_skipped += 1
@@ -119,7 +121,7 @@ class Level:
         for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.x < 0: #Moving right
-                    print('NAN')
+                    player = player
             # for enemy in self.enemies.sprites():
             #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
             #         if enemy.direction < 0: #moving left
@@ -185,7 +187,8 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
-                            
+            
+                        
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.y > 0: #Moving up
@@ -245,13 +248,14 @@ class Level:
             if sprite.rect.colliderect(player.rect) or sprite.rect.colliderect(banker.rect): #If either player collides, remove
                 print('Point collection')
                 sprite.kill()
+                self.score += 100
 
         for sprite in self.obstacles.sprites(): #Looking through all obstacles
             if sprite.obstacleID == 0: #If the obstacle is the generic obstacle door
                 if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: #If player 1 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_f: #and it is player 1's interact button (F), remove
+                            if event.key == pygame.K_s: #and it is player 1's interact button (F), remove
                                 if(len(player.inventory) > 0):
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
@@ -260,7 +264,7 @@ class Level:
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_SLASH: #and it is player 2's interact button (/), remove
+                            if event.key == pygame.K_DOWN: #and it is player 2's interact button (/), remove
                                 if(len(banker.inventory) > 0):
                                     print('Player 2 (Arrows) with key encountered door, removing')
                                     sprite.kill()
@@ -276,7 +280,7 @@ class Level:
                 if sprite.rect.left == player.rect.right or sprite.rect.right == player.rect.left: #If player 1 is next to the lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_f: #and it is player 1's interact button (F)
+                            if event.key == pygame.K_s: #and it is player 1's interact button (F)
                                 for spriteOb in self.obstacles.sprites():
                                     if spriteOb.obstacleID == sprite.leverID: #delete the corresponding object to lever ID
                                         print('Player 1 flipped lever, obstacle of id ' + str(spriteOb.obstacleID) + ' is removed')
@@ -287,7 +291,7 @@ class Level:
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_SLASH: #and it is player 2's interact button (/)
+                            if event.key == pygame.K_DOWN: #and it is player 2's interact button (/)
                                 for spriteOb in self.obstacles.sprites():
                                     if spriteOb.obstacleID == sprite.leverID: #delete the corresponding object to lever ID
                                         print('Player 2 flipped lever, obstacle of id ' + str(spriteOb.obstacleID) + ' is removed')
@@ -309,6 +313,7 @@ class Level:
                     
 
     def run(self):
+        self.display_surface.blit(self.bg_image, (0,0))
         self.tiles.draw(self.display_surface)
         
         self.obstacles.draw(self.display_surface)
@@ -339,6 +344,11 @@ class Level:
         
         self.obstacle_behavior()
         self.lever_flip()
+
+        textFont = pygame.font.SysFont('timesnewroman', 40)
+        scoreText = textFont.render(f'{self.score}', False, 'Black')
+        scoreRect = scoreText.get_rect(topleft = (6, 6))
+        self.display_surface.blit(scoreText, scoreRect)
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
