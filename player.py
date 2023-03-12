@@ -147,7 +147,7 @@ class Janitor(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_w] and self.direction[1] == 0:
+        if keys[pygame.K_w] and self.is_on_ground:
             self.jump()
         
 class Banker(Player):
@@ -172,6 +172,6 @@ class Banker(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP] and self.direction[1] == 0:
+        if keys[pygame.K_UP] and self.is_on_ground == True:
             self.jump()
     
