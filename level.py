@@ -88,8 +88,6 @@ class Level:
                         uniqueID = layout[row_index][col_index]
                         lever.leverID = int(uniqueID)
                     self.levers.add(lever)
-                    obstacle = InteractObstacle((x,y), tile_size)
-                    self.obstacles.add(obstacle)
                     
                 if cell == "N":
                     janitor_exit = JanitorExit((x,y))
