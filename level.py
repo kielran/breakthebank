@@ -7,11 +7,10 @@ from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle, InteractBox
 
 class Level:
-    def __init__(self, level_map, level_param, surface, bg_image):
+    def __init__(self, level_map, level_param, surface):
         self.display_surface = surface
         self.level_map = level_map
         self.level_param = level_param
-        self.bg_image = pygame.image.load(bg_image).convert_alpha()
         self.setup_level(level_map, level_param)
 
     def setup_level(self, layout, level_param):
@@ -45,8 +44,12 @@ class Level:
                     self.player.add(player_sprite)
                     
                 if cell == "B":
-                    player_sprite = Banker((x,y))
-                    self.banker.add(player_sprite)
+                    player_sprite = Banker((x,y-11))
+                    self.player.add(player_sprite)
+                
+                if cell == "B":
+                    banker_sprite = Banker((x,y))
+                    self.banker.add(banker_sprite)
                     
                 if cell == "E":
                     enemy_distance = level_param[currParam][0]
@@ -155,35 +158,25 @@ class Level:
         banker = self.banker.sprite
         banker.apply_gravity()
         
-        banker_is_colliding_with_tile = False
-        janitor_is_colliding_with_tile = False
-
         for item in self.items:
             item.apply_gravity()
         
         for sprite in self.tiles.sprites(): #Looking through all tiles on map
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a tile
-                janitor_is_colliding_with_tile = True
                 if player.direction.y > 0: #Moving up
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
-                    player.is_on_ground = True
                 elif player.direction.y < 0: #Moving down
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
-                    player.is_on_ground = False
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with a tile
-                banker_is_colliding_with_tile = True
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
-                    banker.is_on_ground = True
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
-                    banker.is_on_ground = False
-
-
+                    
             for item in self.items.sprites(): #Looking through all items (y axis)
                 if sprite.rect.colliderect(item.rect): #If item collides with a tile
                     if item.direction.y > 0: #Moving up
@@ -192,8 +185,7 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
-            
-                        
+                            
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.y > 0: #Moving up
@@ -209,11 +201,6 @@ class Level:
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
-        if janitor_is_colliding_with_tile == False:
-            player.is_on_ground = False
-
-        if banker_is_colliding_with_tile == False:
-            banker.is_on_ground = False
 
 
     """
@@ -322,7 +309,6 @@ class Level:
                     
 
     def run(self):
-        self.display_surface.blit(self.bg_image, (0,0))
         self.tiles.draw(self.display_surface)
         
         self.obstacles.draw(self.display_surface)
