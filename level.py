@@ -42,11 +42,11 @@ class Level:
                     self.tiles.add(tile)
 
                 if cell == "J":
-                    player_sprite = Janitor((x,y))
+                    player_sprite = Janitor((x,y+8))
                     self.janitor.add(player_sprite)
                               
                 if cell == "B":
-                    banker_sprite = Banker((x,y))
+                    banker_sprite = Banker((x,y+8))
                     self.banker.add(banker_sprite)
                     
                 if cell == "E":
