@@ -204,6 +204,18 @@ class Level:
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
+                    
+        for sprite in self.levers.sprites(): # Looking through all levers on map (x axis)
+            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a lever
+                if janitor.direction.y < 0: #Moving right
+                    janitor.rect.top = sprite.rect.bottom
+                elif janitor.direction.y > 0: #Moving left
+                    janitor.rect.bottom = sprite.rect.top
+            if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a lever
+                if banker.direction.y < 0: #Moving right
+                    banker.rect.top = sprite.rect.bottom 
+                elif banker.direction.y > 0: #Moving left
+                    banker.rect.bottom = sprite.rect.top
 
 
     """
