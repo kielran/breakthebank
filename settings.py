@@ -38,26 +38,48 @@ level_map = [
 'XXXXXXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
 
-
 level_map_0 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-'XX         NM     XXXXXXXXXX',
-'XXX                XXXXXXXXX',
-'XXXX                XXXXXXXX',
-'XXXXX                XXXXXXX',
-'XXXXXX                XXXXXX',
-'XXXXXXX                XXXXX',
-'XXXXXXXX                XXXX',
-'XXXXXXXXX                XXX',
-'XXXXXXXXXX                XX',
-'XXXX XXXXXX                X',
-'XXXXJXXXXXXX               X',
-'XXXXXXXXXXXXX              X',
+'X     C                    X',
+'X     X       C     N  M   X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X        C                 X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'X   E  G                   X',
 'XXXXXXXXXXXXXX             X',
-'XXXXXXXXXXXXXXX            X',
-'XXXXXXXXXXXXXXXX           X']
+'X  B         XXXXXXXXXX    X',
+'XXXXXXXXXXX     C   C    XXX',
+'X                          X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level0_param = [[350, 2]]
 
 level_map_1 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X     C                    X',
+'X     X       C     N  M   X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X        C                 X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'X   E  G                   X',
+'XXXXXXXXXXXXXX             X',
+'X  B         XXXXXXXXXX    X',
+'XXXXXXXXXXX     C   C    XXX',
+'X                          X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level1_param = [[350, 2]]
+
+
+
+
+level_map_2 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'XX          NM    XXXXXXXXXX',
 'XXX         XXX    XXXXXXXXX',
@@ -74,35 +96,7 @@ level_map_1 = [
 'XXXXXXXXXXXXXX             X',
 'XXXXXXXXXXXXXXX            X',
 'XXXXXXXXXXXXXXXX           X']
-
-
-level_param = [[335, 2]]
-
-# level_map = [
-# '                            ',
-# '                            ',
-# '                            ',
-# ' XX    XXX            XX    ',
-# ' XX P                       ',
-# ' XXXX         XX         XX ',
-# ' XXXX       XX              ',
-# ' XX    X  XXXX    XX  XX    ',
-# '       X  XXXX    XX  XXX   ',
-# '    XXXX  XXXXXX  XX  XXXX  ',
-# 'XXXXXXXX  XXXXXX  XX  XXXX  ']
-
-# level_map = [
-# '                            ',
-# '                            ',
-# '                            ',
-# '                            ',
-# '                            ',
-# '                            ',
-# '                            ',
-# '                            ',
-# '         XE  B              ',
-# '  P J  XXXXXXXXXXXXX        ',
-# 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level2_param = [[335, 2]]
 
 #11 rows
 # tile_size = 64
