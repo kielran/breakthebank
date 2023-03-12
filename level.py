@@ -14,6 +14,7 @@ class Level:
         self.level_param = level_param
         self.bg_image = pygame.image.load(bg_image).convert_alpha()
         self.setup_level(level_map, level_param)
+        self.score = 0
 
     def setup_level(self, layout, level_param):
         self.tiles = pygame.sprite.Group()
@@ -44,10 +45,10 @@ class Level:
                 if cell == "J":
                     player_sprite = Janitor((x,y))
                     self.janitor.add(player_sprite)
-                    
+                              
                 if cell == "B":
-                    player_sprite = Banker((x,y))
-                    self.banker.add(player_sprite)
+                    banker_sprite = Banker((x,y))
+                    self.banker.add(banker_sprite)
                     
                 if cell == "E":
                     enemy_distance = level_param[currParam][0]
@@ -123,9 +124,9 @@ class Level:
                     banker.rect.right = sprite.rect.left
                     
         for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
-            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with an obstacle
-                if janitor.direction.x < 0: #Moving right
-                    print('NAN')
+            if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
+                if player.direction.x < 0: #Moving right
+                    player = player
             # for enemy in self.enemies.sprites():
             #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
             #         if enemy.direction < 0: #moving left
@@ -290,14 +291,15 @@ class Level:
             if sprite.rect.colliderect(janitor.rect) or sprite.rect.colliderect(banker.rect): #If either player collides, remove
                 print('Point collection')
                 sprite.kill()
+                self.score += 100
 
         for sprite in self.obstacles.sprites(): #Looking through all obstacles
             if sprite.obstacleID == 0: #If the obstacle is the generic obstacle door
                 if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_f: #and it is player 1's interact button (F), remove
-                                if(len(janitor.inventory) > 0):
+                            if event.key == pygame.K_s: #and it is player 1's interact button (F), remove
+                                if(len(player.inventory) > 0):
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
                                 else:
@@ -305,7 +307,7 @@ class Level:
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_SLASH: #and it is player 2's interact button (/), remove
+                            if event.key == pygame.K_DOWN: #and it is player 2's interact button (/), remove
                                 if(len(banker.inventory) > 0):
                                     print('Player 2 (Arrows) with key encountered door, removing')
                                     sprite.kill()
@@ -395,6 +397,11 @@ class Level:
         
         self.obstacle_behavior()
         self.lever_flip()
+
+        textFont = pygame.font.SysFont('timesnewroman', 40)
+        scoreText = textFont.render(f'{self.score}', False, 'Black')
+        scoreRect = scoreText.get_rect(topleft = (6, 6))
+        self.display_surface.blit(scoreText, scoreRect)
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
