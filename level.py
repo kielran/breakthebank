@@ -166,9 +166,11 @@ class Level:
                 if janitor.direction.y > 0: #Moving up
                     janitor.rect.bottom = sprite.rect.top
                     janitor.direction.y = 0
+                    janitor.is_on_ground = True
                 elif janitor.direction.y < 0: #Moving down
                     janitor.rect.top = sprite.rect.bottom
                     janitor.direction.y = 0
+                    janitor.is_on_ground = False
             if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a tile
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
