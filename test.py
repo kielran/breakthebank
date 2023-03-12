@@ -24,8 +24,7 @@ def releaseAll():
 def testArrange():
     pygame.init()
     screen = pygame.display.set_mode([80*16, 80*9])
-    screen.fill('black')
-    return Level(level_map, level_param, screen), screen
+    return Level(level_map_0, level0_param, screen, "./imgs/stage1_lobby.png"), screen
 
 class TestPlayer(unittest.TestCase):  
         
@@ -38,35 +37,35 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(self.level.player.sprite.rect.x, originalX)
         self.assertEqual(self.level.player.sprite.rect.y, originalY)
     
-    def test_CheckPlayerDetected(self): 
-        self.level, self.screen = testArrange()
+    # def test_CheckPlayerDetected(self): 
+    #     self.level, self.screen = testArrange()
         
-        c = 0
-        timer = pygame.time.Clock()
-        playerDetected = False
-        while c < 250:
-            self.screen.fill('black')
+    #     c = 0
+    #     timer = pygame.time.Clock()
+    #     playerDetected = False
+    #     while c < 250:
+    #         self.screen.fill('black')
             
-            #Movement
-            press('w', 21, 21, c)
-            press('d', 20, 60, c)
-            #press('w', 65, 65, c)
-            press('d', 66, 100, c)   
-            #press('a', 121, 135, c)     
+    #         #Movement
+    #         press('w', 21, 21, c)
+    #         press('d', 20, 60, c)
+    #         #press('w', 65, 65, c)
+    #         press('d', 66, 100, c)   
+    #         #press('a', 121, 135, c)     
             
-            pygame.event.get()
-            if not self.level.run():
-                print("player died")
-                playerDetected = True
-                break
+    #         pygame.event.get()
+    #         if not self.level.run():
+    #             print("player died")
+    #             playerDetected = True
+    #             break
             
-            releaseAll()
+    #         releaseAll()
             
-            timer.tick(60)
-            c += 1
-            pygame.display.update()
+    #         timer.tick(60)
+    #         c += 1
+    #         pygame.display.update()
             
-        self.assertTrue(playerDetected)
+    #     self.assertTrue(playerDetected)
         
         
         

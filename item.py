@@ -3,7 +3,7 @@ import pygame, copy
 class Item(pygame.sprite.Sprite):
     def __init__(self, pos, size, img):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(img), (50, 50)).convert_alpha()
+        self.image = pygame.transform.scale(pygame.image.load(img), (45, 45)).convert_alpha()
         # self.uncollected_image = pygame.image.load(img).convert_alpha()
         # self.collected_image = pygame.image.load(img).convert_alpha()
         self.uncollected_img = self.image
