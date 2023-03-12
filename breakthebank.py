@@ -100,6 +100,7 @@ class CurrentScene(StateMachine):
                     print("TRIGGERED start game")
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    sys.exit()
                     pygame.quit()
             if event.type == pygame.KEYDOWN: #temp to get coords
                 if event.key == pygame.K_RETURN:
@@ -213,6 +214,8 @@ class CurrentScene(StateMachine):
                     esc_click.play()
                     self.in_game = True
 
+
+    #-------------DEATH MENU-------------
     def drawDeathMenu(self):
         if self.musicON is False:
             bgm_ch.pause()
@@ -413,14 +416,9 @@ pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continu
 InGame = Scene(screen, "imgs/in_game.png", [])
 mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
 stageSelection = Scene(screen, "imgs/stage_select.png", stageSelection_list)
-<<<<<<< Updated upstream
-deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
-=======
 deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, death_title, quit_button, audio_button, accessibility_button], True)
->>>>>>> Stashed changes
 
         
-
 
 #--------------------------------------------------------
 #Define Booleans for stage states
@@ -475,3 +473,4 @@ while running:
 
 # Done! Time to quit.
 pygame.quit()
+sys.exit()

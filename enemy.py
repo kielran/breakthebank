@@ -29,12 +29,11 @@ class Enemy(pygame.sprite.Sprite):
             self.reverse_dir()
         
 class Roomba(Enemy):
-    def __init__(self, pos, distance, speed, player):
+    def __init__(self, pos, distance, speed):
         super().__init__(pos, distance, speed)
         self.sight_image = pygame.Surface((1000, 44))
         self.sight_image.fill((50, 50, 50))
         self.sight_rect = self.sight_image.get_rect(topleft = self.rect.topright)
-        self.player = player
         
     def move(self):
         if self.direction == 1:
