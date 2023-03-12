@@ -87,8 +87,6 @@ class Level:
                         uniqueID = layout[row_index][col_index]
                         lever.leverID = int(uniqueID)
                     self.levers.add(lever)
-                    obstacle = InteractObstacle((x,y), tile_size)
-                    self.obstacles.add(obstacle)
                     
                 if cell == "N":
                     janitor_exit = JanitorExit((x,y))
@@ -187,8 +185,7 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
-            
-                        
+                            
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.y > 0: #Moving up
