@@ -357,29 +357,6 @@ bgm_ch = pygame.mixer.Channel(0)
 bgm_ch.set_volume(0.3)
 bgm_ch.play(menuMusic, loops = -1, fade_ms = 500)
 
-#--------------------------------------------------------
-# Drawing game stage
-# 
-# 
-#--------------------------------------------------------
-# def game_stage():
-#     # test_tile = pygame.sprite.Group(Tile((100,100), 200))
-    
-#     screen.fill('black')
-#     level.run()
-    # while True:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             pygame.quit()
-    #             sys.exit()
-    #     screen.fill('black')
-    #     level.run()
-        
-    #     pygame.display.update()
-    #     timer.tick(60)
-
-
-
 
 #--------------------------------------------------------
 # Set up the drawing window
@@ -404,6 +381,7 @@ continue_button = button(width/2.4288,height/2.1951219, 20, 100, '', None, "imgs
 restart_button = button(width/2.4015,height/1.75182, 20, 100, '', None, "imgs/buttons/slice_restart.png","imgs/buttons/hovering_slice_restart.png",160)
 tutorial_button = button(width/2.424242,height/1.50627, 20, 100, '', None, "imgs/buttons/slice_tutorial.png","imgs/buttons/hovering_slice_tutorial.png",160)
 pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slice_paused.png","imgs/slice_paused.png",160) #bad code 
+death_title = button(width/5.62195,height/6.6129, 20, 100, '', None, "imgs/slice_gameover.png","imgs/slice_gameover.png",160) #bad code 
 
 # TODO: placeholders for Stage Selection Menu
 stage_placeholderbutton_1 = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
@@ -435,7 +413,11 @@ pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continu
 InGame = Scene(screen, "imgs/in_game.png", [])
 mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
 stageSelection = Scene(screen, "imgs/stage_select.png", stageSelection_list)
+<<<<<<< Updated upstream
 deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
+=======
+deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, death_title, quit_button, audio_button, accessibility_button], True)
+>>>>>>> Stashed changes
 
         
 

@@ -52,7 +52,7 @@ level_map_0 = [
 'X    XXXXXXXXXXX  C        X',
 'X              XXXXXXXXXXXXX',
 'X   E  G                   X',
-'XXXXXXXXXXXXXX             X',
+'XXXXXXXXXXXXXX     F       X',
 'X  B         XXXXXXXXXX    X',
 'XXXXXXXXXXX     C   C    XXX',
 'X  J                       X',
