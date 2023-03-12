@@ -6,6 +6,7 @@ from item import JanitorItem, BankerItem
 from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle, InteractBox
 from water import Water
+from elevator import Elevator
 
 class Level:
     def __init__(self, level_map, level_param, surface, bg_image):
@@ -26,6 +27,7 @@ class Level:
         self.obstacles = pygame.sprite.Group()
         self.levers = pygame.sprite.Group()
         self.exits = pygame.sprite.Group()
+        self.elevators = pygame.sprite.Group()
         self.water = []
         tile_size = 46
         currParam = 0
@@ -93,6 +95,12 @@ class Level:
                     banker_exit = BankerExit((x,y))
                     self.exits.add(banker_exit)
                     
+                if cell == "Z":
+                    elevator_distance = level_param[currParam][0]
+                    elevator_speed = level_param[currParam][1] 
+                    elevator = Elevator((x, y), elevator_distance, elevator_speed)
+                    self.elevators.add(elevator)
+                    
                 if cell == "W":
                     water_tiles = pygame.sprite.Group()
                     startX = x
@@ -125,6 +133,18 @@ class Level:
         #     enemy.rect.x += enemy.direction * enemy.speed
 
         for sprite in self.tiles.sprites(): #Looking through all tiles on map (x axis)
+            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile
+                if janitor.direction.x < 0: #Moving right
+                    janitor.rect.left = sprite.rect.right
+                elif janitor.direction.x > 0: #Moving left
+                    janitor.rect.right = sprite.rect.left
+            if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a tile
+                if banker.direction.x < 0: #Moving right
+                    banker.rect.left = sprite.rect.right
+                elif banker.direction.x > 0: #Moving left
+                    banker.rect.right = sprite.rect.left
+                    
+        for sprite in self.elevators.sprites(): #Looking through all tiles on map (x axis)
             if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile
                 if janitor.direction.x < 0: #Moving right
                     janitor.rect.left = sprite.rect.right
@@ -234,6 +254,28 @@ class Level:
                         banker.rect.top = sprite.rect.bottom
                         banker.direction.y = 0
                         banker.is_on_ground = False
+                        
+        for sprite in self.elevators.sprites(): #Looking through all tiles on map
+            if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
+                janitor_is_colliding_with_tile = True
+                if janitor.direction.y > 0: #Moving up
+                    janitor.rect.bottom = sprite.rect.top
+                    janitor.direction.y = 0
+                    janitor.is_on_ground = True
+                elif janitor.direction.y < 0: #Moving down
+                    janitor.rect.top = sprite.rect.bottom
+                    janitor.direction.y = 0
+                    janitor.is_on_ground = False
+            if sprite.rect.colliderect(banker.rect): #If banker collides with a tile
+                banker_is_colliding_with_tile = True
+                if banker.direction.y > 0: #Moving up
+                    banker.rect.bottom = sprite.rect.top
+                    banker.direction.y = 0
+                    banker.is_on_ground = True
+                elif banker.direction.y < 0: #Moving down
+                    banker.rect.top = sprite.rect.bottom
+                    banker.direction.y = 0
+                    banker.is_on_ground = False
             
                         
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
@@ -386,6 +428,9 @@ class Level:
         
         self.exits.draw(self.display_surface)
         
+        self.elevators.update(self.banker.sprite, self.janitor.sprite)
+        self.elevators.draw(self.display_surface)
+        
         for enemy in self.enemies:
             sight_rect = enemy.update()
             #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
@@ -400,7 +445,7 @@ class Level:
         self.janitor.update(self.items, self.water, self.tiles)
         self.janitor.draw(self.display_surface)
         
-        self.banker.update(self.items)
+        self.banker.update(self.items, self.elevators, self.janitor.sprite)
         self.banker.draw(self.display_surface)
         
         self.horizontal_movement_collision()

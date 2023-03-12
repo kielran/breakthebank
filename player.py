@@ -72,6 +72,7 @@ class Player(pygame.sprite.Sprite):
         self.inventory = []
         self.counter = 0
         self.facingRight = True
+        self.canMove = True
 
         self.is_on_ground = False
 
@@ -134,12 +135,12 @@ class Janitor(Player):
         
     def player_movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] and self.canMove:
             self.image = janitorright[self.counter]
             self.counter = (self.counter + 1) % len(janitorright)
             self.direction.x = 1
             self.facingRight = True
-        elif keys[pygame.K_a]:
+        elif keys[pygame.K_a] and self.canMove:
             self.image = janitorleft[self.counter]
             self.counter = (self.counter + 1) % len(janitorleft)
             self.direction.x = -1
@@ -147,7 +148,7 @@ class Janitor(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_w] and self.is_on_ground:
+        if keys[pygame.K_w] and self.is_on_ground and self.canMove:
             self.jump()
             
     def update(self, items, water, tiles):
@@ -181,12 +182,12 @@ class Banker(Player):
 
     def player_movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] and self.canMove:
             self.image = bankerright[self.counter]
             self.counter = (self.counter + 1) % len(bankerright)
             self.direction.x = 1
             self.facingRight = True
-        elif keys[pygame.K_LEFT]:
+        elif keys[pygame.K_LEFT] and self.canMove:
             self.image = bankerleft[self.counter]
             self.counter = (self.counter + 1) % len(bankerleft)
             self.direction.x = -1
@@ -194,6 +195,33 @@ class Banker(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP] and self.is_on_ground == True:
+        if keys[pygame.K_UP] and self.is_on_ground == True and self.canMove:
             self.jump()
+            
+    def update(self, items, elevators, janitor):
+        self.player_movement()
+        keys = pygame.key.get_pressed()
+        
+        if (len(self.inventory)) > 0:
+            self.inventory[0].update(self.rect.center, self.facingRight)
+
+        if keys[pygame.K_f]:
+            self.pick_up_item(items)
+        if keys[pygame.K_j]:
+            self.drop_item()
+        if keys[pygame.K_DOWN] and len(self.inventory) > 0:
+            self.activate_elevator(elevators, janitor)
+
+        self.rect.x += self.direction.x * self.speed
+        
+    def activate_elevator(self, elevators, janitor):
+        for elevator in elevators:
+            print("elevator")
+            if self.rect.midbottom[1] == elevator.rect.midtop[1] and elevator.startX <= self.rect.midbottom[0] and elevator.endX >= self.rect.midbottom[0]:
+                print("on elevator")
+                self.canMove = False
+                if janitor.rect.midbottom[1] == elevator.rect.midtop[1] and elevator.startX <= janitor.rect.midbottom[0] and elevator.endX >= janitor.rect.midbottom[0]:
+                    janitor.canMove = False
+                elevator.activate()
+                
     
