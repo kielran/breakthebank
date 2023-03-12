@@ -202,12 +202,13 @@ class CurrentScene(StateMachine):
                     self.in_game = True
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    self.musicON = False
                     self.select_stage = True
                 if restart_button.isOver(mouse):
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
-                    self.musicON = False
+                    self.musicON = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     esc_click.play()
@@ -225,11 +226,12 @@ class CurrentScene(StateMachine):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    self.musicON = False
                     self.select_stage = True
                 if restart_button.isOver(mouse):
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
-                    self.musicON = False
+                    self.musicON = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     esc_click.play()
