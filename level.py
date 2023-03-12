@@ -391,10 +391,10 @@ class Level:
             #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             if enemy.detect_player(self.janitor.sprite.rect, self.tiles):
                 print("detected")
-                return False
+                return False, "loss"
             if enemy.detect_player(self.banker.sprite.rect, self.tiles):
                 print("detected")
-                return False
+                return False, "loss"
         self.enemies.draw(self.display_surface)
         
         self.janitor.update(self.items, self.water, self.tiles)
@@ -418,7 +418,7 @@ class Level:
             self.display_surface.blit(item.image, item.rect)
         
         if self.check_banker_on_water():
-            return False
+            return False, "loss"
         if self.check_game_ended():
-             return False                      
-        return True
+             return False, "win"                      
+        return True, ""
