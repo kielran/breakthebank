@@ -29,11 +29,10 @@ class Level:
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
-            cols_skipped = 0
             for col_index, cell in enumerate(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
-                x = (col_index - cols_skipped) * tile_size
+                x = col_index * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
@@ -68,21 +67,15 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3)
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        obstacle.obstacleID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3, uniqueID)
                     self.obstacles.add(obstacle)   
                            
                 if cell == "L":
-                    lever = InteractBox((x,y))
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        lever.leverID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    lever = InteractBox((x,y), uniqueID)
                     self.levers.add(lever)
                     
                 if cell == "N":
@@ -289,7 +282,7 @@ class Level:
                 if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_f: #and it is player 1's interact button (F)
+                            if event.key == pygame.K_s: #and it is player 1's interact button (F)
                                 for spriteOb in self.obstacles.sprites():
                                     if spriteOb.obstacleID == sprite.leverID: #delete the corresponding object to lever ID
                                         print('Player 1 flipped lever, obstacle of id ' + str(spriteOb.obstacleID) + ' is removed')
@@ -300,7 +293,7 @@ class Level:
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the lever
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
-                            if event.key == pygame.K_SLASH: #and it is player 2's interact button (/)
+                            if event.key == pygame.K_DOWN: #and it is player 2's interact button (/)
                                 for spriteOb in self.obstacles.sprites():
                                     if spriteOb.obstacleID == sprite.leverID: #delete the corresponding object to lever ID
                                         print('Player 2 flipped lever, obstacle of id ' + str(spriteOb.obstacleID) + ' is removed')
@@ -311,9 +304,13 @@ class Level:
 
     def check_game_ended(self):
         janitor = self.janitor.sprite
+        banker = self.banker.sprite
         for exit in self.exits.sprites():
             if janitor.rect.colliderect(exit):
-                if not ((type(self.player) == Banker and type(exit) == BankerExit) or (type(self.player) == Janitor and type(exit) == JanitorExit)):
+                if not type(exit) == JanitorExit:
+                    return False
+            elif banker.rect.colliderect(exit):
+                if not type(exit) == BankerExit:
                     return False
             else:
                 return False
