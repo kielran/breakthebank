@@ -155,6 +155,9 @@ class Level:
         banker = self.banker.sprite
         banker.apply_gravity()
         
+        banker_is_colliding_with_tile = False
+        janitor_is_colliding_with_tile = False
+
         for item in self.items:
             item.apply_gravity()
         
@@ -170,10 +173,13 @@ class Level:
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
+                    banker.is_on_ground = True
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
-                    
+                    banker.is_on_ground = False
+
+
             for item in self.items.sprites(): #Looking through all items (y axis)
                 if sprite.rect.colliderect(item.rect): #If item collides with a tile
                     if item.direction.y > 0: #Moving up
@@ -199,6 +205,11 @@ class Level:
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
+        if janitor_is_colliding_with_tile == False:
+            janitor.is_on_ground = False
+
+        if banker_is_colliding_with_tile == False:
+            banker.is_on_ground = False
 
 
     """
