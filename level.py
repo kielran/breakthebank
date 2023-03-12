@@ -155,25 +155,35 @@ class Level:
         banker = self.banker.sprite
         banker.apply_gravity()
         
+        banker_is_colliding_with_tile = False
+        janitor_is_colliding_with_tile = False
+
         for item in self.items:
             item.apply_gravity()
         
         for sprite in self.tiles.sprites(): #Looking through all tiles on map
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a tile
+                janitor_is_colliding_with_tile = True
                 if player.direction.y > 0: #Moving up
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
+                    player.is_on_ground = True
                 elif player.direction.y < 0: #Moving down
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+                    player.is_on_ground = False
             if sprite.rect.colliderect(banker.rect): #If player 2 collides with a tile
+                banker_is_colliding_with_tile = True
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
                     banker.direction.y = 0
+                    banker.is_on_ground = True
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
-                    
+                    banker.is_on_ground = False
+
+
             for item in self.items.sprites(): #Looking through all items (y axis)
                 if sprite.rect.colliderect(item.rect): #If item collides with a tile
                     if item.direction.y > 0: #Moving up
@@ -199,6 +209,11 @@ class Level:
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
+        if janitor_is_colliding_with_tile == False:
+            player.is_on_ground = False
+
+        if banker_is_colliding_with_tile == False:
+            banker.is_on_ground = False
 
 
     """

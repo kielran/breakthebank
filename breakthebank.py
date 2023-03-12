@@ -65,6 +65,7 @@ class CurrentScene(StateMachine):
         self.death_menu = False
         self.curr_screen = screen.copy()
         self.current_level = ""
+        self.current_level_parems = ""
         super().__init__()
         print("DEF INIT")
 
@@ -118,37 +119,43 @@ class CurrentScene(StateMachine):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
                     self.current_level = level_map_0
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level_parems = level0_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_2.isOver(mouse) and 2<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
                     self.current_level = level_map_1
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level_parems = level1_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_0
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level = level_map_1
+                    self.current_level_parems = level1_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_0
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level = level_map_1
+                    self.current_level_parems = level1_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_5.isOver(mouse) and 5<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_0
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level = level_map_1
+                    self.current_level_parems = level1_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_6.isOver(mouse) and 6<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_0
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level = level_map_1
+                    self.current_level_parems = level1_param
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if quit_mainmenu_button.isOver(mouse):
                     button_hover.play()
@@ -195,11 +202,12 @@ class CurrentScene(StateMachine):
                     self.in_game = True
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    self.musicON = False
                     self.select_stage = True
                 if restart_button.isOver(mouse):
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
-                    self.musicON = False
+                    self.musicON = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     esc_click.play()
@@ -217,11 +225,12 @@ class CurrentScene(StateMachine):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    self.musicON = False
                     self.select_stage = True
                 if restart_button.isOver(mouse):
-                    self.level = Level(self.current_level, level_param, screen, "./imgs/stage1_lobby.png")
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
-                    self.musicON = False
+                    self.musicON = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     esc_click.play()
