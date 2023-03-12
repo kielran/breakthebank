@@ -117,8 +117,8 @@ class CurrentScene(StateMachine):
                 if (stage_placeholderbutton_1.isOver(mouse) and 1<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map
-                    self.level = Level(self.current_level, level_param, screen, "./imgs/stage1_lobby.png")
+                    self.current_level = level_map_0
+                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_2.isOver(mouse) and 2<=levels_to_draw):
                     button_hover.play()
@@ -219,7 +219,7 @@ class CurrentScene(StateMachine):
                     button_hover.play()
                     self.select_stage = True
                 if restart_button.isOver(mouse):
-                    self.level = Level(self.current_level, level_param, screen)
+                    self.level = Level(self.current_level, level_param, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                     self.musicON = False
             if event.type == pygame.KEYDOWN:

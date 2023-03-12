@@ -1,7 +1,6 @@
 import pygame
 from item import Item, JanitorItem, BankerItem
 
-
 bankerr1 = pygame.image.load('imgs/banker_sprite/banker_walk/r1.png'); bankerr2 = pygame.image.load('imgs/banker_sprite/banker_walk/r2.png'); bankerr3 = pygame.image.load('imgs/banker_sprite/banker_walk/r3.png'); bankerr4 = pygame.image.load('imgs/banker_sprite/banker_walk/r4.png')
 bankerr5 = pygame.image.load('imgs/banker_sprite/banker_walk/r5.png')
 bankerr6 = pygame.image.load('imgs/banker_sprite/banker_walk/r6.png')
@@ -102,5 +101,25 @@ class Janitor(Player):
         super().__init__(pos)
         
 class Banker(Player):
+
     def __init__(self, pos):
         super().__init__(pos)
+        #self.image = pygame.Surface((32,64))
+        # self.image.fill('red')
+
+    def player_movement(self):
+        
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            self.direction.x = 1
+        
+        elif keys[pygame.K_LEFT]:
+            self.direction.x = -1
+
+        else:
+            self.direction.x = 0
+
+        if keys[pygame.K_UP]:
+            self.jump()
+    

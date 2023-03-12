@@ -6,7 +6,7 @@ class Banker(Player):
     def __init__(self, pos):
         super().__init__(pos)
         #self.image = pygame.Surface((32,64))
-        self.image.fill('red')
+        # self.image.fill('red')
 
     def player_movement(self):
         
