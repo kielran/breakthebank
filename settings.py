@@ -7,8 +7,8 @@
 #  E: enemy, specify the distance it travels and its speed
 #  F: Janitor item
 #  G: Banker item
-#  L: Lever, specify id     **not implmented yet**
-#  O: Obstacle, specify id  **id not implemented yet**
+#  L: Lever, specify id
+#  O: Obstacle, specify id
 #  C: Point obstacle
 #  N: Janitor exit
 #  M: Banker exit
@@ -23,11 +23,11 @@
 level_map = [
 '                            ',
 '                            ',
-' F     C N                  ',
+' F     C N             L1    ',
 ' XX    XXX            XX    ',
 ' XXBX          M            ',
 ' XXXX         XX         XX ',
-' XXXX  GE     XX            ',
+' XXXX  G      XX  O    O1    ',
 ' XX    XXXXXXXX   XX  XX    ',
 '       X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX  ',
