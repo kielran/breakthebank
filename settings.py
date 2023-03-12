@@ -74,7 +74,7 @@ level_map_1 = [
 'XXXXXXXXXXXXXX             X',
 'X  B         XXXXXXXXXX    X',
 'XXXXXXXXXXX     C   C    XXX',
-'X                          X',
+'X   J                      X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
 level1_param = [[350, 2]]
 
