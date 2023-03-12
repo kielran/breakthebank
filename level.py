@@ -30,11 +30,10 @@ class Level:
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
-            cols_skipped = 0
             for col_index, cell in enumerate(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
-                x = (col_index - cols_skipped) * tile_size
+                x = col_index * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
@@ -73,21 +72,15 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 2)
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        obstacle.obstacleID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 2, uniqueID)
                     self.obstacles.add(obstacle)   
                            
                 if cell == "L":
-                    lever = InteractBox((x,y))
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        lever.leverID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    lever = InteractBox((x,y), uniqueID)
                     self.levers.add(lever)
                     
                 if cell == "N":
@@ -313,10 +306,14 @@ class Level:
                                 sprite.update() #Update lever sprite to being flipped
 
     def check_game_ended(self):
-        player = self.player.sprite
+        janitor = self.janitor.sprite
+        banker = self.banker.sprite
         for exit in self.exits.sprites():
-            if player.rect.colliderect(exit):
-                if not ((type(self.player) == Banker and type(exit) == BankerExit) or (type(self.player) == Janitor and type(exit) == JanitorExit)):
+            if janitor.rect.colliderect(exit):
+                if not type(exit) == JanitorExit:
+                    return False
+            elif banker.rect.colliderect(exit):
+                if not type(exit) == BankerExit:
                     return False
             else:
                 return False
