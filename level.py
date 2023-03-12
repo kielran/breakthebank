@@ -187,13 +187,6 @@ class Level:
                     banker.direction.y = 0
                     banker.is_on_ground = False
 
-        if janitor_is_colliding_with_tile == False:
-            player.is_on_ground = False
-
-        if banker_is_colliding_with_tile == False:
-            banker.is_on_ground = False
-
-
 
             for item in self.items.sprites(): #Looking through all items (y axis)
                 if sprite.rect.colliderect(item.rect): #If item collides with a tile
@@ -220,6 +213,11 @@ class Level:
                 elif banker.direction.y < 0: #Moving down
                     banker.rect.top = sprite.rect.bottom
                     banker.direction.y = 0
+        if janitor_is_colliding_with_tile == False:
+            player.is_on_ground = False
+
+        if banker_is_colliding_with_tile == False:
+            banker.is_on_ground = False
 
 
     """
