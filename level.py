@@ -105,7 +105,7 @@ class Level:
                         col_index += 1
                     col_index -= 1
                     endX = x + 46
-                    water_object = Water(water_tiles, startX, endX)
+                    water_object = Water(water_tiles, startX, endX, y)
                     self.water.append(water_object)
                     print(self.water)
                     
@@ -347,7 +347,13 @@ class Level:
                                         break
                                 sprite.flipUse = 0 #Lever can no longer be used
                                 sprite.update() #Update lever sprite to being flipped
+      
+    def check_banker_on_water(self):
+        bankerRect = self.banker.sprite.rect
         
+        for waterObject in self.water:
+            if waterObject.active and bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10:
+                return True
 
     def check_game_ended(self):
         janitor = self.janitor.sprite
@@ -411,6 +417,8 @@ class Level:
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
         
+        if self.check_banker_on_water():
+            return False
         if self.check_game_ended():
              return False                      
         return True
