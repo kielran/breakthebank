@@ -37,7 +37,7 @@ level_map = [
 'XXXXXXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
-
+level_param = [[225, 2]]
 
 level_map_0 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
@@ -76,7 +76,7 @@ level_map_1 = [
 'XXXXXXXXXXXXXXXX           X']
 
 
-level_param = [[335, 2]]
+
 
 # level_map = [
 # '                            ',
@@ -108,4 +108,3 @@ level_param = [[335, 2]]
 # tile_size = 64
 # screen_width = 1280
 # screen_height = len(level_map) * tile_size
-
