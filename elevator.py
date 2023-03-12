@@ -1,5 +1,6 @@
 import pygame
 
+#when player enters elevator and activates it, they cannot move until the elevator stops moving
 class Elevator(pygame.sprite.Sprite):
     def __init__(self, pos, distance, speed):
         super().__init__()
