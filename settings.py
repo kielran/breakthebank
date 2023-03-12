@@ -12,6 +12,7 @@
 #  C: Point obstacle
 #  N: Janitor exit
 #  M: Banker exit
+#  W: Water tile
 #
 #
 # Rules for parameters
@@ -48,15 +49,15 @@ level_map_0 = [
 'XXXXX   X                  X',
 'XXXXX      XXXXXX          X',
 'XXXXXXXXXXXXXXXXXXXXXX     X',
-'X                          X',
+'X     O                    X',
 'X    XXXXXXXXXXX  C        X',
 'X              XXXXXXXXXXXXX',
-'X      G                   X',
+'XL                         X',
 'XXXXXXXXXXXXXX             X',
 'X  B         XXXXXXXXXX    X',
 'XXXXXXXXXXX     C   C    XXX',
-'X  J                       X',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+'X  J      F                X',
+'XXXXXXXXXXXXXXXXWWWWXXXXXXXX']
 level0_param = [[1], [1], [350, 2]]
 
 level_map_1 = [

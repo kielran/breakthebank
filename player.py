@@ -149,7 +149,31 @@ class Janitor(Player):
 
         if keys[pygame.K_w] and self.is_on_ground:
             self.jump()
+            
+    def update(self, items, water, tiles):
+        self.player_movement()
+        keys = pygame.key.get_pressed()
         
+        if (len(self.inventory)) > 0:
+            self.inventory[0].update(self.rect.center, self.facingRight)
+
+        if keys[pygame.K_f]:
+            self.pick_up_item(items)
+        if keys[pygame.K_j]:
+            self.drop_item()
+        if keys[pygame.K_c] and len(self.inventory) > 0:
+            self.clean_water(water, tiles)
+
+        self.rect.x += self.direction.x * self.speed
+    
+    def clean_water(self, waterObjects, tiles):
+        for waterObject in waterObjects:
+            for waterTile in waterObject.tiles.sprites():
+                print(waterTile.rect.midtop[1], self.rect.midbottom[1])
+                if waterTile.rect.midtop[1] == self.rect.midbottom[1]: #and waterTile.rect.y >= self.rect.y:
+                    print("can clean")
+                    waterObject.clean(tiles)
+                
 class Banker(Player):
 
     def __init__(self, pos):

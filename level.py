@@ -5,6 +5,7 @@ from enemy import Roomba
 from item import JanitorItem, BankerItem
 from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle, InteractBox
+from water import Water
 
 class Level:
     def __init__(self, level_map, level_param, surface, bg_image):
@@ -24,6 +25,7 @@ class Level:
         self.obstacles = pygame.sprite.Group()
         self.levers = pygame.sprite.Group()
         self.exits = pygame.sprite.Group()
+        self.water = []
         tile_size = 46
         currParam = 0
         for row_index, row in enumerate(layout):
@@ -36,7 +38,7 @@ class Level:
                 y = row_index * tile_size
                 
                 if cell == "X":    
-                    tile = Tile((x,y), tile_size)
+                    tile = Tile((x,y), "./imgs/floor1.png")
                     self.tiles.add(tile)
 
                 if cell == "J":
@@ -85,6 +87,20 @@ class Level:
                 if cell == "M":
                     banker_exit = BankerExit((x,y))
                     self.exits.add(banker_exit)
+                    
+                if cell == "W":
+                    water_tiles = pygame.sprite.Group()
+                    while layout[row_index][col_index] == "W":
+                        x = col_index * tile_size
+                        y = row_index * tile_size
+                        water = Tile((x,y), "./imgs/water.png")
+                        water_tiles.add(water)
+                        col_index += 1
+                    water_object = Water(water_tiles)
+                    self.water.append(water_object)
+                    
+                    
+                
 
     def horizontal_movement_collision(self):
         janitor = self.janitor.sprite  
@@ -155,7 +171,7 @@ class Level:
             item.apply_gravity()
         
         for sprite in self.tiles.sprites(): #Looking through all tiles on map
-            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile
+            if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
                 janitor_is_colliding_with_tile = True
                 if janitor.direction.y > 0: #Moving up
                     janitor.rect.bottom = sprite.rect.top
@@ -165,7 +181,7 @@ class Level:
                     janitor.rect.top = sprite.rect.bottom
                     janitor.direction.y = 0
                     janitor.is_on_ground = False
-            if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a tile
+            if sprite.rect.colliderect(banker.rect): #If banker collides with a tile
                 banker_is_colliding_with_tile = True
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
@@ -185,6 +201,29 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
+                        
+        for waterObject in self.water:
+            for waterTile in waterObject.tiles:
+                if waterTile.rect.colliderect(janitor.rect): #If janitor collides with a tile
+                    janitor_is_colliding_with_tile = True
+                    if janitor.direction.y > 0: #Moving up
+                        janitor.rect.bottom = sprite.rect.top
+                        janitor.direction.y = 0
+                        janitor.is_on_ground = True
+                    elif janitor.direction.y < 0: #Moving down
+                        janitor.rect.top = sprite.rect.bottom
+                        janitor.direction.y = 0
+                        janitor.is_on_ground = False
+                if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
+                    banker_is_colliding_with_tile = True
+                    if banker.direction.y > 0: #Moving up
+                        banker.rect.bottom = sprite.rect.top
+                        banker.direction.y = 0
+                        banker.is_on_ground = True
+                    elif banker.direction.y < 0: #Moving down
+                        banker.rect.top = sprite.rect.bottom
+                        banker.direction.y = 0
+                        banker.is_on_ground = False
             
                         
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
@@ -301,6 +340,7 @@ class Level:
                                         break
                                 sprite.flipUse = 0 #Lever can no longer be used
                                 sprite.update() #Update lever sprite to being flipped
+        
 
     def check_game_ended(self):
         janitor = self.janitor.sprite
@@ -322,6 +362,9 @@ class Level:
         self.display_surface.blit(self.bg_image, (0,0))
         self.tiles.draw(self.display_surface)
         
+        for water in self.water:
+            water.draw(self.display_surface)
+        
         self.obstacles.draw(self.display_surface)
 
         self.points.draw(self.display_surface)
@@ -341,7 +384,7 @@ class Level:
                 return False
         self.enemies.draw(self.display_surface)
         
-        self.janitor.update(self.items)
+        self.janitor.update(self.items, self.water, self.tiles)
         self.janitor.draw(self.display_surface)
         
         self.banker.update(self.items)
