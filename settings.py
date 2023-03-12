@@ -1,3 +1,4 @@
+
 #-------------------------------------------------------------------------------------------------
 # Rules for creating level maps
 #
@@ -108,4 +109,5 @@ level_map_1 = [
 # tile_size = 64
 # screen_width = 1280
 # screen_height = len(level_map) * tile_size
+
 
