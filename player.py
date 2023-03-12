@@ -169,9 +169,7 @@ class Janitor(Player):
     def clean_water(self, waterObjects, tiles):
         for waterObject in waterObjects:
             for waterTile in waterObject.tiles.sprites():
-                print(waterTile.rect.midtop[1], self.rect.midbottom[1])
-                if waterTile.rect.midtop[1] == self.rect.midbottom[1]: #and waterTile.rect.y >= self.rect.y:
-                    print("can clean")
+                if waterTile.rect.midtop[1] == self.rect.midbottom[1] and waterObject.startX <= self.rect.midbottom[0] and waterObject.endX >= self.rect.midbottom[0]:
                     waterObject.clean(tiles)
                 
 class Banker(Player):

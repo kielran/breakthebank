@@ -2,9 +2,10 @@ import pygame
 from tiles import Tile
 
 class Water():
-    def __init__(self,tiles):
+    def __init__(self, tiles, startX, endX):
         self.tiles = tiles
-    
+        self.startX = startX
+        self.endX = endX
     def draw(self, surface):
         self.tiles.draw(surface)
         

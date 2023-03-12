@@ -29,10 +29,14 @@ class Level:
         self.water = []
         tile_size = 46
         currParam = 0
-        for row_index, row in enumerate(layout):
+        col_index = 0
+        row_index = 0
+        while row_index < len(layout):
             # print(row_index)
             # print(row)
-            for col_index, cell in enumerate(row):
+            row = layout[row_index]
+            col_index = 0
+            while col_index < len(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
                 x = col_index * tile_size
@@ -91,14 +95,23 @@ class Level:
                     
                 if cell == "W":
                     water_tiles = pygame.sprite.Group()
-                    while layout[row_index][col_index] == "W":
+                    startX = x
+                    while col_index < len(row) and layout[row_index][col_index] == "W":
+                        print("colindex: ", col_index)
                         x = col_index * tile_size
                         y = row_index * tile_size
                         water = Tile((x,y), "./imgs/water.png")
                         water_tiles.add(water)
                         col_index += 1
-                    water_object = Water(water_tiles)
+                    col_index -= 1
+                    endX = x + 46
+                    water_object = Water(water_tiles, startX, endX)
                     self.water.append(water_object)
+                    print(self.water)
+                    
+                col_index += 1
+            row_index += 1
+                    
                     
                     
                 
