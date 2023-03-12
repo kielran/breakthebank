@@ -26,9 +26,9 @@ bankerleft.append(bankerl6)
 bankerleft.append(bankerl7)
 
 for index, banker in enumerate(bankerright):
-    bankerright[index] = pygame.transform.scale_by(banker, 0.72)
+    bankerright[index] = pygame.transform.scale_by(banker, 0.48)
 for index, banker in enumerate(bankerleft):
-    bankerleft[index] = pygame.transform.scale_by(banker, 0.72)
+    bankerleft[index] = pygame.transform.scale_by(banker, 0.48)
     
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 4
         self.gravity = 0.8
-        self.jump_speed = -16
+        self.jump_speed = -15
         self.inventory = []
         self.counter = 0
         self.facingRight = True
@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and self.direction[1] == 0:
             self.jump()
 
     def apply_gravity(self):
@@ -91,7 +91,7 @@ class Player(pygame.sprite.Sprite):
         if (len(self.inventory)) > 0:
             self.inventory[0].update(self.rect.center, self.facingRight)
 
-        if keys[pygame.K_s]:
+        if keys[pygame.K_f]:
             self.pick_up_item(items)
         if keys[pygame.K_j]:
             self.drop_item()
