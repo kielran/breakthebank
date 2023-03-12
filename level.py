@@ -1,20 +1,19 @@
-import pygame
+import pygame, sys
 from tiles import Tile
-from player import Player
-from banker import Banker
-from obstacle import PointObstacle
-from obstacle import InteractObstacle
-from obstacle import InteractBox
+from player import Janitor, Banker
 from enemy import Roomba
 from item import JanitorItem, BankerItem
+from exit import JanitorExit, BankerExit
+from obstacle import PointObstacle, InteractObstacle, InteractBox
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, level_map, level_param, surface):
         self.display_surface = surface
-        self.level_data = level_data
-        self.setup_level(level_data)
+        self.level_map = level_map
+        self.level_param = level_param
+        self.setup_level(level_map, level_param)
 
-    def setup_level(self,layout):
+    def setup_level(self, layout, level_param):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.banker = pygame.sprite.GroupSingle()
@@ -23,13 +22,14 @@ class Level:
         self.points = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
         self.levers = pygame.sprite.Group()
+        self.exits = pygame.sprite.Group()
         tile_size = 46
+        currParam = 0
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
-
-            cols_skipped = 0
             for col_index, cell in enumerate(row):
+                cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
                 x = (col_index - cols_skipped) * tile_size
                 y = row_index * tile_size
@@ -38,8 +38,12 @@ class Level:
                     tile = Tile((x,y), tile_size)
                     self.tiles.add(tile)
 
-                if cell == "P":
-                    player_sprite = Player((x,y))
+                if cell == "J":
+                    player_sprite = Janitor((x,y))
+                    self.player.add(player_sprite)
+                    
+                if cell == "B":
+                    player_sprite = Banker((x,y-11))
                     self.player.add(player_sprite)
                 
                 if cell == "B":
@@ -47,15 +51,18 @@ class Level:
                     self.banker.add(banker_sprite)
                     
                 if cell == "E":
-                    roomba_sprite = Roomba((x, y), 300, self.player)
+                    enemy_distance = level_param[currParam][0]
+                    enemy_speed = level_param[currParam][1]
+                    currParam += 1
+                    roomba_sprite = Roomba((x, y), enemy_distance, enemy_speed, self.player)
                     self.enemies.add(roomba_sprite)
-                
-                if cell == "J":
-                    janitor_item_sprite = JanitorItem((x, y), (tile_size, tile_size), "./imgs/key.png")
+                    
+                if cell == "F":
+                    janitor_item_sprite = JanitorItem((x, y), (64, 32))
                     self.items.add(janitor_item_sprite)
                 
-                if cell == "K":
-                    banker_item_sprite = BankerItem((x, y), (tile_size, tile_size), "./imgs/key.png")
+                if cell == "G":
+                    banker_item_sprite = BankerItem((x, y), (64, 32))
                     self.items.add(banker_item_sprite)
                     
                 if cell == "C":
@@ -79,12 +86,24 @@ class Level:
                         uniqueID = layout[row_index][col_index]
                         lever.leverID = int(uniqueID)
                     self.levers.add(lever)
+                    obstacle = InteractObstacle((x,y), tile_size)
+                    self.obstacles.add(obstacle)
+                    
+                if cell == "N":
+                    janitor_exit = JanitorExit((x,y))
+                    self.exits.add(janitor_exit)
+                    
+                if cell == "M":
+                    banker_exit = BankerExit((x,y))
+                    self.exits.add(banker_exit)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite  
         player.rect.x += player.direction.x * player.speed
         banker = self.banker.sprite  
         banker.rect.x += banker.direction.x * banker.speed
+        # for enemy in self.enemies.sprites():
+        #     enemy.rect.x += enemy.direction * enemy.speed
 
         for sprite in self.tiles.sprites(): #Looking through all tiles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with a tile
@@ -101,6 +120,17 @@ class Level:
         for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.x < 0: #Moving right
+            # for enemy in self.enemies.sprites():
+            #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
+            #         if enemy.direction < 0: #moving left
+            #             enemy.rect.left = sprite.rect.right
+            #         elif enemy.direction > 0: #moving right
+            #             enemy.rect.right = sprite.rect.left
+                    
+      
+        for sprite in self.obstacles.sprites(): # Same as above but with obstacles
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0: #Moving left
                     player.rect.right = sprite.rect.left
@@ -156,6 +186,7 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
+            
                         
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
@@ -268,8 +299,17 @@ class Level:
                                         break
                                 sprite.flipUse = 0 #Lever can no longer be used
                                 sprite.update() #Update lever sprite to being flipped
-            #else:
-                #print('Lever id ' + str(sprite.leverID) + ' is deactivated')
+
+    def check_game_ended(self):
+        player = self.player.sprite
+        for exit in self.exits.sprites():
+            if player.rect.colliderect(exit):
+                if not ((type(self.player) == Banker and type(exit) == BankerExit) or (type(self.player) == Janitor and type(exit) == JanitorExit)):
+                    return False
+            else:
+                return False
+        
+        return True
                     
 
     def run(self):
@@ -281,12 +321,15 @@ class Level:
 
         self.levers.draw(self.display_surface)
         
+        self.exits.draw(self.display_surface)
+        
         for enemy in self.enemies:
             sight_rect = enemy.update()
             #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             for player in self.player:
                 if enemy.detect_player(player.rect, self.tiles):
                     print("detected")
+                    return False
         self.enemies.draw(self.display_surface)
         
         self.player.update(self.items)
@@ -303,3 +346,7 @@ class Level:
         
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
+        
+        if self.check_game_ended():
+             return False                      
+        return True

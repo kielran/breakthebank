@@ -1,15 +1,82 @@
+#-------------------------------------------------------------------------------------------------
+# Rules for creating level maps
+#
+#  X: tile
+#  B: Banker player
+#  J: Janitor player
+#  E: enemy, specify the distance it travels and its speed
+#  F: Janitor item
+#  G: Banker item
+#  L: Lever, specify id     **not implmented yet**
+#  O: Obstacle, specify id  **id not implemented yet**
+#  C: Point obstacle
+#  N: Janitor exit
+#  M: Banker exit
+#
+#
+# Rules for parameters
+#
+#  - put parameters in order of which the entity appears in the map (left to right, top to bottom)
+#  - level_param is a 2d array, each subarray contains the parameters for one entity
+# -----------------------------------------------------------------------------------------------
+
 level_map = [
 '                            ',
-'        C                   ',
 '                            ',
+' F     C N                  ',
 ' XX    XXX            XX    ',
-' XXL1P          O            ',
+' XXBX          M            ',
 ' XXXX         XX         XX ',
-' XXXX     B XX              ',
-' XX    X  XXXX    XX  XX    ',
-'       X  XXXX  O1 XX  XXX   ',
+' XXXX  GE     XX            ',
+' XX    XXXXXXXX   XX  XX    ',
+'       X  XXXX    XX  XXX   ',
 '    XXXX  XXXXXX  XX  XXXX  ',
+'XXXXXXXX  XXXXXX  XX  XXXX  ',
+'XXXXXXXX  XXXXXX  XX  XXXX  ',
+'XXXXXXXX  XXXXXX  XX  XXXX  ',
+'XXXXXXXX  XXXXXX  XX  XXXX  ',
+'XXXXXXXX  XXXXXX  XX  XXXX  ',
 'XXXXXXXX  XXXXXX  XX  XXXX  ']
+level_param = [[225, 2]]
+
+level_map_0 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'XX         NM     XXXXXXXXXX',
+'XXX                XXXXXXXXX',
+'XXXX                XXXXXXXX',
+'XXXXX                XXXXXXX',
+'XXXXXX                XXXXXX',
+'XXXXXXX                XXXXX',
+'XXXXXXXX                XXXX',
+'XXXXXXXXX                XXX',
+'XXXXXXXXXX                XX',
+'XXXX XXXXXX                X',
+'XXXXJXXXXXXX               X',
+'XXXXXXXXXXXXX              X',
+'XXXXXXXXXXXXXX             X',
+'XXXXXXXXXXXXXXX            X',
+'XXXXXXXXXXXXXXXX           X']
+
+level_map_1 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'XX          NM    XXXXXXXXXX',
+'XXX         XXX    XXXXXXXXX',
+'XXXX          X     XXXXXXXX',
+'XXXX B        X      XXXXXXX',
+'XXXXXX       XXX      XXXXXX',
+'XXXXXXX X              XXXXX',
+'XXXXXXX X                XXXX',
+'XXXXXXXXX                XXX',
+'XXXXXXXXXX                XX',
+'XXXXXXXXXXX                X',
+'XXXXXXXXXXXX   E           X',
+'XXXXXXXXXXXXX              X',
+'XXXXXXXXXXXXXX             X',
+'XXXXXXXXXXXXXXX            X',
+'XXXXXXXXXXXXXXXX           X']
+
+
+
 
 # level_map = [
 # '                            ',
@@ -23,20 +90,20 @@ level_map = [
 # '       X  XXXX    XX  XXX   ',
 # '    XXXX  XXXXXX  XX  XXXX  ',
 # 'XXXXXXXX  XXXXXX  XX  XXXX  ']
-"""
-level_map = [
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'                            ',
-'         XE  B              ',
-'  P J  XXXXXXXXXXXXX        ',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
-"""
+
+# level_map = [
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '                            ',
+# '         XE  B              ',
+# '  P J  XXXXXXXXXXXXX        ',
+# 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+
 #11 rows
 # tile_size = 64
 # screen_width = 1280
