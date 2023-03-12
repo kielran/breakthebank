@@ -123,10 +123,6 @@ class Level:
                 elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
                     
-        for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
-            if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
-                if player.direction.x < 0: #Moving right
-                    player = player
             # for enemy in self.enemies.sprites():
             #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
             #         if enemy.direction < 0: #moving left
@@ -299,7 +295,7 @@ class Level:
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_s: #and it is player 1's interact button (F), remove
-                                if(len(player.inventory) > 0):
+                                if(len(janitor.inventory) > 0):
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
                                 else:
