@@ -258,7 +258,6 @@ class Level:
                                 if(len(player.inventory) > 0):
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
-                                    player.inventory.clear()
                                 else:
                                     print('Player 1 does not have an item, cannot remove')
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
@@ -268,7 +267,6 @@ class Level:
                                 if(len(banker.inventory) > 0):
                                     print('Player 2 (Arrows) with key encountered door, removing')
                                     sprite.kill()
-                                    player.inventory.clear()
                                 else:
                                     print('Player 2 does not have an item, cannot remove')
 
