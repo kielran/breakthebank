@@ -28,6 +28,7 @@ class Level:
         for row_index, row in enumerate(layout):
             # print(row_index)
             # print(row)
+            cols_skipped = 0
             for col_index, cell in enumerate(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
@@ -120,6 +121,7 @@ class Level:
         for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
             if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
                 if player.direction.x < 0: #Moving right
+                    print('NAN')
             # for enemy in self.enemies.sprites():
             #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
             #         if enemy.direction < 0: #moving left
@@ -127,7 +129,6 @@ class Level:
             #         elif enemy.direction > 0: #moving right
             #             enemy.rect.right = sprite.rect.left
                     
-      
         for sprite in self.obstacles.sprites(): # Same as above but with obstacles
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
