@@ -46,11 +46,7 @@ class Level:
                     
                 if cell == "B":
                     player_sprite = Banker((x,y))
-                    self.player.add(player_sprite)
-                
-                if cell == "B":
-                    banker_sprite = Banker((x,y))
-                    self.banker.add(banker_sprite)
+                    self.banker.add(player_sprite)
                     
                 if cell == "E":
                     enemy_distance = level_param[currParam][0]
