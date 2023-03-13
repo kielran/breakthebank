@@ -24,7 +24,13 @@ import time
 def testArrange1():
     pygame.init()
     screen = pygame.display.set_mode([80*16, 80*9])
-    return Level(level_map_0, level0_param, screen, "./imgs/stage1_lobby.png"), screen
+    return Level(level_map_test, leveltest_param, screen, "./imgs/stage1_lobby.png"), screen
+
+
+def testArrangeGravity():
+    pygame.init()
+    screen = pygame.display.set_mode([80*16, 80*9])
+    return Level(level_map_test_gravity, leveltest_param, screen, "./imgs/stage1_lobby.png"), screen
 
 
 class Testjanitor(unittest.TestCase):  
@@ -145,6 +151,117 @@ class Testenemy(unittest.TestCase):
         self.assertNotEqual(self.level.enemies.sprites()[0].rect.topleft, originaltopleft0)
     
     
+
+class Testitems_janitor(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrange1()
+        # print(self.level.items.sprites()[0])
+        originaltopleft0 = self.level.items.sprites()[0].rect.topleft
+        c = 0
+        while c < 60:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+
+        self.assertEqual(self.level.items.sprites()[0].rect.topleft, originaltopleft0)
+
+class Testitems_banker(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrange1()
+        # print(self.level.items.sprites()[0])
+        originaltopleft0 = self.level.items.sprites()[1].rect.topleft
+        c = 0
+        while c < 60:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+
+        self.assertEqual(self.level.items.sprites()[1].rect.topleft, originaltopleft0)
+    
+    
+
+
+class Test_janitor_gravity(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrangeGravity()
+        originalX = self.level.janitor.sprite.rect.x
+        originalY = self.level.janitor.sprite.rect.y
+        c = 0
+        while c < 20:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+        
+        self.assertEqual(self.level.janitor.sprite.rect.x, originalX)
+        self.assertNotEqual(self.level.janitor.sprite.rect.y, originalY)
+
+class Test_banker_gravity(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrangeGravity()
+        originalX = self.level.banker.sprite.rect.x
+        originalY = self.level.banker.sprite.rect.y
+        c = 0
+        while c < 20:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+        
+        self.assertEqual(self.level.banker.sprite.rect.x, originalX)
+        self.assertNotEqual(self.level.banker.sprite.rect.y, originalY)
+
+
+class Test_items_janitor_gravity(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrangeGravity()
+        # print(self.level.items.sprites()[0])
+        originaltopleft0 = self.level.items.sprites()[0].rect.topleft
+        c = 0
+        while c < 60:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+
+        self.assertNotEqual(self.level.items.sprites()[0].rect.topleft, originaltopleft0)
+
+class Test_items_banker_gravity(unittest.TestCase):  
+        
+    def test_CheckSpawn(self): 
+        self.level, self.screen = testArrangeGravity()
+        # print(self.level.items.sprites()[0])
+        originaltopleft0 = self.level.items.sprites()[1].rect.topleft
+        c = 0
+        while c < 60:
+            self.level.run()
+            timer = pygame.time.Clock()
+            # print(originaltopleft0)
+            timer.tick(60)
+            c += 1
+            pygame.display.update()
+
+        self.assertNotEqual(self.level.items.sprites()[1].rect.topleft, originaltopleft0)
+    
+
+
     # def test_CheckjanitorDetected(self): 
     #     self.level, self.screen = testArrange()
         

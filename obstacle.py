@@ -20,7 +20,8 @@ class InteractObstacle(pygame.sprite.Sprite):
         self.notFlippable = 1
         self.obstacleID = uniqueID
     def __del__(self):
-        print('Gone forever')
+        # print('Gone forever')
+        pass
 
 class InteractBox(pygame.sprite.Sprite):
     def __init__(self, pos, uniqueID):
