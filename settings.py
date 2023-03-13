@@ -13,8 +13,7 @@
 #  N: Janitor exit
 #  M: Banker exit
 #  W: Water tile
-#  E: Elevator (2 tiles long in the horizontal), specify distance it travels (in tiles) and its speed
-#
+#  Z: Elevator (2 tiles long in the horizontal), specify distance it travels (in tiles) and its speed
 #
 # Rules for parameters
 #
