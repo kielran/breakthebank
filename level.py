@@ -47,6 +47,10 @@ class Level:
                 if cell == "X":    
                     tile = Tile((x,y), "./imgs/floor1.png")
                     self.tiles.add(tile)
+                    
+                if cell == "A":    
+                    tile = Tile((x,y), "./imgs/floor2.png")
+                    self.tiles.add(tile)
 
                 if cell == "J":
                     player_sprite = Janitor((x,y+8))

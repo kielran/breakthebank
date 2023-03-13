@@ -1,7 +1,8 @@
 #-------------------------------------------------------------------------------------------------
 # Rules for creating level maps
 #
-#  X: tile
+#  X: tile 1
+#  A: tile 2
 #  B: Banker player
 #  J: Janitor player
 #  E: enemy, specify the distance it travels and its speed
