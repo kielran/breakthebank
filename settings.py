@@ -158,6 +158,26 @@ level_map_3 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
 level3_param=[[100,2],[80,2], [35,3]]
 
+level_map_4 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'X NM O                     X',
+'XXXXXXX                    X',
+'X     X                    X',
+'X    FX                    X',
+'X   XXX XXX  XXX           X',
+'X     X      JXBO          X',
+'X     X  XXXXXXXXG         X',
+'X     X         XX         X',
+'X     X          XX        X',
+'X     X           XX       X',
+'X                  XX      X',
+'XZ                  XX    LX',
+'XL                         X',
+'XXXXXXXXXXXXXXXWWWWWWWWWWWWX']
+
+level4_param = [[1], [2], [6, 2], [1], [2]]
+
 
 
 #11 rows
