@@ -14,10 +14,14 @@ class PointObstacle(pygame.sprite.Sprite):
 class InteractObstacle(pygame.sprite.Sprite):
     def __init__(self, pos, size_x, size_y, uniqueID):
         super().__init__()
-        self.image = pygame.Surface((size_x, size_y))
-        self.image.fill('Red')
-        self.rect = self.image.get_rect(bottomleft = pos)
-        self.notFlippable = 1
+        if uniqueID == 0:
+            self.image = pygame.Surface((size_x, size_y))
+            self.image.fill('Pink')
+            self.rect = self.image.get_rect(bottomleft = pos)
+        else: 
+            self.image = pygame.Surface((size_x, size_y))
+            self.image.fill('Red')
+            self.rect = self.image.get_rect(bottomleft = pos)
         self.obstacleID = uniqueID
     def __del__(self):
         # print('Gone forever')
