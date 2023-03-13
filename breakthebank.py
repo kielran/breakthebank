@@ -46,6 +46,7 @@ class CurrentScene(StateMachine):
     scene_win_menu = State("Completed Level")
     global levels_to_draw
     musicON = True
+    audioTog = True
     # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
 
     go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
@@ -90,9 +91,9 @@ class CurrentScene(StateMachine):
     #-------------MAIN MENU-------------
     def drawMainMenu(self):
         if self.musicON is True:
-            bgm_ch.play(menuMusic, loops=-1, fade_ms=100)
+            bgm_ch.play(lobbyMusic, loops=-1, fade_ms=100)
             self.musicON = False
-            print("bgm_ch play menuMusic")
+            print("bgm_ch play lobbyMusic")
         mainMenu.update()
         for event in pygame.event.get():
             mouse = pygame.mouse.get_pos()
@@ -103,6 +104,13 @@ class CurrentScene(StateMachine):
                     button_hover.play()
                     self.select_stage = True
                     print("TRIGGERED start game")
+                if audio_button.isOver(mouse):
+                    if self.audioTog is True:
+                        bgm_ch.set_volume(0.0)
+                        self.audioTog = False
+                    elif self.audioTog is False:
+                        bgm_ch.set_volume(0.3)
+                        self.audioTog = True
                 if quit_button.isOver(mouse):
                     button_hover.play()
                     sys.exit()
@@ -133,14 +141,14 @@ class CurrentScene(StateMachine):
                     print("TRIGGERED stage selection -> in game")
                     self.current_level = level_map_1
                     self.current_level_parems = level1_param
-                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage2_basement.png")
                     self.in_game = True
                 if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
-                    button_hover.play()
+                    button_hover.play() 
                     print("TRIGGERED stage selection -> in game")
                     self.current_level = level_map_3
                     self.current_level_parems = level3_param
-                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage3_offices.png")
                     self.in_game = True
                 if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
                     button_hover.play()
@@ -171,10 +179,15 @@ class CurrentScene(StateMachine):
     #-------------IN GAME-------------
     def drawInGame(self):
         # game_stage()
-        if self.musicON is True:
-            bgm_ch.play(wipMusic, loops=-1, fade_ms=100)
+        if self.musicON is True: 
+            if self.current_level == level_map_0:
+                bgm_ch.play(menuMusic, loops=-1, fade_ms=100)
+            elif self.current_level == level_map_1:
+                bgm_ch.play(basementMusic, loops=-1, fade_ms=100)
+            elif self.current_level == level_map_3: 
+                bgm_ch.play(officeMusic, loops=-1, fade_ms=100)
             self.musicON = False
-            print("bgm_ch play wipMusic")
+            print("bgm_ch play menuMusic")
         screen.fill('black')
         
         keep_running, outcome = self.level.run()
@@ -208,6 +221,8 @@ class CurrentScene(StateMachine):
         screen.blit(self.curr_screen,(0,0))
         pauseMenu.update()
         mouse = pygame.mouse.get_pos()
+        if tutorial_button.isOver(mouse):
+                screen.blit(tutorialMenu, (0,0))
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if continue_button.isOver(mouse):
@@ -221,6 +236,13 @@ class CurrentScene(StateMachine):
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                     self.musicON = True
+                if audio_button.isOver(mouse):
+                    if self.audioTog is True:
+                        bgm_ch.set_volume(0.0)
+                        self.audioTog = False
+                    elif self.audioTog is False:
+                        bgm_ch.set_volume(0.3)
+                        self.audioTog = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: # go back to game
                     esc_click.play()
@@ -238,6 +260,13 @@ class CurrentScene(StateMachine):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if audio_button.isOver(mouse):
+                    if self.audioTog is True:
+                        bgm_ch.set_volume(0.0)
+                        self.audioTog = False
+                    elif self.audioTog is False:
+                        bgm_ch.set_volume(0.3)
+                        self.audioTog = True
                 if quit_button.isOver(mouse):
                     button_hover.play()
                     self.musicON = False
@@ -261,6 +290,28 @@ class CurrentScene(StateMachine):
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if audio_button.isOver(mouse):
+                    if self.audioTog is True:
+                        bgm_ch.set_volume(0.0)
+                        self.audioTog = False
+                    elif self.audioTog is False:
+                        bgm_ch.set_volume(0.3)
+                        self.audioTog = True
+                if continue_button.isOver(mouse):
+                    if self.current_level == level_map_0:
+                        button_hover.play()
+                        print("TRIGGERED stage selection -> in game")
+                        self.current_level = level_map_1
+                        self.current_level_parems = level1_param
+                        self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage2_basement.png")
+                        self.in_game = True
+                    elif self.current_level == level_map_1:
+                        button_hover.play()
+                        print("TRIGGERED stage selection -> in game")
+                        self.current_level = level_map_3
+                        self.current_level_parems = level3_param
+                        self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage3_offices.png")
+                        self.in_game = True
                 if quit_button.isOver(mouse):
                     button_hover.play()
                     self.musicON = False
@@ -387,13 +438,15 @@ class button():
 #--------------------------------------------------------
 # Load background music
 #--------------------------------------------------------
-menuMusic = pygame.mixer.Sound("audio\stage1_bgm_spookydarkpad.mp3") ; menuMusic.set_volume(1.0)
-selectMusic = pygame.mixer.Sound("audio\maintheme_syndicate.mp3"); selectMusic.set_volume(0.4)
-wipMusic = pygame.mixer.Sound("audio\wip\duskwalkinloop.wav"); wipMusic.set_volume(0.4)
+lobbyMusic = pygame.mixer.Sound("audio\stage1_bgm_spookydarkpad.mp3") ; lobbyMusic.set_volume(1.0)
+selectMusic = pygame.mixer.Sound("audio\stageselect_syndicate.mp3"); selectMusic.set_volume(0.4)
+menuMusic = pygame.mixer.Sound("audio\duskwalkinloop.wav"); menuMusic.set_volume(0.4)
+basementMusic = pygame.mixer.Sound("audio\pianoloops.wav"); basementMusic.set_volume(0.4)
+officeMusic = pygame.mixer.Sound("audio\dventurerloop.mp3"); officeMusic.set_volume(0.4)
 
 bgm_ch = pygame.mixer.Channel(0)
 bgm_ch.set_volume(0.3)
-bgm_ch.play(menuMusic, loops = -1, fade_ms = 500)
+bgm_ch.play(lobbyMusic, loops = -1, fade_ms = 500)
 
 
 #--------------------------------------------------------
@@ -420,16 +473,16 @@ restart_button = button(width/2.4015,height/1.75182, 20, 100, '', None, "imgs/bu
 tutorial_button = button(width/2.424242,height/1.50627, 20, 100, '', None, "imgs/buttons/slice_tutorial.png","imgs/buttons/hovering_slice_tutorial.png",160)
 pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slice_paused.png","imgs/slice_paused.png",160) #bad code 
 death_title = button(width/5.62195,height/6.6129, 20, 100, '', None, "imgs/slice_gameover.png","imgs/slice_gameover.png",160) #bad code 
-win_title = button(width/2.62195,height/6.6129, 20, 100, '', None, "imgs/slice_completed.png","imgs/slice_completed.png",120) #bad code 
+win_title = button(width/6.62195,height/6.6129, 20, 100, '', None, "imgs/slice_completed.png","imgs/slice_completed.png",120) #bad code 
 
 
 # TODO: placeholders for Stage Selection Menu
-stage_placeholderbutton_1 = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-stage_placeholderbutton_2 = button(width/18+1*(width/3),height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-stage_placeholderbutton_3 = button(width/18+2*(width/3),height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-stage_placeholderbutton_4 = button(width/18,height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-stage_placeholderbutton_5 = button(width/18+1*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
-stage_placeholderbutton_6 = button(width/18+2*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_1 = button(width/8,height/4,0,20,'',None,"imgs/1f.png","imgs/1f_hover.png")
+stage_placeholderbutton_2 = button(width/8+0.85*(width/3),height/4,0,20,'',None,"imgs/b.png","imgs/b_hover.png")
+stage_placeholderbutton_3 = button(width/8+1.7*(width/3),height/4,0,20,'',None,"imgs/2f.png","imgs/2f_hover.png")
+stage_placeholderbutton_4 = button(width/8,height/4+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_5 = button(width/8+1*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_6 = button(width/8+2*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
 
 # notify_msg = button( width/2+50, height/2, 250, 100,"PRESS ENTER TO GO BACK TO MAIN MENU FOR NOW",(255, 0, 255), None, None)
 
@@ -453,9 +506,10 @@ pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continu
 InGame = Scene(screen, "imgs/in_game.png", [])
 mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
 stageSelection = Scene(screen, "imgs/stage_select.png", stageSelection_list)
-deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, death_title, quit_button, audio_button, accessibility_button], True)
-winMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, win_title, quit_button, audio_button, accessibility_button], True)
+deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg.png", [restart_button, tutorial_button, death_title, quit_button, audio_button, accessibility_button], True)
+winMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continue_button, restart_button, tutorial_button, win_title, quit_button, audio_button, accessibility_button], True)
 
+tutorialMenu = pygame.image.load("./imgs/tutorial.png")
         
 
 #--------------------------------------------------------

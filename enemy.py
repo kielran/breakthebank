@@ -1,10 +1,12 @@
 import pygame
 
+enemyr = pygame.image.load("./imgs/enemyr.png")
+enemyl = pygame.image.load("./imgs/enemyl.png")
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos, distance, speed):
         super().__init__()
         self.image = pygame.Surface((32,46))
-        self.image.fill("red")
         self.rect = self.image.get_rect(topleft = pos)
         self.posFromStart = 0
         self.speed = speed
@@ -37,10 +39,12 @@ class Roomba(Enemy):
         
     def move(self):
         if self.direction == 1:
+            self.image = enemyr
             self.rect.x += self.speed
             self.sight_rect.x += self.speed
             self.posFromStart += self.speed
         elif self.direction == -1:
+            self.image = enemyl
             self.rect.x -= self.speed
             self.sight_rect.x -= self.speed
             self.posFromStart -= self.speed
