@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 4
         self.gravity = 0.8
-        self.jump_speed = -15
+        self.jump_speed = -13
         self.inventory = []
         self.counter = 0
         self.facingRight = True

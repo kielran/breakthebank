@@ -13,7 +13,7 @@
 #  N: Janitor exit
 #  M: Banker exit
 #  W: Water tile
-#
+#  E: Elevator, specify distance it travels (in tiles) and its speed
 #
 # Rules for parameters
 #
@@ -45,20 +45,20 @@ level_map_0 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'X     C                    X',
 'X     X       C   N  M     X',
-'X C    XXXXXXXXXXXXXXXXXXXXX',
-'XXXXX   X                  X',
-'XXXXX      XXXXXX          X',
-'XXXXXXXXXXXXXXXXXXXXXX     X',
-'X                          X',
-'X    XXXXXXXXXXX  C        X',
+'X C    XXXWWWWXXXXXXXXXXXXXX',
+'XXXXX                      X',
+'XXXXXXXXXXXXXXXXXXXXXXX    X',
+'X                        XXX',
+'X  XXXXXXXXXXXXX  C        X',
 'X              XXXXXXXXXXXXX',
+'X                          X',
 'XZ     G                   X',
 'XXXXXXXXXXXXXX             X',
 'X  B         XXXXXXXXXX    X',
 'XXXXXXXXXXX     C   C    XXX',
 'X  J      F                X',
 'XXXXXXXXXXXWWXXXWWWWXXXXXXXX']
-level0_param = [[90, 1], [350, 2]]
+level0_param = [[3, 2], [350, 2]]
 
 level_map_1 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
