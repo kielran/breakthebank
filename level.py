@@ -142,6 +142,7 @@ class Level:
                     banker.rect.left = sprite.rect.right
                 elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
+
                     
         for sprite in self.elevators.sprites(): #Looking through all tiles on map (x axis)
             if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile

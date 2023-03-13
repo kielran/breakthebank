@@ -162,7 +162,7 @@ class Janitor(Player):
             self.pick_up_item(items)
         if keys[pygame.K_j]:
             self.drop_item()
-        if keys[pygame.K_c] and len(self.inventory) > 0:
+        if keys[pygame.K_s] and len(self.inventory) > 0:
             self.clean_water(water, tiles)
 
         self.rect.x += self.direction.x * self.speed
@@ -205,7 +205,7 @@ class Banker(Player):
         if (len(self.inventory)) > 0:
             self.inventory[0].update(self.rect.center, self.facingRight)
 
-        if keys[pygame.K_f]:
+        if keys[pygame.K_SLASH]:
             self.pick_up_item(items)
         if keys[pygame.K_j]:
             self.drop_item()
