@@ -170,7 +170,7 @@ level_map_4 = [
 'X     X       XXX          X',
 'X     X       JXBO         X',
 'X     X  XXXXXXXXG         X',
-'X    LX         XX         X',
+'X     X         XX         X',
 'X     X          XX        X',
 'X                 XX       X',
 'XZ                 XX      X',
