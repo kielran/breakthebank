@@ -62,13 +62,16 @@ class Roomba(Enemy):
     def detect_player(self, player_rect, tiles):
         tiles_to_check = []
         
-        for tile in tiles.sprites(): #looking through all sprites
-            if pygame.Rect.colliderect(self.sight_rect, player_rect): #if enemy collides with sight
-                if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
-                    #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
-                    tiles_to_check.append(tile)
+        if not pygame.Rect.colliderect(self.sight_rect, player_rect):
+            return False
         
-        for index,tile in enumerate(tiles_to_check):
+        for tile in tiles.sprites(): #looking through all sprites
+            if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
+                #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
+                tiles_to_check.append(tile)
+
+
+        for index, tile in enumerate(tiles_to_check):
             if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
                 break
             if player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:

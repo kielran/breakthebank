@@ -105,7 +105,6 @@ class Level:
                     water_tiles = pygame.sprite.Group()
                     startX = x
                     while col_index < len(row) and layout[row_index][col_index] == "W":
-                        print("colindex: ", col_index)
                         x = col_index * tile_size
                         y = row_index * tile_size
                         water = Tile((x,y), "./imgs/water.png")
@@ -115,7 +114,6 @@ class Level:
                     endX = x + 46
                     water_object = Water(water_tiles, startX, endX, y)
                     self.water.append(water_object)
-                    print(self.water)
                     
                 col_index += 1
             row_index += 1
@@ -244,16 +242,16 @@ class Level:
                         janitor.rect.top = sprite.rect.bottom
                         janitor.direction.y = 0
                         janitor.is_on_ground = False
-                if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
-                    banker_is_colliding_with_tile = True
-                    if banker.direction.y > 0: #Moving up
-                        banker.rect.bottom = sprite.rect.top
-                        banker.direction.y = 0
-                        banker.is_on_ground = True
-                    elif banker.direction.y < 0: #Moving down
-                        banker.rect.top = sprite.rect.bottom
-                        banker.direction.y = 0
-                        banker.is_on_ground = False
+                # if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
+                #     banker_is_colliding_with_tile = True
+                #     if banker.direction.y > 0: #Moving up
+                #         banker.rect.bottom = sprite.rect.top
+                #         banker.direction.y = 0
+                #         banker.is_on_ground = True
+                #     elif banker.direction.y < 0: #Moving down
+                #         banker.rect.top = sprite.rect.bottom
+                #         banker.direction.y = 0
+                #         banker.is_on_ground = False
                         
         for sprite in self.elevators.sprites(): #Looking through all tiles on map
             if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
@@ -394,8 +392,10 @@ class Level:
         bankerRect = self.banker.sprite.rect
         
         for waterObject in self.water:
-            if waterObject.active and bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10:
-                return True
+            if waterObject.active:
+                for waterTile in waterObject.tiles:
+                    if bankerRect.colliderect(waterTile.rect) or (bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10):
+                        return True
 
     def check_game_ended(self):
         janitor = self.janitor.sprite
@@ -435,7 +435,7 @@ class Level:
             sight_rect = enemy.update()
             #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             if enemy.detect_player(self.janitor.sprite.rect, self.tiles):
-                print("detected")
+                print(enemy.distance)
                 return False, "loss"
             if enemy.detect_player(self.banker.sprite.rect, self.tiles):
                 print("detected")
