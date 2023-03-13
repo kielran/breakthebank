@@ -184,6 +184,19 @@ class Level:
                     banker.rect.left = sprite.rect.right 
                 elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
+                    
+        for waterObject in self.water:
+            for waterTile in waterObject.tiles:
+                if waterTile.rect.colliderect(janitor.rect): #If janitor 1 collides with a lever
+                    if janitor.direction.x < 0: #Moving right
+                        janitor.rect.left = waterTile.rect.right
+                    elif janitor.direction.x > 0: #Moving left
+                        janitor.rect.right = waterTile.rect.left
+                if waterTile.rect.colliderect(banker.rect): #If janitor 2 collides with a lever
+                    if banker.direction.x < 0: #Moving right
+                        banker.rect.left = waterTile.rect.right 
+                    elif banker.direction.x > 0: #Moving left
+                        banker.rect.right = waterTile.rect.left
                 
 
     def vertical_movement_collision(self):
@@ -235,23 +248,19 @@ class Level:
                 if waterTile.rect.colliderect(janitor.rect): #If janitor collides with a tile
                     janitor_is_colliding_with_tile = True
                     if janitor.direction.y > 0: #Moving up
-                        janitor.rect.bottom = sprite.rect.top
+                        janitor.rect.bottom = waterTile.rect.top
                         janitor.direction.y = 0
                         janitor.is_on_ground = True
                     elif janitor.direction.y < 0: #Moving down
-                        janitor.rect.top = sprite.rect.bottom
+                        janitor.rect.top = waterTile.rect.bottom
                         janitor.direction.y = 0
                         janitor.is_on_ground = False
-                # if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
-                #     banker_is_colliding_with_tile = True
-                #     if banker.direction.y > 0: #Moving up
-                #         banker.rect.bottom = sprite.rect.top
-                #         banker.direction.y = 0
-                #         banker.is_on_ground = True
-                #     elif banker.direction.y < 0: #Moving down
-                #         banker.rect.top = sprite.rect.bottom
-                #         banker.direction.y = 0
-                #         banker.is_on_ground = False
+                if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
+                    banker_is_colliding_with_tile = True
+                    if banker.direction.y < 0: #Moving down
+                        banker.rect.top = waterTile.rect.bottom
+                        banker.direction.y = 0
+                        banker.is_on_ground = False
                         
         for sprite in self.elevators.sprites(): #Looking through all tiles on map
             if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
@@ -394,7 +403,7 @@ class Level:
         for waterObject in self.water:
             if waterObject.active:
                 for waterTile in waterObject.tiles:
-                    if bankerRect.colliderect(waterTile.rect) or (bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10):
+                    if (bankerRect.colliderect(waterTile.rect) and bankerRect.midbottom[1] < waterTile.rect.center[1]) or (bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10):
                         return True
 
     def check_game_ended(self):
