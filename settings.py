@@ -20,6 +20,45 @@
 #  - level_param is a 2d array, each subarray contains the parameters for one entity
 # -----------------------------------------------------------------------------------------------
 
+
+level_map_test = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X     C                    X',
+'X     X       C   N  M     X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X     O                    X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'XL      E                  X',
+'XXXXXXXXXXXXXX             X',
+'X  B         XXXXXXXXXX    X',
+'XXXXXXXXXXX     C   C    XXX',
+'X  J      F   G            X',
+'XXXXXXXXXXXWWXXXWWWWXXXXXXXX']
+leveltest_param = [[1], [1], [350, 2]]
+
+level_map_test_gravity = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X     C                    X',
+'X     X       C   N  M     X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X     O                    X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'XL      E                  X',
+'XXXXXXXXXXXXXX             X',
+'X  B    J   F   G XXXXX    X',
+'X               C   C    XXX',
+'X                          X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+
+
 level_map = [
 '                            ',
 '                            ',

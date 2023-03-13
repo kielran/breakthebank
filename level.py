@@ -57,11 +57,11 @@ class Level:
                     self.enemies.add(roomba_sprite)
                     
                 if cell == "F":
-                    janitor_item_sprite = JanitorItem((x, y), (64, 32))
+                    janitor_item_sprite = JanitorItem((x, y+1), (64, 32))
                     self.items.add(janitor_item_sprite)
                 
                 if cell == "G":
-                    banker_item_sprite = BankerItem((x, y), (64, 32))
+                    banker_item_sprite = BankerItem((x, y+1), (64, 32))
                     self.items.add(banker_item_sprite)
                     
                 if cell == "C":
