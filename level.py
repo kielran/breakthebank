@@ -5,6 +5,8 @@ from enemy import Roomba
 from item import JanitorItem, BankerItem
 from exit import JanitorExit, BankerExit
 from obstacle import PointObstacle, InteractObstacle, InteractBox
+from water import Water
+from elevator import Elevator
 
 class Level:
     def __init__(self, level_map, level_param, surface, bg_image):
@@ -25,20 +27,25 @@ class Level:
         self.obstacles = pygame.sprite.Group()
         self.levers = pygame.sprite.Group()
         self.exits = pygame.sprite.Group()
+        self.elevators = pygame.sprite.Group()
+        self.water = []
         tile_size = 46
         currParam = 0
-        for row_index, row in enumerate(layout):
+        col_index = 0
+        row_index = 0
+        while row_index < len(layout):
             # print(row_index)
             # print(row)
-            cols_skipped = 0
-            for col_index, cell in enumerate(row):
+            row = layout[row_index]
+            col_index = 0
+            while col_index < len(row):
                 cell = layout[row_index][col_index]
                 #print(f'{row_index},{col_index}:{cell}')
-                x = (col_index - cols_skipped) * tile_size
+                x = col_index * tile_size
                 y = row_index * tile_size
                 
                 if cell == "X":    
-                    tile = Tile((x,y), tile_size)
+                    tile = Tile((x,y), "./imgs/floor1.png")
                     self.tiles.add(tile)
 
                 if cell == "J":
@@ -69,21 +76,15 @@ class Level:
                     self.points.add(point)
                 
                 if cell == "O":
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size)
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        obstacle.obstacleID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3, uniqueID)
                     self.obstacles.add(obstacle)   
                            
                 if cell == "L":
-                    lever = InteractBox((x,y))
-                    if col_index + 1 < len(row) and layout[row_index][col_index + 1].isnumeric():
-                        col_index += 1
-                        cols_skipped += 1
-                        uniqueID = layout[row_index][col_index]
-                        lever.leverID = int(uniqueID)
+                    uniqueID = level_param[currParam][0]
+                    currParam += 1
+                    lever = InteractBox((x,y), uniqueID)
                     self.levers.add(lever)
                     
                 if cell == "N":
@@ -93,8 +94,6 @@ class Level:
                 if cell == "M":
                     banker_exit = BankerExit((x,y))
                     self.exits.add(banker_exit)
-<<<<<<< Updated upstream
-=======
                     
                 if cell == "Z":
                     elevator_distance = level_param[currParam][0]
@@ -122,8 +121,7 @@ class Level:
                     
                     
                     
-                
->>>>>>> Stashed changes
+               
 
     def horizontal_movement_collision(self):
         janitor = self.janitor.sprite  
@@ -144,11 +142,20 @@ class Level:
                     banker.rect.left = sprite.rect.right
                 elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
+
                     
-        for sprite in self.obstacles.sprites(): #Looking through all obstacles on map (x axis)
-            if sprite.rect.colliderect(player.rect): #If player 1 collides with an obstacle
-                if player.direction.x < 0: #Moving right
-                    player = player
+        for sprite in self.elevators.sprites(): #Looking through all tiles on map (x axis)
+            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile
+                if janitor.direction.x < 0: #Moving right
+                    janitor.rect.left = sprite.rect.right
+                elif janitor.direction.x > 0: #Moving left
+                    janitor.rect.right = sprite.rect.left
+            if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a tile
+                if banker.direction.x < 0: #Moving right
+                    banker.rect.left = sprite.rect.right
+                elif banker.direction.x > 0: #Moving left
+                    banker.rect.right = sprite.rect.left
+                    
             # for enemy in self.enemies.sprites():
             #     if sprite.rect.colliderect(enemy.rect): #if enemy collides with a tile
             #         if enemy.direction < 0: #moving left
@@ -179,6 +186,19 @@ class Level:
                     banker.rect.left = sprite.rect.right 
                 elif banker.direction.x > 0: #Moving left
                     banker.rect.right = sprite.rect.left
+                    
+        for waterObject in self.water:
+            for waterTile in waterObject.tiles:
+                if waterTile.rect.colliderect(janitor.rect): #If janitor 1 collides with a lever
+                    if janitor.direction.x < 0: #Moving right
+                        janitor.rect.left = waterTile.rect.right
+                    elif janitor.direction.x > 0: #Moving left
+                        janitor.rect.right = waterTile.rect.left
+                if waterTile.rect.colliderect(banker.rect): #If janitor 2 collides with a lever
+                    if banker.direction.x < 0: #Moving right
+                        banker.rect.left = waterTile.rect.right 
+                    elif banker.direction.x > 0: #Moving left
+                        banker.rect.right = waterTile.rect.left
                 
 
     def vertical_movement_collision(self):
@@ -194,7 +214,7 @@ class Level:
             item.apply_gravity()
         
         for sprite in self.tiles.sprites(): #Looking through all tiles on map
-            if sprite.rect.colliderect(janitor.rect): #If janitor 1 collides with a tile
+            if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
                 janitor_is_colliding_with_tile = True
                 if janitor.direction.y > 0: #Moving up
                     janitor.rect.bottom = sprite.rect.top
@@ -204,7 +224,7 @@ class Level:
                     janitor.rect.top = sprite.rect.bottom
                     janitor.direction.y = 0
                     janitor.is_on_ground = False
-            if sprite.rect.colliderect(banker.rect): #If janitor 2 collides with a tile
+            if sprite.rect.colliderect(banker.rect): #If banker collides with a tile
                 banker_is_colliding_with_tile = True
                 if banker.direction.y > 0: #Moving up
                     banker.rect.bottom = sprite.rect.top
@@ -224,6 +244,47 @@ class Level:
                     elif item.direction.y < 0: #Moving down
                         item.rect.top = sprite.rect.bottom
                         item.direction.y = 0
+                        
+        for waterObject in self.water:
+            for waterTile in waterObject.tiles:
+                if waterTile.rect.colliderect(janitor.rect): #If janitor collides with a tile
+                    janitor_is_colliding_with_tile = True
+                    if janitor.direction.y > 0: #Moving up
+                        janitor.rect.bottom = waterTile.rect.top
+                        janitor.direction.y = 0
+                        janitor.is_on_ground = True
+                    elif janitor.direction.y < 0: #Moving down
+                        janitor.rect.top = waterTile.rect.bottom
+                        janitor.direction.y = 0
+                        janitor.is_on_ground = False
+                if waterTile.rect.colliderect(banker.rect): #If banker collides with a tile
+                    banker_is_colliding_with_tile = True
+                    if banker.direction.y < 0: #Moving down
+                        banker.rect.top = waterTile.rect.bottom
+                        banker.direction.y = 0
+                        banker.is_on_ground = False
+                        
+        for sprite in self.elevators.sprites(): #Looking through all tiles on map
+            if sprite.rect.colliderect(janitor.rect): #If janitor collides with a tile
+                janitor_is_colliding_with_tile = True
+                if janitor.direction.y > 0: #Moving up
+                    janitor.rect.bottom = sprite.rect.top
+                    janitor.direction.y = 0
+                    janitor.is_on_ground = True
+                elif janitor.direction.y < 0: #Moving down
+                    janitor.rect.top = sprite.rect.bottom
+                    janitor.direction.y = 0
+                    janitor.is_on_ground = False
+            if sprite.rect.colliderect(banker.rect): #If banker collides with a tile
+                banker_is_colliding_with_tile = True
+                if banker.direction.y > 0: #Moving up
+                    banker.rect.bottom = sprite.rect.top
+                    banker.direction.y = 0
+                    banker.is_on_ground = True
+                elif banker.direction.y < 0: #Moving down
+                    banker.rect.top = sprite.rect.bottom
+                    banker.direction.y = 0
+                    banker.is_on_ground = False
             
                         
         for sprite in self.obstacles.sprites(): #Looking through all obstacles (y axis)
@@ -252,25 +313,21 @@ class Level:
     def banker_horizontal_movement_collision(self):
         banker = self.banker.sprite  
         banker.rect.x += banker.direction.x * banker.speed
-
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(banker.rect): # If player 2 collides with a tile
                 if banker.direction.x < 0: #moving left
                     banker.rect.left = sprite.rect.right
                 elif banker.direction.x > 0: #moving right
                     banker.rect.right = sprite.rect.left
-
         for sprite in self.obstacles.sprites(): # Players can't overlap obstacles (x axis)
             if sprite.rect.colliderect(banker.rect):
                 if banker.direction.x < 0:
                     banker.rect.left = sprite.rect.right 
                 elif banker.direction.x > 0:
                     banker.rect.right = sprite.rect.left
-
     def banker_vertical_movement_collision(self):
         banker = self.banker.sprite
         banker.apply_gravity()
-
         for sprite in self.tiles.sprites(): #looking through all sprites
             if sprite.rect.colliderect(banker.rect): #if player collides with a tile
                 if banker.direction.y > 0: #moving left
@@ -294,15 +351,15 @@ class Level:
 
         for sprite in self.obstacles.sprites(): #Looking through all obstacles
             if sprite.obstacleID == 0: #If the obstacle is the generic obstacle door
-                if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the obstacle
+                """if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_s: #and it is player 1's interact button (F), remove
-                                if(len(player.inventory) > 0):
+                                if(len(janitor.inventory) > 0):
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
                                 else:
-                                    print('Player 1 does not have an item, cannot remove')
+                                    print('Player 1 does not have an item, cannot remove')"""
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
@@ -341,12 +398,25 @@ class Level:
                                         break
                                 sprite.flipUse = 0 #Lever can no longer be used
                                 sprite.update() #Update lever sprite to being flipped
+      
+    def check_banker_on_water(self):
+        bankerRect = self.banker.sprite.rect
+        
+        for waterObject in self.water:
+            if waterObject.active:
+                for waterTile in waterObject.tiles:
+                    if (bankerRect.colliderect(waterTile.rect) and bankerRect.midbottom[1] < waterTile.rect.center[1]) or (bankerRect.midbottom[1] == waterObject.Y and bankerRect.bottomleft[0] < waterObject.endX - 10 and bankerRect.bottomright[0] > waterObject.startX + 10):
+                        return True
 
     def check_game_ended(self):
         janitor = self.janitor.sprite
+        banker = self.banker.sprite
         for exit in self.exits.sprites():
             if janitor.rect.colliderect(exit):
-                if not ((type(self.player) == Banker and type(exit) == BankerExit) or (type(self.player) == Janitor and type(exit) == JanitorExit)):
+                if not type(exit) == JanitorExit:
+                    return False
+            elif banker.rect.colliderect(exit):
+                if not type(exit) == BankerExit:
                     return False
             else:
                 return False
@@ -358,6 +428,9 @@ class Level:
         self.display_surface.blit(self.bg_image, (0,0))
         self.tiles.draw(self.display_surface)
         
+        for water in self.water:
+            water.draw(self.display_surface)
+        
         self.obstacles.draw(self.display_surface)
 
         self.points.draw(self.display_surface)
@@ -366,21 +439,24 @@ class Level:
         
         self.exits.draw(self.display_surface)
         
+        self.elevators.update(self.banker.sprite, self.janitor.sprite)
+        self.elevators.draw(self.display_surface)
+        
         for enemy in self.enemies:
             sight_rect = enemy.update()
             #pygame.draw.rect(self.display_surface, "white", sight_rect)   #comment out to not draw the sight rect
             if enemy.detect_player(self.janitor.sprite.rect, self.tiles):
-                print("detected")
-                return False
+                print(enemy.distance)
+                return False, "loss"
             if enemy.detect_player(self.banker.sprite.rect, self.tiles):
                 print("detected")
-                return False
+                return False, "loss"
         self.enemies.draw(self.display_surface)
         
-        self.janitor.update(self.items)
+        self.janitor.update(self.items, self.water, self.tiles)
         self.janitor.draw(self.display_surface)
         
-        self.banker.update(self.items)
+        self.banker.update(self.items, self.elevators, self.janitor.sprite)
         self.banker.draw(self.display_surface)
         
         self.horizontal_movement_collision()
@@ -397,6 +473,8 @@ class Level:
         for item in self.items:
             self.display_surface.blit(item.image, item.rect)
         
+        if self.check_banker_on_water():
+            return False, "loss"
         if self.check_game_ended():
-             return False                      
-        return True
+             return False, "win"                      
+        return True, ""
