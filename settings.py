@@ -138,6 +138,50 @@ level_map_2 = [
 'XXXXXXXXXXXXXXXX           X']
 level2_param = [[335, 2]]
 
+<<<<<<< Updated upstream
+=======
+level_map_3 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                         BX',
+'X         C           C   XX',
+'X  X  X   X   X   X   X  XXX',
+'X XXWWWWWWWWWWWWWWWWWWWWWXXX',
+'X                          X',
+'X                  N   M   X',
+'X XXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'XX                  C      X',
+'XXX                  X     X',
+'XXXXX E  C  X E CX ECX     X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
+'X                          X',
+'X  J                    XXXX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level3_param=[[100,2],[80,2], [35,3]]
+
+
+level_map_4 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'X NM O       X             X',
+'XXXXXXX      X             X',
+'X     X      X             X',
+'X    FX      XZ            X',
+'X   XXX XXX  XXXX          X',
+'X     X      JXBO          X',
+'X     X  XXXXXXXXG         X',
+'X    LX         XX         X',
+'X     X          XX        X',
+'X     X           XX       X',
+'XZ                 XX      X',
+'X                   XX    LX',
+'X                          X',
+'XXXXXXXXXXXXXXXWWWWWWWWWWWWX']
+
+level4_param = [[2], [3, 2], [1], [1], [6, 2], [2]]
+
+
+>>>>>>> Stashed changes
 #11 rows
 # tile_size = 64
 # screen_width = 1280

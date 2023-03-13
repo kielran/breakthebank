@@ -93,6 +93,37 @@ class Level:
                 if cell == "M":
                     banker_exit = BankerExit((x,y))
                     self.exits.add(banker_exit)
+<<<<<<< Updated upstream
+=======
+                    
+                if cell == "Z":
+                    elevator_distance = level_param[currParam][0]
+                    elevator_speed = level_param[currParam][1] 
+                    currParam +=1
+                    elevator = Elevator((x, y), elevator_distance, elevator_speed)
+                    self.elevators.add(elevator)
+                    
+                if cell == "W":
+                    water_tiles = pygame.sprite.Group()
+                    startX = x
+                    while col_index < len(row) and layout[row_index][col_index] == "W":
+                        x = col_index * tile_size
+                        y = row_index * tile_size
+                        water = Tile((x,y), "./imgs/water.png")
+                        water_tiles.add(water)
+                        col_index += 1
+                    col_index -= 1
+                    endX = x + 46
+                    water_object = Water(water_tiles, startX, endX, y)
+                    self.water.append(water_object)
+                    
+                col_index += 1
+            row_index += 1
+                    
+                    
+                    
+                
+>>>>>>> Stashed changes
 
     def horizontal_movement_collision(self):
         janitor = self.janitor.sprite  
