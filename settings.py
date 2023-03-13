@@ -178,31 +178,6 @@ level_map_4 = [
 
 level4_param = [[1], [1], [2], [6, 2], [2], [11, 4]]
 
-
-
-
-level_map_4 = [
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-'X                          X',
-'X NM O                     X',
-'XXXXXXX                    X',
-'X     X                    X',
-'X    FX                    X',
-'X   XXX XXX  XXX           X',
-'X     X      JXBO          X',
-'X     X  XXXXXXXXG         X',
-'X     X         XX         X',
-'X     X          XX        X',
-'X     X           XX       X',
-'X                  XX      X',
-'XZ                  XX    LX',
-'XL                         X',
-'XXXXXXXXXXXXXXXWWWWWWWWWWWWX']
-
-level4_param = [[1], [2], [6, 2], [1], [2]]
-
-
-
 #11 rows
 # tile_size = 64
 # screen_width = 1280
