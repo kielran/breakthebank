@@ -105,19 +105,19 @@ level_map_3 = [
 'X                         BX',
 'X                         XX',
 'X  X  X   X   X   X   X  XXX',
-'X XXWWWWWWWWWWWWWWWWWWWWWWWX',
+'X XXWWWWWWWWWWWWWWWWWWWWWXXX',
 'X                          X',
 'X                  N   M   X',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X XXXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                          X',
-'X                          X',
-'X          X     X    X    X',
-'XX   E     X  E  X E  X    X',
+'XX                         X',
+'XXX                  X     X',
+'XXXXX E     X E  X E X     X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
 'X                          X',
-'X  J                     XXXX',
+'X  J                    XXXX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
-level3_param=[[200,1],[100,2],[80,2]]
+level3_param=[[100,2],[80,2], [35,3]]
 
 
 
