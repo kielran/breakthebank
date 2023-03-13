@@ -7,7 +7,7 @@ class Elevator(pygame.sprite.Sprite):
         self.image = pygame.Surface((92, 23))
         self.image.fill("black")
         self.rect = self.image.get_rect(topleft = pos)
-        self.distance = distance
+        self.distance = distance * 46 - 2
         self.posFromStart = 0
         self.direction = 1
         self.speed = speed
