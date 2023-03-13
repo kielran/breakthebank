@@ -177,9 +177,6 @@ class CurrentScene(StateMachine):
             print("bgm_ch play wipMusic")
         screen.fill('black')
         
-        if not self.level.run():
-            self.curr_screen = screen.copy()
-            self.death_menu = True # make die
         keep_running, outcome = self.level.run()
         if not keep_running:
             if outcome == "loss":
@@ -188,7 +185,6 @@ class CurrentScene(StateMachine):
             else:
                 self.curr_screen = screen.copy()
                 self.win_menu = True 
-                self.pause_menu = True 
                 
 
         mouse = pygame.mouse.get_pos()
