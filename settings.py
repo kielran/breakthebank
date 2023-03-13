@@ -13,6 +13,7 @@
 #  N: Janitor exit
 #  M: Banker exit
 #  W: Water tile
+#  Z: Elevator (2 tiles long in the horizontal)
 #
 #
 # Rules for parameters
