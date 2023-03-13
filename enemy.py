@@ -29,12 +29,11 @@ class Enemy(pygame.sprite.Sprite):
             self.reverse_dir()
         
 class Roomba(Enemy):
-    def __init__(self, pos, distance, speed, player):
+    def __init__(self, pos, distance, speed):
         super().__init__(pos, distance, speed)
         self.sight_image = pygame.Surface((1000, 44))
         self.sight_image.fill((50, 50, 50))
         self.sight_rect = self.sight_image.get_rect(topleft = self.rect.topright)
-        self.player = player
         
     def move(self):
         if self.direction == 1:
@@ -63,16 +62,19 @@ class Roomba(Enemy):
     def detect_player(self, player_rect, tiles):
         tiles_to_check = []
         
-        for tile in tiles.sprites(): #looking through all sprites
-            if pygame.Rect.colliderect(self.sight_rect, player_rect): #if enemy collides with sight
-                if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
-                    #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
-                    tiles_to_check.append(tile)
+        if not pygame.Rect.colliderect(self.sight_rect, player_rect):
+            return False
         
-        for tile in tiles_to_check:
+        for tile in tiles.sprites(): #looking through all sprites
+            if tile.rect.colliderect(self.sight_rect): #if tile is colliding with the sight
+                #print(player_rect.x < tile.rect.x, tile.rect.x < self.sight_rect.midright[0])
+                tiles_to_check.append(tile)
+
+
+        for index, tile in enumerate(tiles_to_check):
             if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
-                continue
-            elif player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
-                continue
-            else: return True
+                break
+            if player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
+                break
+            if index == len(tiles_to_check) - 1: return True
         return False

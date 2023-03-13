@@ -26,7 +26,8 @@ pygame.display.set_caption('Break the Bank')
 gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
-levels_to_draw = 2
+
+levels_to_draw = 4
 
 button_hover = pygame.mixer.Sound('audio/sfx/button_hover.mp3')
 button_hover.set_volume(1.0)
@@ -42,6 +43,7 @@ class CurrentScene(StateMachine):
     scene_in_game = State("In Game")
     scene_pause_menu = State("Paused")
     scene_death_menu = State("Death")
+    scene_win_menu = State("Completed Level")
     global levels_to_draw
     musicON = True
     # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
@@ -49,12 +51,13 @@ class CurrentScene(StateMachine):
     go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
         scene_in_game, cond = "in_game") | scene_in_game.to(scene_main_menu, cond = "main_menu") | scene_in_game.to(
         scene_pause_menu, cond = "pause_menu") | scene_pause_menu.to(scene_in_game, cond = "in_game") | scene_pause_menu.to(scene_level_selection, cond = "select_stage") | scene_in_game.to(
-        scene_death_menu, cond = "death_menu")| scene_death_menu.to(scene_level_selection, cond = "select_stage") | scene_death_menu.to(scene_in_game, cond = "in_game")
+        scene_death_menu, cond = "death_menu")| scene_death_menu.to(scene_level_selection, cond = "select_stage") | scene_death_menu.to(scene_in_game, cond = "in_game") | scene_in_game.to(
+        scene_win_menu, cond = "win_menu")| scene_win_menu.to(scene_level_selection, cond = "select_stage") | scene_win_menu.to(scene_in_game, cond = "in_game")
     
     
     
     update = scene_main_menu.to.itself(on="drawMainMenu") | scene_level_selection.to.itself(on="drawStageSelection") | scene_in_game.to.itself(
-        on="drawInGame") | scene_pause_menu.to.itself(on="drawPauseMenu") | scene_death_menu.to.itself(on="drawDeathMenu")
+        on="drawInGame") | scene_pause_menu.to.itself(on="drawPauseMenu") | scene_death_menu.to.itself(on="drawDeathMenu") | scene_win_menu.to.itself(on="drawWinMenu")
 
     def __init__(self):
         # self.calls = []
@@ -63,6 +66,7 @@ class CurrentScene(StateMachine):
         self.in_game = False
         self.pause_menu = False
         self.death_menu = False
+        self.win_menu = False
         self.curr_screen = screen.copy()
         self.current_level = ""
         self.current_level_parems = ""
@@ -75,10 +79,11 @@ class CurrentScene(StateMachine):
         self.in_game = False
         self.pause_menu = False
         self.death_menu = False
+        self.win_menu = False
         # print("ON_TRANSITION")
 
     def checkChange(self):
-        if self.select_stage | self.main_menu | self.in_game | self.pause_menu | self.death_menu:
+        if self.select_stage | self.main_menu | self.in_game | self.pause_menu | self.death_menu | self.win_menu:
             return True
 
 
@@ -100,6 +105,7 @@ class CurrentScene(StateMachine):
                     print("TRIGGERED start game")
                 if quit_button.isOver(mouse):
                     button_hover.play()
+                    sys.exit()
                     pygame.quit()
             if event.type == pygame.KEYDOWN: #temp to get coords
                 if event.key == pygame.K_RETURN:
@@ -132,15 +138,15 @@ class CurrentScene(StateMachine):
                 if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_1
-                    self.current_level_parems = level1_param
+                    self.current_level = level_map_3
+                    self.current_level_parems = level3_param
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_1
-                    self.current_level_parems = level1_param
+                    self.current_level = level_map_4
+                    self.current_level_parems = level4_param
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_5.isOver(mouse) and 5<=levels_to_draw):
@@ -171,9 +177,16 @@ class CurrentScene(StateMachine):
             print("bgm_ch play wipMusic")
         screen.fill('black')
         
-        if not self.level.run():
-            self.curr_screen = screen.copy()
-            self.death_menu = True # make die
+        keep_running, outcome = self.level.run()
+        if not keep_running:
+            if outcome == "loss":
+                self.curr_screen = screen.copy()
+                self.death_menu = True 
+            else:
+                self.curr_screen = screen.copy()
+                self.win_menu = True 
+                
+
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -206,7 +219,6 @@ class CurrentScene(StateMachine):
                     self.select_stage = True
                 if restart_button.isOver(mouse):
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
-                    self.level = Level(self.current_level, level0_param, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                     self.musicON = True
             if event.type == pygame.KEYDOWN:
@@ -214,6 +226,8 @@ class CurrentScene(StateMachine):
                     esc_click.play()
                     self.in_game = True
 
+
+    #-------------DEATH MENU-------------
     def drawDeathMenu(self):
         if self.musicON is False:
             bgm_ch.pause()
@@ -221,6 +235,29 @@ class CurrentScene(StateMachine):
             print("====pause menu stop music")
         screen.blit(self.curr_screen,(0,0))
         deathMenu.update()
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if quit_button.isOver(mouse):
+                    button_hover.play()
+                    self.musicON = False
+                    self.select_stage = True
+                if restart_button.isOver(mouse):
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
+                    self.in_game = True
+                    self.musicON = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE: # go back to game
+                    esc_click.play()
+                    self.select_stage = True
+
+    def drawWinMenu(self):
+        if self.musicON is False:
+            bgm_ch.pause()
+            self.musicON = True
+            print("====pause menu stop music")
+        screen.blit(self.curr_screen,(0,0))
+        winMenu.update()
         mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -358,29 +395,6 @@ bgm_ch = pygame.mixer.Channel(0)
 bgm_ch.set_volume(0.3)
 bgm_ch.play(menuMusic, loops = -1, fade_ms = 500)
 
-#--------------------------------------------------------
-# Drawing game stage
-# 
-# 
-#--------------------------------------------------------
-# def game_stage():
-#     # test_tile = pygame.sprite.Group(Tile((100,100), 200))
-    
-#     screen.fill('black')
-#     level.run()
-    # while True:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             pygame.quit()
-    #             sys.exit()
-    #     screen.fill('black')
-    #     level.run()
-        
-    #     pygame.display.update()
-    #     timer.tick(60)
-
-
-
 
 #--------------------------------------------------------
 # Set up the drawing window
@@ -405,6 +419,9 @@ continue_button = button(width/2.4288,height/2.1951219, 20, 100, '', None, "imgs
 restart_button = button(width/2.4015,height/1.75182, 20, 100, '', None, "imgs/buttons/slice_restart.png","imgs/buttons/hovering_slice_restart.png",160)
 tutorial_button = button(width/2.424242,height/1.50627, 20, 100, '', None, "imgs/buttons/slice_tutorial.png","imgs/buttons/hovering_slice_tutorial.png",160)
 pause_title = button(width/3.12195,height/11.6129, 20, 100, '', None, "imgs/slice_paused.png","imgs/slice_paused.png",160) #bad code 
+death_title = button(width/5.62195,height/6.6129, 20, 100, '', None, "imgs/slice_gameover.png","imgs/slice_gameover.png",160) #bad code 
+win_title = button(width/2.62195,height/6.6129, 20, 100, '', None, "imgs/slice_completed.png","imgs/slice_completed.png",120) #bad code 
+
 
 # TODO: placeholders for Stage Selection Menu
 stage_placeholderbutton_1 = button(width/18,height/3,0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
@@ -436,10 +453,10 @@ pauseMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continu
 InGame = Scene(screen, "imgs/in_game.png", [])
 mainMenu = Scene(screen, "imgs/start_bare.png", [start_button,quit_button,audio_button,accessibility_button])
 stageSelection = Scene(screen, "imgs/stage_select.png", stageSelection_list)
-deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, pause_title, quit_button, audio_button, accessibility_button], True)
+deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, death_title, quit_button, audio_button, accessibility_button], True)
+winMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [restart_button, tutorial_button, win_title, quit_button, audio_button, accessibility_button], True)
 
         
-
 
 #--------------------------------------------------------
 #Define Booleans for stage states
@@ -494,3 +511,4 @@ while running:
 
 # Done! Time to quit.
 pygame.quit()
+sys.exit()

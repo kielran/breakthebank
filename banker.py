@@ -6,7 +6,7 @@ class Banker(Player):
     def __init__(self, pos):
         super().__init__(pos)
         #self.image = pygame.Surface((32,64))
-        self.image.fill('red')
+        # self.image.fill('red')
 
     def player_movement(self):
         
@@ -21,5 +21,5 @@ class Banker(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and self.is_on_ground == True :
             self.jump()
