@@ -163,15 +163,26 @@ level3_param=[[100,2],[80,2], [35,3]]
 level_map_4 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                          X',
+<<<<<<< Updated upstream
 'X NM O       X             X',
 'XXXXXXX      X             X',
 'X     X      X             X',
 'X    FX      XZ            X',
 'X   XXX XXX  XXXX          X',
 'X     X      JXBO          X',
+=======
+'X NM O                    LX',
+'XXXXXXXXXXXXXXXXXXWWWWWWW  X',
+'X     X                    X',
+'X    FX                    X',
+'X   XXX                    X',
+'X     X       XXX          X',
+'X     X       JXBO         X',
+>>>>>>> Stashed changes
 'X     X  XXXXXXXXG         X',
 'X    LX         XX         X',
 'X     X          XX        X',
+<<<<<<< Updated upstream
 'X     X           XX       X',
 'XZ                 XX      X',
 'X                   XX    LX',
@@ -179,6 +190,15 @@ level_map_4 = [
 'XXXXXXXXXXXXXXXWWWWWWWWWWWWX']
 
 level4_param = [[2], [3, 2], [1], [1], [6, 2], [2]]
+=======
+'X                 XX       X',
+'XZ                 XX      X',
+'XL                       Z X',
+'XXXXXXXXXXXXXXXWWWWWWWWWWWWX']
+
+level4_param = [[1], [1], [2], [6, 2], [2], [11, 4]]
+
+>>>>>>> Stashed changes
 
 
 >>>>>>> Stashed changes
