@@ -20,8 +20,9 @@ class InteractObstacle(pygame.sprite.Sprite):
             self.image.fill('Pink')
             self.rect = self.image.get_rect(bottomleft = pos)
         else: 
-            self.image = pygame.Surface((size_x, size_y))
-            self.image.fill('Red')
+            #self.image = pygame.Surface((size_x, size_y))
+            #self.image.fill('Red')
+            self.image = pygame.transform.scale(pygame.image.load("./imgs/floor2.png"), (size_x,size_y)).convert_alpha()
             self.rect = self.image.get_rect(bottomleft = pos)
         self.obstacleID = uniqueID
     def __del__(self):
