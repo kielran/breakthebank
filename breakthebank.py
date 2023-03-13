@@ -7,6 +7,8 @@ from settings import *
 from tiles import Tile
 from level import Level
 from statemachine import StateMachine, State
+from story import Story
+from dialogue import Dialogue
 
 pygame.init()
 pygame.mixer.init()
@@ -47,6 +49,7 @@ class CurrentScene(StateMachine):
     global levels_to_draw
     musicON = True
     audioTog = True
+    storyTog = True
     # to create new scene, declare, create a variable for it, put it in init on_transition, and update the update var
 
     go_to_next_scene = scene_main_menu.to(scene_level_selection, cond = "select_stage") | scene_level_selection.to(scene_main_menu, cond = "main_menu") | scene_level_selection.to(
@@ -54,7 +57,6 @@ class CurrentScene(StateMachine):
         scene_pause_menu, cond = "pause_menu") | scene_pause_menu.to(scene_in_game, cond = "in_game") | scene_pause_menu.to(scene_level_selection, cond = "select_stage") | scene_in_game.to(
         scene_death_menu, cond = "death_menu")| scene_death_menu.to(scene_level_selection, cond = "select_stage") | scene_death_menu.to(scene_in_game, cond = "in_game") | scene_in_game.to(
         scene_win_menu, cond = "win_menu")| scene_win_menu.to(scene_level_selection, cond = "select_stage") | scene_win_menu.to(scene_in_game, cond = "in_game")
-    
     
     
     update = scene_main_menu.to.itself(on="drawMainMenu") | scene_level_selection.to.itself(on="drawStageSelection") | scene_in_game.to.itself(
@@ -179,6 +181,11 @@ class CurrentScene(StateMachine):
     #-------------IN GAME-------------
     def drawInGame(self):
         # game_stage()
+        if self.storyTog is True:
+            self.storyTog = False
+            S1B.readStory()
+            #self.storyTog = True
+
         if self.musicON is True: 
             if self.current_level == level_map_0:
                 bgm_ch.play(menuMusic, loops=-1, fade_ms=100)
@@ -510,8 +517,21 @@ deathMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg.png", [restart_butto
 winMenu = Scene(overallScreen.curr_screen, "imgs/pause_bg_light.png", [continue_button, restart_button, tutorial_button, win_title, quit_button, audio_button, accessibility_button], True)
 
 tutorialMenu = pygame.image.load("./imgs/tutorial.png")
-        
 
+bank = "./imgs/banker_img.png"
+jan = "./imgs/janitor_img.png"
+# Draw Stories =================
+S1B = Story(screen, "./imgs/stage1_lobby.png")
+S1B01 = Dialogue(overallScreen.curr_screen, bank, jan, "...Testing.")
+S1B02 = Dialogue(overallScreen.curr_screen, bank, jan, "...aafsf.")
+S1B03 = Dialogue(overallScreen.curr_screen, bank, jan, "...jgfjf.")
+S1B04 = Dialogue(overallScreen.curr_screen, bank, jan, "...reye.")
+S1B05 = Dialogue(overallScreen.curr_screen, bank, jan, "...vnd.")
+S1B.dialogue.append(S1B01)
+S1B.dialogue.append(S1B02)
+S1B.dialogue.append(S1B03)
+S1B.dialogue.append(S1B04)
+S1B.dialogue.append(S1B05)
 #--------------------------------------------------------
 #Define Booleans for stage states
 #--------------------------------------------------------
