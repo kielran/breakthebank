@@ -155,7 +155,7 @@ class CurrentScene(StateMachine):
                     print("TRIGGERED stage selection -> in game")
                     self.current_level = level_map_4
                     self.current_level_parems = level4_param
-                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
+                    self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage4_executive.png")
                     self.in_game = True
                 if (stage_placeholderbutton_5.isOver(mouse) and 5<=levels_to_draw):
                     button_hover.play()
@@ -480,7 +480,7 @@ win_title = button(width/6.62195,height/6.6129, 20, 100, '', None, "imgs/slice_c
 stage_placeholderbutton_1 = button(width/8,height/4,0,20,'',None,"imgs/1f.png","imgs/1f_hover.png")
 stage_placeholderbutton_2 = button(width/8+0.85*(width/3),height/4,0,20,'',None,"imgs/b.png","imgs/b_hover.png")
 stage_placeholderbutton_3 = button(width/8+1.7*(width/3),height/4,0,20,'',None,"imgs/2f.png","imgs/2f_hover.png")
-stage_placeholderbutton_4 = button(width/8,height/4+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
+stage_placeholderbutton_4 = button(width/8,height/4+(height/3),0,20,'',None,"imgs/3f.png","imgs/3f_hover.png")
 stage_placeholderbutton_5 = button(width/8+1*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
 stage_placeholderbutton_6 = button(width/8+2*(width/3),height/3+(height/3),0,20,'',None,"imgs/stage_placeholderbutton.png","imgs/stage_placeholderbutton_hover.png")
 
