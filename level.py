@@ -114,7 +114,6 @@ class Level:
                     endX = x + 46
                     water_object = Water(water_tiles, startX, endX, y)
                     self.water.append(water_object)
-                    print(self.water)
                     
                 col_index += 1
             row_index += 1

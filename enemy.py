@@ -71,10 +71,10 @@ class Roomba(Enemy):
                 tiles_to_check.append(tile)
 
 
-        for tile in tiles_to_check:
+        for index, tile in enumerate(tiles_to_check):
             if player_rect.x < tile.rect.x and tile.rect.x < self.rect.x:
                 break
-            elif player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
+            if player_rect.x > tile.rect.x and tile.rect.x > self.rect.x:
                 break
-            else: return True
+            if index == len(tiles_to_check) - 1: return True
         return False

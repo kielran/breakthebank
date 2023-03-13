@@ -71,13 +71,13 @@ level_map_1 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                          X',
 'X                          X',
-'X          X     X    X    X',
-'XX    E    X     X    X    X',
+'X   J      X     X    X    X',
+'XX  X E    X     X    X    X',
 'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
 'X                          X',
-'X  J                     XXXX',
+'X                        XXXX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
-level1_param=[[200,1],[100,2],[80,2]]
+level1_param=[[101,1],[100,2],[80,2]]
 
 
 
