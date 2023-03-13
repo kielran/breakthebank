@@ -351,7 +351,7 @@ class Level:
 
         for sprite in self.obstacles.sprites(): #Looking through all obstacles
             if sprite.obstacleID == 0: #If the obstacle is the generic obstacle door
-                if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the obstacle
+                """if sprite.rect.left == janitor.rect.right or sprite.rect.right == janitor.rect.left: #If player 1 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
                             if event.key == pygame.K_s: #and it is player 1's interact button (F), remove
@@ -359,7 +359,7 @@ class Level:
                                     print('Player 1 (WASD) with key encountered door, removing')
                                     sprite.kill()
                                 else:
-                                    print('Player 1 does not have an item, cannot remove')
+                                    print('Player 1 does not have an item, cannot remove')"""
                 if sprite.rect.left == banker.rect.right or sprite.rect.right == banker.rect.left: #If player 2 is next to the obstacle
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN: #If a key is pressed
