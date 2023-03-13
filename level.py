@@ -78,7 +78,7 @@ class Level:
                 if cell == "O":
                     uniqueID = level_param[currParam][0]
                     currParam += 1
-                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 3, uniqueID)
+                    obstacle = InteractObstacle((x, y + tile_size), tile_size, tile_size * 2, uniqueID)
                     self.obstacles.add(obstacle)   
                            
                 if cell == "L":
