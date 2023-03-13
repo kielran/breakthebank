@@ -98,7 +98,7 @@ class Level:
                 if cell == "Z":
                     elevator_distance = level_param[currParam][0]
                     elevator_speed = level_param[currParam][1] 
-                    currParam += 1
+                    currParam +=1
                     elevator = Elevator((x, y), elevator_distance, elevator_speed)
                     self.elevators.add(elevator)
                     
@@ -121,7 +121,7 @@ class Level:
                     
                     
                     
-                
+               
 
     def horizontal_movement_collision(self):
         janitor = self.janitor.sprite  
