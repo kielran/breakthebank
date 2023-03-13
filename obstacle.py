@@ -8,7 +8,8 @@ class PointObstacle(pygame.sprite.Sprite):
         self.image.fill('Blue')
         self.rect = self.image.get_rect(topleft = pos)
     def __del__(self):
-        print('Point deletion')
+        # print('Point deletion')
+        pass
 
 class InteractObstacle(pygame.sprite.Sprite):
     def __init__(self, pos, size_x, size_y, uniqueID):
@@ -19,7 +20,8 @@ class InteractObstacle(pygame.sprite.Sprite):
         self.notFlippable = 1
         self.obstacleID = uniqueID
     def __del__(self):
-        print('Gone forever')
+        # print('Gone forever')
+        pass
 
 class InteractBox(pygame.sprite.Sprite):
     def __init__(self, pos, uniqueID):

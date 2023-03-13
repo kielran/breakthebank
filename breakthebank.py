@@ -26,7 +26,7 @@ pygame.display.set_caption('Break the Bank')
 gameicon = pygame.image.load("imgs/game_icon.png")
 pygame.display.set_icon(gameicon)
 size = 80
-levels_to_draw = 2
+levels_to_draw = 3
 
 button_hover = pygame.mixer.Sound('audio/sfx/button_hover.mp3')
 button_hover.set_volume(1.0)
@@ -133,8 +133,8 @@ class CurrentScene(StateMachine):
                 if (stage_placeholderbutton_3.isOver(mouse) and 3<=levels_to_draw):
                     button_hover.play()
                     print("TRIGGERED stage selection -> in game")
-                    self.current_level = level_map_1
-                    self.current_level_parems = level1_param
+                    self.current_level = level_map_3
+                    self.current_level_parems = level3_param
                     self.level = Level(self.current_level, self.current_level_parems, screen, "./imgs/stage1_lobby.png")
                     self.in_game = True
                 if (stage_placeholderbutton_4.isOver(mouse) and 4<=levels_to_draw):
