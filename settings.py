@@ -162,8 +162,8 @@ level3_param=[[100,2],[80,2], [35,3]]
 level_map_4 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
 'X                          X',
-'X NM O                    LX',
-'XXXXXXXXXXXXXXXXXXWWWWWWW  X',
+'X NM O                 XL  X',
+'XXXXXXXXXXXXXXXXXXWWWWWXX  X',
 'X     X                    X',
 'X    FX                    X',
 'X   XXX                    X',
