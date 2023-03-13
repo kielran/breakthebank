@@ -62,22 +62,22 @@ level0_param = [[90, 1], [350, 2]]
 
 level_map_1 = [
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-'X     C                    X',
-'X     X       C     N  M   X',
-'X C    XXXXXXXXXXXXXXXXXXXXX',
-'XXXXX   X                  X',
-'XXXXX      XXXXXX          X',
-'XXXXXXXXXXXXXXXXXXXXXX     X',
-'X        C                 X',
-'X    XXXXXXXXXXX  C        X',
-'X              XXXXXXXXXXXXX',
-'X   E  G                   X',
-'XXXXXXXXXXXXXX             X',
-'X  B         XXXXXXXXXX    X',
-'XXXXXXXXXXX     C   C    XXX',
-'X   J                      X',
+'X                         BX',
+'X                         XX',
+'X  X  X   X   X   X   X  XXX',
+'X XXWWWWWWWWWWWWWWWWWWWWWWWX',
+'X                          X',
+'X                  N   M    X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'X                          X',
+'X          X     X    X    X',
+'XX    E    X     X    X    X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
+'X                          X',
+'X  J                     XXXX',
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
-level1_param = [[350, 2]]
+level1_param=[[200,1],[100,2],[80,2]]
 
 
 
