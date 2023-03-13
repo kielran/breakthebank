@@ -13,13 +13,52 @@
 #  N: Janitor exit
 #  M: Banker exit
 #  W: Water tile
-#  Z: Elevator, specify distance it travels (in tiles) and its speed
+#  Z: Elevator (2 tiles long in the horizontal), specify distance it travels (in tiles) and its speed
 #
 # Rules for parameters
 #
 #  - put parameters in order of which the entity appears in the map (left to right, top to bottom)
 #  - level_param is a 2d array, each subarray contains the parameters for one entity
 # -----------------------------------------------------------------------------------------------
+
+
+level_map_test = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X     C                    X',
+'X     X       C   N  M     X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X     O                    X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'XL      E                  X',
+'XXXXXXXXXXXXXX             X',
+'X  B         XXXXXXXXXX    X',
+'XXXXXXXXXXX     C   C    XXX',
+'X  J      F   G            X',
+'XXXXXXXXXXXWWXXXWWWWXXXXXXXX']
+leveltest_param = [[1], [1], [350, 2]]
+
+level_map_test_gravity = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X     C                    X',
+'X     X       C   N  M     X',
+'X C    XXXXXXXXXXXXXXXXXXXXX',
+'XXXXX   X                  X',
+'XXXXX      XXXXXX          X',
+'XXXXXXXXXXXXXXXXXXXXXX     X',
+'X     O                    X',
+'X    XXXXXXXXXXX  C        X',
+'X              XXXXXXXXXXXXX',
+'XL      E                  X',
+'XXXXXXXXXXXXXX             X',
+'X  B    J   F   G XXXXX    X',
+'X               C   C    XXX',
+'X                          X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+
 
 level_map = [
 '                            ',
@@ -87,7 +126,7 @@ level_map_2 = [
 'XXX         XXX    XXXXXXXXX',
 'XXXX          X     XXXXXXXX',
 'XXXX B        X      XXXXXXX',
-'XXXXXX       XXX      XXXXXX',
+'XXXXXX  J     XXX     XXXXXX',
 'XXXXXXX X              XXXXX',
 'XXXXXXX X                XXXX',
 'XXXXXXXXX                XXX',
@@ -99,6 +138,27 @@ level_map_2 = [
 'XXXXXXXXXXXXXXX            X',
 'XXXXXXXXXXXXXXXX           X']
 level2_param = [[335, 2]]
+
+level_map_3 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                         BX',
+'X         C           C   XX',
+'X  X  X   X   X   X   X  XXX',
+'X XXWWWWWWWWWWWWWWWWWWWWWXXX',
+'X                          X',
+'X                  N   M   X',
+'X XXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'XX                  C      X',
+'XXX                  X     X',
+'XXXXX E  C  X E CX ECX     X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
+'X                          X',
+'X  J                    XXXX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level3_param=[[100,2],[80,2], [35,3]]
+
+
 
 #11 rows
 # tile_size = 64
