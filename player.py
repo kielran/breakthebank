@@ -216,9 +216,7 @@ class Banker(Player):
         
     def activate_elevator(self, elevators, janitor):
         for elevator in elevators:
-            print("elevator")
             if self.rect.midbottom[1] == elevator.rect.midtop[1] and elevator.startX <= self.rect.midbottom[0] and elevator.endX >= self.rect.midbottom[0]:
-                print("on elevator")
                 self.canMove = False
                 if janitor.rect.midbottom[1] == elevator.rect.midtop[1] and elevator.startX <= janitor.rect.midbottom[0] and elevator.endX >= janitor.rect.midbottom[0]:
                     janitor.canMove = False
