@@ -87,7 +87,7 @@ level_map_2 = [
 'XXX         XXX    XXXXXXXXX',
 'XXXX          X     XXXXXXXX',
 'XXXX B        X      XXXXXXX',
-'XXXXXX       XXX      XXXXXX',
+'XXXXXX  J     XXX     XXXXXX',
 'XXXXXXX X              XXXXX',
 'XXXXXXX X                XXXX',
 'XXXXXXXXX                XXX',
@@ -99,6 +99,27 @@ level_map_2 = [
 'XXXXXXXXXXXXXXX            X',
 'XXXXXXXXXXXXXXXX           X']
 level2_param = [[335, 2]]
+
+level_map_3 = [
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                         BX',
+'X                         XX',
+'X  X  X   X   X   X   X  XXX',
+'X XXWWWWWWWWWWWWWWWWWWWWWWWX',
+'X                          X',
+'X                  N   M   X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+'X                          X',
+'X                          X',
+'X          X     X    X    X',
+'XX   E     X  E  X E  X    X',
+'XXXXXXXXXXXXXXXXXXXXXXXXXX X',
+'X                          X',
+'X  J                     XXXX',
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXX']
+level3_param=[[200,1],[100,2],[80,2]]
+
+
 
 #11 rows
 # tile_size = 64
