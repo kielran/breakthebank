@@ -527,6 +527,7 @@ S1B02 = Dialogue(overallScreen.curr_screen, bank, jan, "...aafsf.")
 S1B03 = Dialogue(overallScreen.curr_screen, bank, jan, "...jgfjf.")
 S1B04 = Dialogue(overallScreen.curr_screen, bank, jan, "...reye.")
 S1B05 = Dialogue(overallScreen.curr_screen, bank, jan, "...vnd.")
+#new version
 S1B.dialogue.append(S1B01)
 S1B.dialogue.append(S1B02)
 S1B.dialogue.append(S1B03)
