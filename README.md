@@ -20,6 +20,7 @@ Our team developed Break the Bank with the goal of modernizing the classic 2-pla
 
 ## Project Input/Output
 Players will interact with the game through direct keyboard commands which translate into real-time changes on the screen. The player will be able to move around the map, jump, collect points, pick up their unique item, and use their item to manipulate objects and scenarios on the map. Correct inputs will be rewarded with a higher game score and passage to the next stage.
+
 <img src="https://github.com/kielran/breakthebank/blob/jane-story/imgs/tutorial.PNG" width=60% height=60%></img>
 
 ## Implementation
